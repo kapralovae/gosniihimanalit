@@ -1,0 +1,39 @@
+export default defineNuxtConfig({
+  compatibilityDate: '2026-09-01',
+  
+  devtools: { enabled: true },
+  
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxt/image'
+  ],
+  
+  css: [
+    '~/assets/css/main.css'
+  ],
+  
+  app: {
+    head: {
+      title: 'ГосНИИХиманалит - Научно-производственное предприятие',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { 
+          name: 'description', 
+          content: 'ГосНИИХиманалит - производство, испытания, метрология, аналитическая химия' 
+        }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
+    }
+  },
+  
+  runtimeConfig: {
+    public: {
+      siteUrl: 'https://gosniihimanalit.ru',
+      siteName: 'ГосНИИХиманалит',
+      companyName: 'АО "ГосНИИХиманалит"'
+    }
+  }
+})
