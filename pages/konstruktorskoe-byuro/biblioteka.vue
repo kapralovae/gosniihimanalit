@@ -289,7 +289,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -308,7 +308,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -323,7 +323,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -355,7 +355,7 @@ useHead({
 
 .search-input:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .filters {
@@ -375,7 +375,7 @@ useHead({
 
 .filter-select:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 /* Категории */
@@ -397,7 +397,7 @@ useHead({
 }
 
 .category-card:hover {
-  border-color: #29b026;
+  border-color: #005700;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transform: translateY(-3px);
 }
@@ -419,7 +419,7 @@ useHead({
 .category-count {
   display: inline-block;
   padding: 2px 8px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border-radius: 10px;
   font-size: 12px;
@@ -478,7 +478,7 @@ useHead({
 .doc-type {
   padding: 4px 8px;
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
   border-radius: 4px;
   font-size: 12px;
 }
@@ -493,7 +493,7 @@ useHead({
 
 .availability.available {
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
 }
 
 /* Модальное окно */
@@ -575,7 +575,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -585,7 +585,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 @media (max-width: 1024px) {

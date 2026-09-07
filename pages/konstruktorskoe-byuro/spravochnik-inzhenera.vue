@@ -7,10 +7,10 @@
         <span class="separator">/</span>
         <NuxtLink to="/konstruktorskoe-byuro">Конструкторское бюро</NuxtLink>
         <span class="separator">/</span>
-        <span class="current">Справочник инженера</span>
+        <span class="current">Полезное для инженера</span>
       </nav>
       
-      <h1 class="page-title">Справочник инженера</h1>
+      <h1 class="page-title">Полезное для инженера</h1>
       
       <div class="kb-content">
         <p class="kb-intro">
@@ -233,11 +233,11 @@ function openCalculator(calculator) {
 }
 
 useHead({
-  title: 'Справочник инженера - ГосНИИХиманалит',
+  title: 'Полезное для инженера - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Справочник инженера ГосНИИХиманалит: калькуляторы, таблицы, формулы' 
+      content: 'Полезное для инженера ГосНИИХиманалит: калькуляторы, таблицы, формулы' 
     }
   ]
 })
@@ -265,7 +265,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -284,7 +284,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -299,7 +299,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -323,7 +323,7 @@ useHead({
 .calculator-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .calculator-icon {
@@ -347,8 +347,8 @@ useHead({
 .open-btn {
   padding: 8px 20px;
   background: transparent;
-  color: #29b026;
-  border: 2px solid #29b026;
+  color: #005700;
+  border: 2px solid #005700;
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
@@ -356,7 +356,7 @@ useHead({
 }
 
 .open-btn:hover {
-  background: #29b026;
+  background: #005700;
   color: #fff;
 }
 
@@ -384,12 +384,12 @@ useHead({
 }
 
 .tab-btn:hover {
-  color: #29b026;
+  color: #005700;
 }
 
 .tab-btn.active {
-  color: #29b026;
-  border-bottom-color: #29b026;
+  color: #005700;
+  border-bottom-color: #005700;
 }
 
 .tab-content {
@@ -467,7 +467,7 @@ useHead({
 
 .formula-toggle {
   font-size: 24px;
-  color: #29b026;
+  color: #005700;
   font-weight: 700;
 }
 
@@ -479,7 +479,7 @@ useHead({
 .formula {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 0.5rem;
   padding: 0.75rem;
   background: #f0f9f0;
@@ -513,7 +513,7 @@ useHead({
   }
   
   .tab-btn.active {
-    border-left: 3px solid #29b026;
+    border-left: 3px solid #005700;
     border-bottom: 1px solid #e5e7eb;
   }
   

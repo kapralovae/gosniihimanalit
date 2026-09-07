@@ -188,7 +188,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -207,7 +207,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -222,7 +222,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -246,7 +246,7 @@ useHead({
 .direction-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .direction-icon {
@@ -279,7 +279,7 @@ useHead({
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #29b026;
+  background: #005700;
 }
 
 .stage-item {
@@ -293,7 +293,7 @@ useHead({
   top: 10px;
   width: 30px;
   height: 30px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border-radius: 50%;
   display: flex;
@@ -302,7 +302,7 @@ useHead({
   font-weight: 700;
   font-size: 14px;
   border: 3px solid #fff;
-  box-shadow: 0 0 0 2px #29b026;
+  box-shadow: 0 0 0 2px #005700;
 }
 
 .stage-content {

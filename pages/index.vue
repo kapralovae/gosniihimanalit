@@ -85,7 +85,7 @@ useHead({
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   position: relative;
 }
@@ -95,7 +95,7 @@ useHead({
   display: block;
   width: 60px;
   height: 3px;
-  background: #29b026;
+  background: #005700;
   margin: 10px auto 0;
 }
 

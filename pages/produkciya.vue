@@ -274,7 +274,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -301,14 +301,14 @@ useHead({
 }
 
 .filter-btn:hover {
-  border-color: #29b026;
-  color: #29b026;
+  border-color: #005700;
+  color: #005700;
 }
 
 .filter-btn.active {
-  background: #29b026;
+  background: #005700;
   color: #fff;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 /* Сетка продуктов */
@@ -331,7 +331,7 @@ useHead({
 .product-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .product-image-wrapper {
@@ -379,8 +379,8 @@ useHead({
 .product-tag {
   padding: 4px 10px;
   background: #f0f9f0;
-  color: #29b026;
-  border: 1px solid #29b026;
+  color: #005700;
+  border: 1px solid #005700;
   border-radius: 4px;
   font-size: 12px;
 }
@@ -392,7 +392,7 @@ useHead({
 
 .details-btn {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -403,7 +403,7 @@ useHead({
 }
 
 .details-btn:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 /* Модальное окно */
@@ -471,7 +471,7 @@ useHead({
 }
 
 .in-stock {
-  color: #29b026;
+  color: #005700;
   font-weight: 500;
 }
 
@@ -511,7 +511,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -522,7 +522,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 @media (max-width: 1024px) {

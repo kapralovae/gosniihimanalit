@@ -155,7 +155,7 @@ const dialogVisible = ref(false)
 const departments = [
   'Конструкторское бюро',
   'Производство',
-  'Испытательный центр',
+  'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
   'Метрология',
   'Администрация'
 ]
@@ -178,7 +178,7 @@ const vacancies = ref([
   {
     id: 2,
     title: 'Химик-аналитик',
-    department: 'Испытательный центр',
+    department: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
     type: 'Полная занятость',
     salary: '60 000 - 90 000 ₽',
     location: 'Санкт-Петербург',
@@ -331,7 +331,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -350,7 +350,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -382,7 +382,7 @@ useHead({
 
 .filter-select:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 /* Сетка вакансий */
@@ -406,7 +406,7 @@ useHead({
 .vacancy-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .vacancy-header {
@@ -428,7 +428,7 @@ useHead({
   font-size: 12px;
   font-weight: 500;
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
   white-space: nowrap;
 }
 
@@ -469,7 +469,7 @@ useHead({
 .apply-button {
   width: 100%;
   padding: 12px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -480,7 +480,7 @@ useHead({
 }
 
 .apply-button:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 /* Преимущества */
@@ -488,7 +488,7 @@ useHead({
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin: 3rem 0 2rem;
   position: relative;
 }
@@ -498,7 +498,7 @@ useHead({
   display: block;
   width: 60px;
   height: 3px;
-  background: #29b026;
+  background: #005700;
   margin: 10px auto 0;
 }
 
@@ -603,7 +603,7 @@ useHead({
 
 .form-input:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .modal-footer {
@@ -626,7 +626,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -636,7 +636,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 @media (max-width: 1024px) {

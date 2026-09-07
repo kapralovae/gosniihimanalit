@@ -264,7 +264,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -283,7 +283,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -298,7 +298,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -321,7 +321,7 @@ useHead({
 .equipment-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .equipment-image-wrapper {
@@ -378,13 +378,13 @@ useHead({
 
 .detail-value {
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
 }
 
 .rent-button {
   width: 100%;
   padding: 12px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -395,7 +395,7 @@ useHead({
 }
 
 .rent-button:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 /* Условия */
@@ -411,7 +411,7 @@ useHead({
   padding: 1.5rem;
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-left: 4px solid #29b026;
+  border-left: 4px solid #005700;
   border-radius: 8px;
 }
 
@@ -448,7 +448,7 @@ useHead({
 }
 
 .advantage-icon {
-  color: #29b026;
+  color: #005700;
   font-weight: 700;
   font-size: 18px;
 }
@@ -523,7 +523,7 @@ useHead({
 
 .form-input:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .date-range {
@@ -556,7 +556,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -566,7 +566,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 @media (max-width: 1024px) {

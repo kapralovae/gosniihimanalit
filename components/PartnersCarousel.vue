@@ -156,8 +156,8 @@ onBeforeUnmount(() => {
   width: 36px;
   height: 36px;
   background: #fff;
-  color: #29b026;
-  border: 2px solid #29b026;
+  color: #005700;
+  border: 2px solid #005700;
   border-radius: 50%;
   cursor: pointer;
   z-index: 10;
@@ -169,7 +169,7 @@ onBeforeUnmount(() => {
 }
 
 .carousel-arrow:hover {
-  background: #29b026;
+  background: #005700;
   color: #fff;
 }
 

@@ -200,7 +200,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -219,7 +219,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -246,7 +246,7 @@ useHead({
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #29b026;
+  background: #005700;
 }
 
 .timeline-item {
@@ -261,16 +261,16 @@ useHead({
   top: 10px;
   width: 12px;
   height: 12px;
-  background: #29b026;
+  background: #005700;
   border-radius: 50%;
   border: 3px solid #fff;
-  box-shadow: 0 0 0 2px #29b026;
+  box-shadow: 0 0 0 2px #005700;
 }
 
 .timeline-year {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 0.5rem;
 }
 
@@ -318,7 +318,7 @@ useHead({
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin: 3rem 0 2rem;
   position: relative;
 }
@@ -328,7 +328,7 @@ useHead({
   display: block;
   width: 60px;
   height: 3px;
-  background: #29b026;
+  background: #005700;
   margin: 10px auto 0;
 }
 
@@ -357,7 +357,7 @@ useHead({
   width: 80px;
   height: 80px;
   margin: 0 auto 1rem;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   display: flex;
   align-items: center;
@@ -374,7 +374,7 @@ useHead({
 }
 
 .person-position {
-  color: #29b026;
+  color: #005700;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }

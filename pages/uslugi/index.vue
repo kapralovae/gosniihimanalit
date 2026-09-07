@@ -44,7 +44,7 @@
 const services = [
   {
     icon: '🔬',
-    title: 'Испытательный центр',
+    title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
     description: 'Комплексные испытания технических средств химического контроля',
     path: '/uslugi/ispytatelnyj-centr',
     features: ['Испытания', 'Сертификация', 'Аккредитация']
@@ -119,7 +119,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -149,7 +149,7 @@ useHead({
 .service-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 35px rgba(41, 176, 38, 0.15);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .service-content {
@@ -190,15 +190,15 @@ useHead({
 .feature-tag {
   padding: 4px 10px;
   background: #f0f9f0;
-  color: #29b026;
-  border: 1px solid #29b026;
+  color: #005700;
+  border: 1px solid #005700;
   border-radius: 4px;
   font-size: 12px;
 }
 
 .service-button {
   margin-top: auto;
-  color: #29b026;
+  color: #005700;
   font-weight: 500;
 }
 

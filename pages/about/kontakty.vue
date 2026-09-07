@@ -244,7 +244,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -263,7 +263,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -277,14 +277,14 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
 .info-card {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-left: 4px solid #29b026;
+  border-left: 4px solid #005700;
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -360,7 +360,7 @@ useHead({
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .form-textarea {
@@ -374,7 +374,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -385,7 +385,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 .btn-secondary {
@@ -425,8 +425,8 @@ useHead({
   margin-top: 1rem;
   padding: 10px 20px;
   background: transparent;
-  color: #29b026;
-  border: 2px solid #29b026;
+  color: #005700;
+  border: 2px solid #005700;
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
@@ -434,7 +434,7 @@ useHead({
 }
 
 .map-btn:hover {
-  background: #29b026;
+  background: #005700;
   color: #fff;
 }
 
