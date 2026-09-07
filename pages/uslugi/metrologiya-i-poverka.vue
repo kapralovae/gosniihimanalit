@@ -177,7 +177,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -196,7 +196,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -211,7 +211,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -235,7 +235,7 @@ useHead({
 .type-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .type-icon {
@@ -304,7 +304,7 @@ useHead({
 
 .order-btn {
   padding: 8px 16px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -314,7 +314,7 @@ useHead({
 }
 
 .order-btn:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 /* Документация */
@@ -350,7 +350,7 @@ useHead({
 
 .toggle {
   font-size: 24px;
-  color: #29b026;
+  color: #005700;
   font-weight: 700;
 }
 

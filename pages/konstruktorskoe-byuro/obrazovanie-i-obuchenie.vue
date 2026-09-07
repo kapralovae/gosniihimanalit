@@ -256,7 +256,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -275,7 +275,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -290,7 +290,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -315,7 +315,7 @@ useHead({
 .program-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .program-header {
@@ -332,7 +332,7 @@ useHead({
 .program-duration {
   padding: 4px 10px;
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
@@ -371,13 +371,13 @@ useHead({
 
 .price {
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
 }
 
 .enroll-button {
   width: 100%;
   padding: 12px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -388,7 +388,7 @@ useHead({
 }
 
 .enroll-button:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 /* Преподаватели */
@@ -416,7 +416,7 @@ useHead({
   width: 80px;
   height: 80px;
   margin: 0 auto 1rem;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   display: flex;
   align-items: center;
@@ -442,7 +442,7 @@ useHead({
   display: inline-block;
   padding: 4px 10px;
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
   border-radius: 4px;
   font-size: 12px;
 }
@@ -519,7 +519,7 @@ useHead({
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .modal-footer {
@@ -542,7 +542,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -552,7 +552,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 @media (max-width: 1024px) {

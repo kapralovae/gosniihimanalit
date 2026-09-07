@@ -16,6 +16,7 @@
       </div>
     </div>
     
+    <!-- Стрелки -->
     <button type="button" class="carousel-arrow left" @click="prevSlide" aria-label="Предыдущий слайд">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -77,6 +78,7 @@ function prevSlide() {
 
 function handleResize() {
   windowWidth.value = window.innerWidth
+  currentIndex.value = 0
 }
 
 onMounted(() => {
@@ -104,6 +106,7 @@ onBeforeUnmount(() => {
 .carousel-container {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .carousel-slide {
@@ -112,12 +115,26 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   padding: 0 80px;
+  position: relative;
+  transition: opacity 0.5s ease;
 }
 
 .slide-item {
   flex: 1;
   height: 100%;
   min-width: 0;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .carousel-image {
@@ -136,8 +153,8 @@ onBeforeUnmount(() => {
   width: 44px;
   height: 44px;
   background: #fff;
-  color: #29b026;
-  border: 2px solid #29b026;
+  color: #005700;
+  border: 2px solid #005700;
   border-radius: 50%;
   cursor: pointer;
   z-index: 10;
@@ -149,9 +166,9 @@ onBeforeUnmount(() => {
 }
 
 .carousel-arrow:hover {
-  background: #29b026;
+  background: #005700;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(41, 176, 38, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 87, 0, 0.3);
 }
 
 .carousel-arrow:active {

@@ -21,10 +21,15 @@
               Продукция
             </NuxtLink>
             
+            <!-- Услуги -->
             <div class="nav-item has-dropdown">
-              <span class="nav-link">
+              <NuxtLink 
+                to="/uslugi" 
+                class="nav-link"
+                :class="{ 'active': $route.path.startsWith('/uslugi') }"
+              >
                 Услуги <span class="arrow">▼</span>
-              </span>
+              </NuxtLink>
               <div class="dropdown-menu">
                 <NuxtLink v-for="service in services" :key="service.path" :to="service.path" class="dropdown-item">
                   {{ service.title }}
@@ -32,21 +37,68 @@
               </div>
             </div>
             
+            <!-- Конструкторское бюро -->
             <div class="nav-item has-dropdown">
-              <span class="nav-link">
+              <NuxtLink 
+                to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" 
+                class="nav-link"
+                :class="{ 'active': $route.path.startsWith('/konstruktorskoe-byuro') }"
+              >
                 Конструкторское бюро <span class="arrow">▼</span>
-              </span>
+              </NuxtLink>
               <div class="dropdown-menu">
-                <NuxtLink v-for="item in kbItems" :key="item.path" :to="item.path" class="dropdown-item">
-                  {{ item.title }}
+                <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="dropdown-item">
+                  Центр разработки технических средств химического контроля
+                </NuxtLink>
+                
+                <!-- Полезное для инженера с подменю -->
+                <div class="dropdown-submenu">
+                  <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera" class="dropdown-item">
+                    Полезное для инженера <span class="arrow-right">›</span>
+                  </NuxtLink>
+                  <div class="submenu">
+                    <NuxtLink 
+                      :to="{ path: '/konstruktorskoe-byuro/spravochnik-inzhenera', query: { tab: 'calculators' } }" 
+                      class="dropdown-item"
+                    >
+                      Калькуляторы
+                    </NuxtLink>
+                    <NuxtLink 
+                      :to="{ path: '/konstruktorskoe-byuro/spravochnik-inzhenera', query: { tab: 'tables' } }" 
+                      class="dropdown-item"
+                    >
+                      Справочные таблицы
+                    </NuxtLink>
+                    <NuxtLink 
+                      :to="{ path: '/konstruktorskoe-byuro/spravochnik-inzhenera', query: { tab: 'formulas' } }" 
+                      class="dropdown-item"
+                    >
+                      Формулы
+                    </NuxtLink>
+                  </div>
+                </div>
+                
+                <NuxtLink to="/konstruktorskoe-byuro/obrazovanie-i-obuchenie" class="dropdown-item">
+                  Образование и обучение
+                </NuxtLink>
+                <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="dropdown-item">
+                  Библиотека
+                </NuxtLink>
+                <NuxtLink to="/konstruktorskoe-byuro/biblioteka-3d" class="dropdown-item">
+                  Библиотека 3D
                 </NuxtLink>
               </div>
             </div>
             
+            <!-- О организации -->
             <div class="nav-item has-dropdown">
-              <span class="nav-link">
+              <NuxtLink 
+                to="/about" 
+                class="nav-link"
+                :class="{ 'active': $route.path.startsWith('/about') }"
+              >
                 О организации <span class="arrow">▼</span>
-              </span>
+              </NuxtLink>
               <div class="dropdown-menu">
                 <NuxtLink to="/about/kontakty" class="dropdown-item">Контакты</NuxtLink>
                 <NuxtLink to="/about/vakansii" class="dropdown-item">Вакансии</NuxtLink>
@@ -67,7 +119,9 @@
         </NuxtLink>
         
         <div class="mobile-group">
-          <span class="mobile-group-title">Услуги</span>
+          <NuxtLink to="/uslugi" class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
+            Услуги
+          </NuxtLink>
           <NuxtLink 
             v-for="service in services" 
             :key="service.path"
@@ -80,20 +134,43 @@
         </div>
         
         <div class="mobile-group">
-          <span class="mobile-group-title">Конструкторское бюро</span>
-          <NuxtLink 
-            v-for="item in kbItems" 
-            :key="item.path"
-            :to="item.path" 
-            class="mobile-link sub"
-            @click="mobileMenuOpen = false"
-          >
-            {{ item.title }}
+          <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
+            Конструкторское бюро
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Центр разработки технических средств химического контроля
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Полезное для инженера
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera?tab=calculators" class="mobile-link sub2" @click="mobileMenuOpen = false">
+            Калькуляторы
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera?tab=tables" class="mobile-link sub2" @click="mobileMenuOpen = false">
+            Справочные таблицы
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera?tab=formulas" class="mobile-link sub2" @click="mobileMenuOpen = false">
+            Формулы
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/obrazovanie-i-obuchenie" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Образование и обучение
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Библиотека
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/biblioteka-3d" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Библиотека 3D
           </NuxtLink>
         </div>
         
         <div class="mobile-group">
-          <span class="mobile-group-title">О организации</span>
+          <NuxtLink to="/about" class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
+            О организации
+          </NuxtLink>
           <NuxtLink to="/about/kontakty" class="mobile-link sub" @click="mobileMenuOpen = false">
             Контакты
           </NuxtLink>
@@ -108,6 +185,7 @@
     </div>
     
     <!-- Логотип и контакты (прокручиваются) -->
+    
     <div class="header-main">
       <div class="container">
         <div class="header-main-inner">
@@ -116,31 +194,38 @@
               <img src="/images/himanalit_gerb.webp" alt="Герб">
             </div>
             <div class="logo-text">
-              <span class="company-name">ГосНИИхиманалит</span>
-              <span class="company-subtitle">Научно-производственное предприятие</span>
+              <span class="company-name">АО «ГосНИИхиманалит»</span>
+              <span class="company-subtitle">Приборы. Средства химического контроля. Услуги</span>
             </div>
           </NuxtLink>
           
           <div class="header-contacts">
-            <div class="contact-item">
+            <!-- Коммерческий отдел -->
+            <div class="contact-block">
               <span class="contact-icon">📞</span>
               <div class="contact-text">
-                <span class="contact-label">Телефон:</span>
-                <span class="contact-value">+7 (812) 345-67-89</span>
+                <span class="contact-label">Коммерческий отдел:</span>
+                <a href="tel:+78122522245" class="contact-value">+7 (812) 252-22-45</a>
+                <a href="mailto:marketing@himanalit.ru" class="contact-value">marketing@himanalit.ru</a>
               </div>
             </div>
-            <div class="contact-item">
-              <span class="contact-icon">✉️</span>
+            
+            <!-- Секретарь -->
+            <div class="contact-block">
+              <span class="contact-icon">📞</span>
               <div class="contact-text">
-                <span class="contact-label">Email:</span>
-                <span class="contact-value">info@gosniihimanalit.ru</span>
+                <span class="contact-label">Секретарь:</span>
+                <a href="tel:+78127866159" class="contact-value">+7 (812) 786-61-59</a>
+                <a href="mailto:info@himanalit.ru" class="contact-value">mail@himanalit.ru</a>
               </div>
             </div>
-            <div class="contact-item">
+            
+            <!-- Адрес -->
+            <div class="contact-block">
               <span class="contact-icon">📍</span>
               <div class="contact-text">
                 <span class="contact-label">Адрес:</span>
-                <span class="contact-value">Санкт-Петербург, ул. Примерная, 1</span>
+                <span class="contact-value">190020, Санкт-Петербург,<br>ул. Бумажная, 17</span>
               </div>
             </div>
           </div>
@@ -156,7 +241,7 @@ import { ref } from 'vue'
 const mobileMenuOpen = ref(false)
 
 const services = [
-  { title: 'Испытательный центр', path: '/uslugi/ispytatelnyj-centr' },
+  { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
   { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
   { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
   { title: 'Конструкторское бюро', path: '/uslugi/konstruktorskoe-byuro-1' },
@@ -166,11 +251,26 @@ const services = [
 ]
 
 const kbItems = [
-  { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
-  { title: 'Образование и обучение', path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' },
-  { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
-  { title: 'Справочник инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
-  { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
+  { 
+    title: 'Центр разработки технических средств химического контроля', 
+    path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' 
+  },
+  { 
+    title: 'Полезное для инженера', 
+    path: '/konstruktorskoe-byuro/spravochnik-inzhenera' 
+  },
+  { 
+    title: 'Образование и обучение', 
+    path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' 
+  },
+  { 
+    title: 'Библиотека', 
+    path: '/konstruktorskoe-byuro/biblioteka' 
+  },
+  { 
+    title: 'Библиотека 3D', 
+    path: '/konstruktorskoe-byuro/biblioteka-3d' 
+  }
 ]
 </script>
 
@@ -192,8 +292,8 @@ const kbItems = [
   left: 0;
   right: 0;
   z-index: 1000;
-  background: #29b026;
-  border-bottom: 3px solid #1a7a1a;
+  background: #005700;
+  border-bottom: 3px solid #003d00;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -254,11 +354,11 @@ const kbItems = [
 }
 
 .nav-link:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 .nav-link.active {
-  background: #1a7a1a;
+  background: #003d00;
   box-shadow: inset 0 -3px 0 #fff;
 }
 
@@ -304,8 +404,48 @@ const kbItems = [
 
 .dropdown-item:hover {
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
   padding-left: 32px;
+}
+
+/* Подменю */
+.dropdown-submenu {
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-10px);
+  transition: all 0.3s;
+  z-index: 1002;
+}
+
+.dropdown-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.arrow-right {
+  margin-left: auto;
+  font-size: 14px;
+}
+
+/* Мобильное подменю */
+.mobile-link.sub2 {
+  padding-left: 50px;
+  font-size: 13px;
+  color: #9ca3af;
 }
 
 /* Мобильное меню */
@@ -329,7 +469,7 @@ const kbItems = [
 
 .mobile-link:hover {
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
 }
 
 .mobile-link.sub {
@@ -347,7 +487,7 @@ const kbItems = [
   display: block;
   padding: 10px 20px;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   font-size: 16px;
 }
 
@@ -375,8 +515,8 @@ const kbItems = [
 }
 
 .logo-image {
-  width: 60px;
-  height: 60px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -397,12 +537,12 @@ const kbItems = [
 .company-name {
   font-size: 20px;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   line-height: 1.2;
 }
 
 .company-subtitle {
-  font-size: 12px;
+  font-size: 14px;
   color: #6b7280;
 }
 

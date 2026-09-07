@@ -123,33 +123,6 @@
           </div>
         </div>
         
-        <h2 class="section-subtitle">Производимая продукция</h2>
-        <div class="products-table">
-          <div class="table-header">
-            <span class="col-name">Наименование</span>
-            <span class="col-type">Тип</span>
-            <span class="col-volume">Объем выпуска</span>
-            <span class="col-availability">Наличие</span>
-          </div>
-          
-          <div 
-            v-for="product in products" 
-            :key="product.name"
-            class="table-row"
-          >
-            <span class="col-name">{{ product.name }}</span>
-            <span class="col-type">{{ product.type }}</span>
-            <span class="col-volume">{{ product.volume }}</span>
-            <span class="col-availability">
-              <span 
-                class="availability"
-                :class="{ 'available': product.available }"
-              >
-                {{ product.available ? 'В наличии' : 'Под заказ' }}
-              </span>
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -183,13 +156,6 @@ const capabilities = [
   }
 ]
 
-const products = [
-  { name: 'Газоанализатор ГАН-1', type: 'Стационарный', volume: '500 шт/год', available: true },
-  { name: 'Газосигнализатор ГС-3', type: 'Портативный', volume: '1000 шт/год', available: true },
-  { name: 'Датчик кислорода ДК-1', type: 'Датчик', volume: '2000 шт/год', available: true },
-  { name: 'Система мониторинга СМ-1', type: 'Система', volume: '50 шт/год', available: false },
-  { name: 'Хроматограф ХРОМ-2', type: 'Лабораторный', volume: '100 шт/год', available: false }
-]
 
 useHead({
   title: 'Производство - ГосНИИХиманалит',
@@ -224,7 +190,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -243,7 +209,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -258,7 +224,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -282,7 +248,7 @@ useHead({
 .capability-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .capability-icon {
@@ -326,12 +292,12 @@ useHead({
 }
 
 .tab-btn:hover {
-  color: #29b026;
+  color: #005700;
 }
 
 .tab-btn.active {
-  color: #29b026;
-  border-bottom-color: #29b026;
+  color: #005700;
+  border-bottom-color: #005700;
 }
 
 .tab-content {
@@ -360,64 +326,6 @@ useHead({
   font-size: 14px;
 }
 
-/* Таблица продукции */
-.products-table {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  align-items: center;
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-row:nth-child(even) {
-  background: #fafafa;
-}
-
-.col-name {
-  font-weight: 500;
-  color: #333;
-}
-
-.col-type,
-.col-volume {
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.availability {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.availability.available {
-  background: #f0f9f0;
-  color: #29b026;
-}
 
 @media (max-width: 1024px) {
   .capabilities-grid {
@@ -456,7 +364,7 @@ useHead({
   }
   
   .tab-btn.active {
-    border-left: 3px solid #29b026;
+    border-left: 3px solid #005700;
     border-bottom: 1px solid #e5e7eb;
   }
   
