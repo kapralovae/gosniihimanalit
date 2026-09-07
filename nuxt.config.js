@@ -31,7 +31,7 @@ export default defineNuxtConfig({
   
   runtimeConfig: {
     public: {
-      siteUrl: 'https://gosniihimanalit.ru',
+      siteUrl: 'https://himanalit.ru',
       siteName: 'ГосНИИХиманалит',
       companyName: 'АО "ГосНИИХиманалит"'
     }

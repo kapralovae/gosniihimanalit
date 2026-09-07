@@ -44,8 +44,8 @@
                 <span class="contact-icon">✉️</span>
                 <div>
                   <h4>Email</h4>
-                  <p>info@gosniihimanalit.ru - общие вопросы</p>
-                  <p>sales@gosniihimanalit.ru - отдел продаж</p>
+                  <p>info@himanalit.ru - общие вопросы</p>
+                  <p>marketing@himanalit.ru - отдел продаж</p>
                 </div>
               </div>
               

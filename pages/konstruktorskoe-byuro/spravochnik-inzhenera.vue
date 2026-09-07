@@ -12,128 +12,254 @@
       
       <h1 class="page-title">Полезное для инженера</h1>
       
-      <div class="kb-content">
-        <p class="kb-intro">
-          Справочные материалы и калькуляторы для инженеров.
-        </p>
-        
-        <!-- Калькуляторы -->
-        <h2 class="section-subtitle">Инженерные калькуляторы</h2>
-        <div class="calculators-grid">
-          <div 
-            v-for="calculator in calculators" 
-            :key="calculator.title"
-            class="calculator-card"
+      <!-- Вкладки -->
+      <div class="tabs">
+        <div class="tab-buttons">
+          <button 
+            type="button"
+            class="tab-btn"
+            :class="{ 'active': activeTab === 'calculators' }"
+            @click="setTab('calculators')"
           >
-            <span class="calculator-icon">{{ calculator.icon }}</span>
-            <h3>{{ calculator.title }}</h3>
-            <p>{{ calculator.description }}</p>
-            <button 
-              type="button"
-              class="open-btn"
-              @click="openCalculator(calculator)"
-            >
-              Открыть
-            </button>
-          </div>
+            Калькуляторы
+          </button>
+          <button 
+            type="button"
+            class="tab-btn"
+            :class="{ 'active': activeTab === 'tables' }"
+            @click="setTab('tables')"
+          >
+            Справочные таблицы
+          </button>
+          <button 
+            type="button"
+            class="tab-btn"
+            :class="{ 'active': activeTab === 'formulas' }"
+            @click="setTab('formulas')"
+          >
+            Формулы
+          </button>
         </div>
         
-        <!-- Справочные таблицы -->
-        <h2 class="section-subtitle">Справочные таблицы</h2>
-        <div class="tabs">
-          <div class="tab-buttons">
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'constants' }"
-              @click="activeTab = 'constants'"
-            >
-              Физические константы
-            </button>
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'units' }"
-              @click="activeTab = 'units'"
-            >
-              Единицы измерения
-            </button>
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'gases' }"
-              @click="activeTab = 'gases'"
-            >
-              Свойства газов
-            </button>
+        <div class="tab-content">
+          <!-- Калькуляторы -->
+          <div v-if="activeTab === 'calculators'">
+            <div class="calculators-grid">
+              
+              <!-- Калькулятор: Концентрация растворов -->
+              <div class="calculator-card">
+                <h3>⚗️ Концентрация растворов</h3>
+                <div class="calc-form">
+                  <div class="form-group">
+                    <label>Масса вещества (г):</label>
+                    <input v-model.number="concMass" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Объём раствора (л):</label>
+                    <input v-model.number="concVolume" type="number" class="form-input" />
+                  </div>
+                  <div class="calc-result" v-if="concMass && concVolume">
+                    <p><strong>Массовая концентрация:</strong> {{ (concMass / concVolume).toFixed(3) }} г/л</p>
+                    <p><strong>Молярная концентрация:</strong> {{ (concMass / concVolume / 100).toFixed(4) }} моль/л (для M=100 г/моль)</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Калькулятор: Пересчёт ppm → мг/м³ -->
+              <div class="calculator-card">
+                <h3>📊 Пересчёт ppm → мг/м³</h3>
+                <div class="calc-form">
+                  <div class="form-group">
+                    <label>Концентрация (ppm):</label>
+                    <input v-model.number="ppmValue" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Молярная масса (г/моль):</label>
+                    <input v-model.number="molarMass" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Температура (°C):</label>
+                    <input v-model.number="temperature" type="number" class="form-input" />
+                  </div>
+                  <div class="calc-result" v-if="ppmValue && molarMass">
+                    <p><strong>Концентрация:</strong> {{ calculatePpmToMg(ppmValue, molarMass, temperature) }} мг/м³</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Калькулятор: Газовые законы -->
+              <div class="calculator-card">
+                <h3>🌡️ Газовые законы (нормальные условия)</h3>
+                <div class="calc-form">
+                  <div class="form-group">
+                    <label>Объём газа (л):</label>
+                    <input v-model.number="gasVolume" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Температура (°C):</label>
+                    <input v-model.number="gasTemperature" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Давление (кПа):</label>
+                    <input v-model.number="gasPressure" type="number" class="form-input" />
+                  </div>
+                  <div class="calc-result" v-if="gasVolume">
+                    <p><strong>Объём при н.у.:</strong> {{ calculateNormalVolume(gasVolume, gasTemperature, gasPressure) }} л</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Калькулятор: Погрешности -->
+              <div class="calculator-card">
+                <h3>📏 Погрешности измерений</h3>
+                <div class="calc-form">
+                  <div class="form-group">
+                    <label>Измеренное значение:</label>
+                    <input v-model.number="measuredValue" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Истинное значение:</label>
+                    <input v-model.number="trueValue" type="number" class="form-input" />
+                  </div>
+                  <div class="calc-result" v-if="measuredValue && trueValue">
+                    <p><strong>Абсолютная погрешность:</strong> {{ Math.abs(measuredValue - trueValue).toFixed(4) }}</p>
+                    <p><strong>Относительная погрешность:</strong> {{ ((Math.abs(measuredValue - trueValue) / trueValue) * 100).toFixed(3) }}%</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Калькулятор: Влажность -->
+              <div class="calculator-card">
+                <h3>💧 Влажность воздуха</h3>
+                <div class="calc-form">
+                  <div class="form-group">
+                    <label>Температура (°C):</label>
+                    <input v-model.number="humidityTemp" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Относительная влажность (%):</label>
+                    <input v-model.number="humidityRH" type="number" class="form-input" />
+                  </div>
+                  <div class="calc-result" v-if="humidityTemp && humidityRH">
+                    <p><strong>Точка росы:</strong> {{ calculateDewPoint(humidityTemp, humidityRH) }} °C</p>
+                    <p><strong>Абсолютная влажность:</strong> {{ calculateAbsoluteHumidity(humidityTemp, humidityRH) }} г/м³</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Калькулятор: Пересчёт единиц давления -->
+              <div class="calculator-card">
+                <h3>🔧 Пересчёт единиц давления</h3>
+                <div class="calc-form">
+                  <div class="form-group">
+                    <label>Значение:</label>
+                    <input v-model.number="pressureValue" type="number" class="form-input" />
+                  </div>
+                  <div class="form-group">
+                    <label>Из:</label>
+                    <select v-model="pressureFrom" class="form-select">
+                      <option value="atm">атмосфера</option>
+                      <option value="mmHg">мм рт. ст.</option>
+                      <option value="bar">бар</option>
+                      <option value="kPa">кПа</option>
+                    </select>
+                  </div>
+                  <div class="calc-result" v-if="pressureValue">
+                    <p><strong>атмосфера:</strong> {{ convertPressure(pressureValue, pressureFrom, 'atm') }}</p>
+                    <p><strong>мм рт. ст.:</strong> {{ convertPressure(pressureValue, pressureFrom, 'mmHg') }}</p>
+                    <p><strong>бар:</strong> {{ convertPressure(pressureValue, pressureFrom, 'bar') }}</p>
+                    <p><strong>кПа:</strong> {{ convertPressure(pressureValue, pressureFrom, 'kPa') }}</p>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
           </div>
           
-          <div class="tab-content">
-            <!-- Физические константы -->
-            <div v-if="activeTab === 'constants'" class="table-wrapper">
-              <div class="table-header">
-                <span class="col-name">Константа</span>
-                <span class="col-symbol">Обозначение</span>
-                <span class="col-value">Значение</span>
-                <span class="col-unit">Единица</span>
+          <!-- Справочные таблицы -->
+          <div v-if="activeTab === 'tables'">
+            <div class="tables-wrapper">
+              <h3>Физические константы</h3>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Константа</th>
+                      <th>Обозначение</th>
+                      <th>Значение</th>
+                      <th>Единица</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in constants" :key="item.name">
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.symbol }}</td>
+                      <td>{{ item.value }}</td>
+                      <td>{{ item.unit }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div v-for="item in constants" :key="item.name" class="table-row">
-                <span class="col-name">{{ item.name }}</span>
-                <span class="col-symbol">{{ item.symbol }}</span>
-                <span class="col-value">{{ item.value }}</span>
-                <span class="col-unit">{{ item.unit }}</span>
+              
+              <h3>Единицы измерения</h3>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Из</th>
+                      <th>В</th>
+                      <th>Коэффициент</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in units" :key="item.from">
+                      <td>{{ item.from }}</td>
+                      <td>{{ item.to }}</td>
+                      <td>{{ item.factor }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
-            
-            <!-- Единицы измерения -->
-            <div v-if="activeTab === 'units'" class="table-wrapper">
-              <div class="table-header">
-                <span class="col-from">Из</span>
-                <span class="col-to">В</span>
-                <span class="col-factor">Коэффициент</span>
-              </div>
-              <div v-for="item in units" :key="item.from" class="table-row">
-                <span class="col-from">{{ item.from }}</span>
-                <span class="col-to">{{ item.to }}</span>
-                <span class="col-factor">{{ item.factor }}</span>
-              </div>
-            </div>
-            
-            <!-- Свойства газов -->
-            <div v-if="activeTab === 'gases'" class="table-wrapper">
-              <div class="table-header">
-                <span class="col-name">Газ</span>
-                <span class="col-formula">Формула</span>
-                <span class="col-density">Плотность</span>
-                <span class="col-boiling">Темп. кипения</span>
-              </div>
-              <div v-for="gas in gases" :key="gas.name" class="table-row">
-                <span class="col-name">{{ gas.name }}</span>
-                <span class="col-formula">{{ gas.formula }}</span>
-                <span class="col-density">{{ gas.density }}</span>
-                <span class="col-boiling">{{ gas.boilingPoint }}</span>
+              
+              <h3>Свойства газов</h3>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Газ</th>
+                      <th>Формула</th>
+                      <th>Плотность (г/л)</th>
+                      <th>Темп. кипения</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="gas in gases" :key="gas.name">
+                      <td>{{ gas.name }}</td>
+                      <td>{{ gas.formula }}</td>
+                      <td>{{ gas.density }}</td>
+                      <td>{{ gas.boilingPoint }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Формулы -->
-        <h2 class="section-subtitle">Основные формулы</h2>
-        <div class="formulas-list">
-          <div 
-            v-for="formula in formulas" 
-            :key="formula.title"
-            class="formula-item"
-          >
-            <div class="formula-header" @click="toggleFormula(formula.title)">
-              <h3>{{ formula.title }}</h3>
-              <span class="formula-toggle">{{ openFormulas.includes(formula.title) ? '−' : '+' }}</span>
-            </div>
-            <div v-if="openFormulas.includes(formula.title)" class="formula-content">
-              <div class="formula">{{ formula.formula }}</div>
-              <p>{{ formula.description }}</p>
+          
+          <!-- Формулы -->
+          <div v-if="activeTab === 'formulas'">
+            <div class="formulas-list">
+              <div 
+                v-for="formula in formulas" 
+                :key="formula.title"
+                class="formula-item"
+              >
+                <h3>{{ formula.title }}</h3>
+                <div class="formula">{{ formula.formula }}</div>
+                <p>{{ formula.description }}</p>
+              </div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -141,38 +267,52 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const activeTab = ref('constants')
-const openFormulas = ref([])
+const route = useRoute()
+const router = useRouter()
+const activeTab = ref('calculators')
 
-const calculators = [
-  {
-    icon: '⚗️',
-    title: 'Концентрация растворов',
-    description: 'Расчет концентрации растворов',
-    type: 'concentration'
-  },
-  {
-    icon: '📊',
-    title: 'Погрешность измерений',
-    description: 'Расчет погрешностей',
-    type: 'error'
-  },
-  {
-    icon: '🌡️',
-    title: 'Температурные коэффициенты',
-    description: 'Расчет температурных коэффициентов',
-    type: 'temperature'
-  },
-  {
-    icon: '📏',
-    title: 'Пересчет единиц',
-    description: 'Конвертер единиц измерения',
-    type: 'units'
+// Устанавливаем вкладку из query параметра
+function syncTabWithQuery() {
+  const tab = route.query.tab
+  if (tab === 'tables' || tab === 'formulas' || tab === 'calculators') {
+    activeTab.value = tab
   }
-]
+}
 
+// Вызываем при загрузке страницы
+syncTabWithQuery()
+
+// Следим за изменением query параметра
+watch(() => route.query.tab, () => {
+  syncTabWithQuery()
+})
+
+// При клике на вкладку обновляем URL
+function setTab(tab) {
+  activeTab.value = tab
+  router.push({ query: { tab: tab } })
+}
+
+// Калькуляторы
+const concMass = ref(null)
+const concVolume = ref(null)
+const ppmValue = ref(null)
+const molarMass = ref(null)
+const temperature = ref(20)
+const gasVolume = ref(null)
+const gasTemperature = ref(20)
+const gasPressure = ref(101.325)
+const measuredValue = ref(null)
+const trueValue = ref(null)
+const humidityTemp = ref(20)
+const humidityRH = ref(50)
+const pressureValue = ref(1)
+const pressureFrom = ref('atm')
+
+// Таблицы
 const constants = [
   { name: 'Число Авогадро', symbol: 'NA', value: '6.022 × 10²³', unit: 'моль⁻¹' },
   { name: 'Газовая постоянная', symbol: 'R', value: '8.314', unit: 'Дж/(моль·К)' },
@@ -201,35 +341,68 @@ const formulas = [
   {
     title: 'Концентрация вещества',
     formula: 'C = m / V',
-    description: 'C - концентрация, m - масса вещества, V - объем раствора'
+    description: 'C - концентрация (г/л), m - масса вещества (г), V - объём раствора (л)'
   },
   {
     title: 'Закон Бойля-Мариотта',
     formula: 'P₁V₁ = P₂V₂',
-    description: 'Для изотермического процесса'
+    description: 'Для изотермического процесса (T = const)'
   },
   {
     title: 'Закон Гей-Люссака',
     formula: 'V₁/T₁ = V₂/T₂',
-    description: 'Для изобарного процесса'
+    description: 'Для изобарного процесса (P = const)'
   },
   {
     title: 'Уравнение Менделеева-Клапейрона',
     formula: 'PV = nRT',
     description: 'Уравнение состояния идеального газа'
+  },
+  {
+    title: 'Относительная погрешность',
+    formula: 'δ = |Δ| / X × 100%',
+    description: 'Δ - абсолютная погрешность, X - истинное значение'
   }
 ]
 
-function toggleFormula(title) {
-  if (openFormulas.value.includes(title)) {
-    openFormulas.value = openFormulas.value.filter(f => f !== title)
-  } else {
-    openFormulas.value.push(title)
-  }
+// Функции калькуляторов
+function calculatePpmToMg(ppm, mass, temp) {
+  const R = 8.314
+  const T = temp + 273.15
+  const P = 101325
+  return ((ppm * mass * P) / (R * T)).toFixed(3)
 }
 
-function openCalculator(calculator) {
-  alert(`Калькулятор "${calculator.title}" в разработке`)
+function calculateNormalVolume(volume, temp, pressure) {
+  const Tn = 273.15
+  const T = temp + 273.15
+  const Pn = 101.325
+  return ((volume * pressure * Tn) / (Pn * T)).toFixed(3)
+}
+
+function calculateDewPoint(temp, rh) {
+  const a = 17.27
+  const b = 237.7
+  const gamma = (a * temp) / (b + temp) + Math.log(rh / 100)
+  return ((b * gamma) / (a - gamma)).toFixed(1)
+}
+
+function calculateAbsoluteHumidity(temp, rh) {
+  const es = 6.112 * Math.exp((17.67 * temp) / (temp + 243.5))
+  const e = (rh / 100) * es
+  return ((217 * e) / (temp + 273.15)).toFixed(2)
+}
+
+function convertPressure(value, from, to) {
+  const factors = {
+    atm: 101325,
+    mmHg: 133.322,
+    bar: 100000,
+    kPa: 1000
+  }
+  const inPascal = value * factors[from]
+  const result = inPascal / factors[to]
+  return result.toFixed(4)
 }
 
 useHead({
@@ -237,10 +410,11 @@ useHead({
   meta: [
     { 
       name: 'description', 
-      content: 'Полезное для инженера ГосНИИХиманалит: калькуляторы, таблицы, формулы' 
+      content: 'Полезное для инженера: калькуляторы, справочные таблицы, формулы' 
     }
   ]
 })
+
 </script>
 
 <style scoped>
@@ -262,6 +436,7 @@ useHead({
   gap: 8px;
   margin-bottom: 2rem;
   font-size: 14px;
+  flex-wrap: wrap;
 }
 
 .breadcrumb a {
@@ -282,85 +457,14 @@ useHead({
 }
 
 .page-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
 
-.kb-intro {
-  font-size: 1.125rem;
-  color: #4b5563;
-  line-height: 1.8;
-  margin-bottom: 2rem;
-}
-
-.section-subtitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #005700;
-  margin: 2rem 0 1rem;
-}
-
-/* Калькуляторы */
-.calculators-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 2rem;
-}
-
-.calculator-card {
-  text-align: center;
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.calculator-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-  border-color: #005700;
-}
-
-.calculator-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.calculator-card h3 {
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 16px;
-}
-
-.calculator-card p {
-  color: #6b7280;
-  font-size: 14px;
-  margin-bottom: 1rem;
-}
-
-.open-btn {
-  padding: 8px 20px;
-  background: transparent;
-  color: #005700;
-  border: 2px solid #005700;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.open-btn:hover {
-  background: #005700;
-  color: #fff;
-}
-
-/* Табы */
+/* Вкладки */
 .tabs {
   margin-bottom: 2rem;
 }
@@ -369,18 +473,20 @@ useHead({
   display: flex;
   gap: 10px;
   border-bottom: 2px solid #e5e7eb;
+  flex-wrap: wrap;
 }
 
 .tab-btn {
-  padding: 10px 20px;
+  padding: 12px 24px;
   background: transparent;
   color: #6b7280;
   border: none;
   border-bottom: 3px solid transparent;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -393,87 +499,130 @@ useHead({
 }
 
 .tab-content {
-  padding: 1rem 0;
+  padding: 1.5rem 0;
 }
 
-.table-wrapper {
+/* Калькуляторы */
+.calculators-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.calculator-card {
+  background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  overflow: hidden;
+  padding: 1.5rem;
+  transition: all 0.3s;
 }
 
-.table-header {
-  display: grid;
+.calculator-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-color: #005700;
+}
+
+.calculator-card h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 16px;
+}
+
+.calc-form {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  padding: 12px 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.form-input,
+.form-select {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #005700;
+}
+
+.calc-result {
+  padding: 10px;
+  background: #f0f5f0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.calc-result p {
+  margin-bottom: 4px;
+  color: #333;
+}
+
+/* Таблицы */
+.tables-wrapper h3 {
+  color: #005700;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.data-table th {
   background: #f8fafc;
   font-weight: 600;
   color: #333;
-  border-bottom: 2px solid #e5e7eb;
 }
 
-.table-row {
-  display: grid;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  align-items: center;
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-row:nth-child(even) {
-  background: #fafafa;
-}
-
-/* Сетки для разных таблиц */
-.tab-content .table-header,
-.tab-content .table-row {
-  grid-template-columns: 2fr 1fr 1.5fr 1fr;
+.data-table tr:hover {
+  background: #f0f5f0;
 }
 
 /* Формулы */
 .formulas-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .formula-item {
+  background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  overflow: hidden;
+  padding: 1.5rem;
 }
 
-.formula-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.formula-header:hover {
-  background: #f0f9f0;
-}
-
-.formula-header h3 {
+.formula-item h3 {
   color: #333;
-  font-size: 16px;
-}
-
-.formula-toggle {
-  font-size: 24px;
-  color: #005700;
-  font-weight: 700;
-}
-
-.formula-content {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  margin-bottom: 0.75rem;
 }
 
 .formula {
@@ -482,12 +631,12 @@ useHead({
   color: #005700;
   margin-bottom: 0.5rem;
   padding: 0.75rem;
-  background: #f0f9f0;
+  background: #f0f5f0;
   border-radius: 4px;
   text-align: center;
 }
 
-.formula-content p {
+.formula-item p {
   color: #6b7280;
 }
 
@@ -518,7 +667,7 @@ useHead({
   }
   
   .page-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 </style>

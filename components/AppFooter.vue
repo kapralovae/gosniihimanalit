@@ -2,15 +2,6 @@
   <footer class="app-footer">
     <div class="container">
       <div class="footer-grid">
-        <!-- О компании -->
-        <div class="footer-col">
-          <h4>О компании</h4>
-          <p class="footer-text">
-            АО «ГосНИИхиманалит»<br>
-            Приборы. Средства химического контроля. Услуги
-          </p>
-        </div>
-        
         <!-- Услуги -->
         <div class="footer-col">
           <NuxtLink to="/uslugi" class="footer-title-link">
@@ -35,33 +26,43 @@
           </ul>
         </div>
         
-        <!-- О организации + Контакты -->
+        <!-- Контакты -->
         <div class="footer-col">
-          <NuxtLink to="/about" class="footer-title-link">
-            <h4>О организации</h4>
-          </NuxtLink>
-          <ul class="footer-links">
-            <li><NuxtLink to="/about/kontakty">Контакты</NuxtLink></li>
-            <li><NuxtLink to="/about/vakansii">Вакансии</NuxtLink></li>
-            <li><NuxtLink to="/about/istoriya">История</NuxtLink></li>
-          </ul>
-          
+          <h4>Контакты</h4>
           <div class="footer-contacts">
-            <div class="footer-contact-item">
-              <span>📞</span>
-              <span>+7 (812) 252-22-45</span>
+            <!-- Коммерческий отдел -->
+            <div class="footer-contact-block">
+              <span class="footer-contact-title">Коммерческий отдел:</span>
+              <div class="footer-contact-item">
+                <span>📞</span>
+                <a href="tel:+78122522245" class="footer-contact-link">+7 (812) 252-22-45</a>
+              </div>
+              <div class="footer-contact-item">
+                <span>✉️</span>
+                <a href="mailto:marketing@himanalit.ru" class="footer-contact-link">marketing@himanalit.ru</a>
+              </div>
             </div>
-            <div class="footer-contact-item">
-              <span>📞</span>
-              <span>+7 (812) 786-61-59</span>
+            
+            <!-- Секретарь -->
+            <div class="footer-contact-block">
+              <span class="footer-contact-title">Секретарь:</span>
+              <div class="footer-contact-item">
+                <span>📞</span>
+                <a href="tel:+78127866159" class="footer-contact-link">+7 (812) 786-61-59</a>
+              </div>
+              <div class="footer-contact-item">
+                <span>✉️</span>
+                <a href="mailto:mail@himanalit.ru" class="footer-contact-link">mail@himanalit.ru</a>
+              </div>
             </div>
-            <div class="footer-contact-item">
-              <span>✉️</span>
-              <span>mail@himanalit.ru</span>
-            </div>
-            <div class="footer-contact-item">
-              <span>📍</span>
-              <span>190020, Санкт-Петербург, ул. Бумажная, 17</span>
+            
+            <!-- Адрес -->
+            <div class="footer-contact-block">
+              <span class="footer-contact-title">Адрес:</span>
+              <div class="footer-contact-item">
+                <span>📍</span>
+                <span class="footer-contact-text">190020, Санкт-Петербург, ул. Бумажная, 17</span>
+              </div>
             </div>
           </div>
         </div>
@@ -112,8 +113,9 @@ const kbItems = [
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 40px;
+  align-items: start;
 }
 
 .footer-col {
@@ -165,15 +167,44 @@ h4 {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
+}
+
+.footer-contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.footer-contact-title {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .footer-contact-item {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   color: #d1d5db;
+}
+
+.footer-contact-link {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-contact-link:hover {
+  color: #4cc94a;
+}
+
+.footer-contact-text {
+  color: #d1d5db;
+  line-height: 1.4;
 }
 
 .footer-divider {

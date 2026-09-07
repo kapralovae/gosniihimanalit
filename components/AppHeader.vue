@@ -47,8 +47,45 @@
                 Конструкторское бюро <span class="arrow">▼</span>
               </NuxtLink>
               <div class="dropdown-menu">
-                <NuxtLink v-for="item in kbItems" :key="item.path" :to="item.path" class="dropdown-item">
-                  {{ item.title }}
+                <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="dropdown-item">
+                  Центр разработки технических средств химического контроля
+                </NuxtLink>
+                
+                <!-- Полезное для инженера с подменю -->
+                <div class="dropdown-submenu">
+                  <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera" class="dropdown-item">
+                    Полезное для инженера <span class="arrow-right">›</span>
+                  </NuxtLink>
+                  <div class="submenu">
+                    <NuxtLink 
+                      :to="{ path: '/konstruktorskoe-byuro/spravochnik-inzhenera', query: { tab: 'calculators' } }" 
+                      class="dropdown-item"
+                    >
+                      Калькуляторы
+                    </NuxtLink>
+                    <NuxtLink 
+                      :to="{ path: '/konstruktorskoe-byuro/spravochnik-inzhenera', query: { tab: 'tables' } }" 
+                      class="dropdown-item"
+                    >
+                      Справочные таблицы
+                    </NuxtLink>
+                    <NuxtLink 
+                      :to="{ path: '/konstruktorskoe-byuro/spravochnik-inzhenera', query: { tab: 'formulas' } }" 
+                      class="dropdown-item"
+                    >
+                      Формулы
+                    </NuxtLink>
+                  </div>
+                </div>
+                
+                <NuxtLink to="/konstruktorskoe-byuro/obrazovanie-i-obuchenie" class="dropdown-item">
+                  Образование и обучение
+                </NuxtLink>
+                <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="dropdown-item">
+                  Библиотека
+                </NuxtLink>
+                <NuxtLink to="/konstruktorskoe-byuro/biblioteka-3d" class="dropdown-item">
+                  Библиотека 3D
                 </NuxtLink>
               </div>
             </div>
@@ -100,14 +137,33 @@
           <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
             Конструкторское бюро
           </NuxtLink>
-          <NuxtLink 
-            v-for="item in kbItems" 
-            :key="item.path"
-            :to="item.path" 
-            class="mobile-link sub"
-            @click="mobileMenuOpen = false"
-          >
-            {{ item.title }}
+          
+          <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Центр разработки технических средств химического контроля
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Полезное для инженера
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera?tab=calculators" class="mobile-link sub2" @click="mobileMenuOpen = false">
+            Калькуляторы
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera?tab=tables" class="mobile-link sub2" @click="mobileMenuOpen = false">
+            Справочные таблицы
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/spravochnik-inzhenera?tab=formulas" class="mobile-link sub2" @click="mobileMenuOpen = false">
+            Формулы
+          </NuxtLink>
+          
+          <NuxtLink to="/konstruktorskoe-byuro/obrazovanie-i-obuchenie" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Образование и обучение
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Библиотека
+          </NuxtLink>
+          <NuxtLink to="/konstruktorskoe-byuro/biblioteka-3d" class="mobile-link sub" @click="mobileMenuOpen = false">
+            Библиотека 3D
           </NuxtLink>
         </div>
         
@@ -150,7 +206,7 @@
               <div class="contact-text">
                 <span class="contact-label">Коммерческий отдел:</span>
                 <a href="tel:+78122522245" class="contact-value">+7 (812) 252-22-45</a>
-                <a href="mailto:sales@gosniihimanalit.ru" class="contact-value">sales@gosniihimanalit.ru</a>
+                <a href="mailto:marketing@himanalit.ru" class="contact-value">marketing@himanalit.ru</a>
               </div>
             </div>
             
@@ -160,7 +216,7 @@
               <div class="contact-text">
                 <span class="contact-label">Секретарь:</span>
                 <a href="tel:+78127866159" class="contact-value">+7 (812) 786-61-59</a>
-                <a href="mailto:info@gosniihimanalit.ru" class="contact-value">mail@himanalit.ru</a>
+                <a href="mailto:info@himanalit.ru" class="contact-value">mail@himanalit.ru</a>
               </div>
             </div>
             
@@ -195,11 +251,26 @@ const services = [
 ]
 
 const kbItems = [
-  { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
-  { title: 'Образование и обучение', path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' },
-  { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
-  { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
-  { title: 'Библиотека 3D моделей', path: '/konstruktorskoe-byuro/biblioteka-3d' }
+  { 
+    title: 'Центр разработки технических средств химического контроля', 
+    path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' 
+  },
+  { 
+    title: 'Полезное для инженера', 
+    path: '/konstruktorskoe-byuro/spravochnik-inzhenera' 
+  },
+  { 
+    title: 'Образование и обучение', 
+    path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' 
+  },
+  { 
+    title: 'Библиотека', 
+    path: '/konstruktorskoe-byuro/biblioteka' 
+  },
+  { 
+    title: 'Библиотека 3D', 
+    path: '/konstruktorskoe-byuro/biblioteka-3d' 
+  }
 ]
 </script>
 
@@ -335,6 +406,46 @@ const kbItems = [
   background: #f0f9f0;
   color: #005700;
   padding-left: 32px;
+}
+
+/* Подменю */
+.dropdown-submenu {
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-10px);
+  transition: all 0.3s;
+  z-index: 1002;
+}
+
+.dropdown-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.arrow-right {
+  margin-left: auto;
+  font-size: 14px;
+}
+
+/* Мобильное подменю */
+.mobile-link.sub2 {
+  padding-left: 50px;
+  font-size: 13px;
+  color: #9ca3af;
 }
 
 /* Мобильное меню */
