@@ -66,11 +66,11 @@
               <div class="requisites-list">
                 <div class="requisite-item">
                   <span class="requisite-label">Полное наименование:</span>
-                  <span>Акционерное общество "ГосНИИХиманалит"</span>
+                  <span>Акционерное общество "ГосНИИхиманалит"</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">Сокращенное наименование:</span>
-                  <span>АО "ГосНИИХиманалит"</span>
+                  <span>АО "ГосНИИхиманалит"</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">ИНН:</span>
@@ -212,11 +212,11 @@ function openMap() {
 }
 
 useHead({
-  title: 'Контакты - ГосНИИХиманалит',
+  title: 'Контакты - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Контакты ГосНИИХиманалит: адрес, телефон, email, реквизиты, форма обратной связи' 
+      content: 'Контакты ГосНИИхиманалит: адрес, телефон, email, реквизиты, форма обратной связи' 
     }
   ]
 })

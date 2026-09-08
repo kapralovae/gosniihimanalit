@@ -406,7 +406,7 @@ function convertPressure(value, from, to) {
 }
 
 useHead({
-  title: 'Полезное для инженера - ГосНИИХиманалит',
+  title: 'Полезное для инженера - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 

@@ -1,91 +1,182 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+
+const activeCategory = ref('all')
+const dialogVisible = ref(false)
+const selectedProduct = ref(null)
+const products = ref([])
+const categories = ref([])
+const loading = ref(true)
+const error = ref(null)
+
+// Используем composable
+const contentService = useContentService()
+
+// Загрузка данных через onMounted (клиентская загрузка)
+const loadData = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    
+    console.log('🔄 Начинаем загрузку данных...')
+    
+    const [productsData, categoriesData] = await Promise.all([
+      contentService.getAllProducts(),
+      contentService.getCategories()
+    ])
+    
+    console.log('📦 Получено товаров:', productsData?.length || 0)
+    console.log('📦 Получено категорий:', categoriesData?.length || 0)
+    
+    products.value = productsData || []
+    categories.value = categoriesData || []
+    
+  } catch (err) {
+    console.error('❌ Ошибка загрузки:', err)
+    error.value = err.message
+  } finally {
+    loading.value = false
+  }
+}
+
+// Загружаем при монтировании компонента
+onMounted(() => {
+  loadData()
+})
+
+// Фильтрация
+const filteredProducts = computed(() => {
+  if (!products.value || products.value.length === 0) return []
+  if (activeCategory.value === 'all') {
+    return products.value
+  }
+  return products.value.filter(p => {
+    const categorySlug = p.category?.toLowerCase().replace(/\s+/g, '-') || ''
+    return categorySlug === activeCategory.value
+  })
+})
+
+function showProductDetails(product) {
+  selectedProduct.value = product
+  dialogVisible.value = true
+}
+
+function requestQuote(product) {
+  dialogVisible.value = false
+  alert(`Запрос на "${product.name}" отправлен. Мы свяжемся с вами!`)
+}
+
+function formatPrice(price) {
+  return new Intl.NumberFormat('ru-RU').format(price)
+}
+
+useHead({
+  title: 'Продукция - ГосНИИхиманалит',
+  meta: [
+    { 
+      name: 'description', 
+      content: 'Каталог продукции ГосНИИхиманалит' 
+    }
+  ]
+})
+</script>
+
+<!-- Всё остальное (template и style) остаётся без изменений -->
+
+
 <template>
   <div class="products-page">
     <div class="container">
       <h1 class="page-title">Продукция</h1>
       
-      <!-- Фильтры -->
-      <div class="filters">
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ 'active': activeCategory === 'all' }"
-          @click="activeCategory = 'all'"
-        >
-          Все
-        </button>
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ 'active': activeCategory === 'analytical' }"
-          @click="activeCategory = 'analytical'"
-        >
-          Аналитическое оборудование
-        </button>
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ 'active': activeCategory === 'sensors' }"
-          @click="activeCategory = 'sensors'"
-        >
-          Датчики и сенсоры
-        </button>
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ 'active': activeCategory === 'systems' }"
-          @click="activeCategory = 'systems'"
-        >
-          Системы контроля
-        </button>
+      <!-- Загрузка -->
+      <div v-if="loading" class="loading">
+        <p>Загрузка товаров...</p>
       </div>
       
-      <!-- Список продуктов -->
-      <div class="products-grid">
-        <div 
-          v-for="product in filteredProducts" 
-          :key="product.id"
-          class="product-card"
-        >
-          <div class="product-image-wrapper">
-            <img 
-              :src="product.image" 
-              :alt="product.title"
-              class="product-image"
-            />
-          </div>
-          
-          <div class="product-info">
-            <h3 class="product-title">{{ product.title }}</h3>
-            <p class="product-description">{{ product.description }}</p>
-            
-            <div class="product-tags">
-              <span 
-                v-for="tag in product.tags" 
-                :key="tag"
-                class="product-tag"
-              >
-                {{ tag }}
-              </span>
+      <!-- Ошибка -->
+      <div v-else-if="error" class="error">
+        <p>Ошибка загрузки: {{ error.message }}</p>
+      </div>
+      
+      <!-- Контент -->
+      <template v-else>
+        <!-- Фильтры -->
+        <div class="filters">
+          <button 
+            type="button"
+            class="filter-btn"
+            :class="{ 'active': activeCategory === 'all' }"
+            @click="activeCategory = 'all'"
+          >
+            Все
+          </button>
+          <button 
+            v-for="category in categories" 
+            :key="category.slug"
+            type="button"
+            class="filter-btn"
+            :class="{ 'active': activeCategory === category.slug }"
+            @click="activeCategory = category.slug"
+          >
+            {{ category.name }}
+          </button>
+        </div>
+        
+        <!-- Список товаров -->
+        <div class="products-grid">
+          <div 
+            v-for="product in filteredProducts" 
+            :key="product.id"
+            class="product-card"
+          >
+            <div class="product-image-wrapper">
+              <img 
+                :src="product.images?.[0] || '/images/products/placeholder.svg'" 
+                :alt="product.name"
+                class="product-image"
+              />
             </div>
             
-            <div class="product-actions">
-              <button 
-                type="button"
-                class="details-btn"
-                @click="showProductDetails(product)"
-              >
-                Подробнее
-              </button>
+            <div class="product-info">
+              <h3 class="product-title">{{ product.name }}</h3>
+              <p class="product-description">{{ product.shortDescription }}</p>
+              
+              <div class="product-tags">
+                <span class="product-tag">{{ product.category }}</span>
+                <span v-if="product.isNew" class="product-tag product-tag--new">Новинка</span>
+                <span v-if="product.isPopular" class="product-tag product-tag--popular">Популярный</span>
+              </div>
+              
+              <div class="product-price">
+                <span class="price-current">{{ formatPrice(product.price) }} ₽</span>
+                <span v-if="product.oldPrice" class="price-old">{{ formatPrice(product.oldPrice) }} ₽</span>
+              </div>
+              
+              <div class="product-actions">
+                <button 
+                  type="button"
+                  class="details-btn"
+                  @click="showProductDetails(product)"
+                >
+                  Подробнее
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        
+        <!-- Пусто -->
+        <div v-if="filteredProducts.length === 0" class="empty">
+          <p>Товаров в этой категории пока нет</p>
+        </div>
+      </template>
       
       <!-- Модальное окно -->
       <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
         <div class="modal-content" @click.stop>
           <div class="modal-header">
-            <h2>{{ selectedProduct?.title }}</h2>
+            <h2>{{ selectedProduct?.name }}</h2>
             <button class="close-btn" @click="dialogVisible = false">✕</button>
           </div>
           
@@ -95,8 +186,15 @@
               <span>{{ selectedProduct.category }}</span>
             </div>
             <div class="detail-row">
+              <span class="detail-label">Цена:</span>
+              <span class="price-current">{{ formatPrice(selectedProduct.price) }} ₽</span>
+              <span v-if="selectedProduct.oldPrice" class="price-old">
+                {{ formatPrice(selectedProduct.oldPrice) }} ₽
+              </span>
+            </div>
+            <div class="detail-row">
               <span class="detail-label">Наличие:</span>
-              <span class="in-stock">В наличии</span>
+              <span class="in-stock">{{ selectedProduct.inStock ? 'В наличии' : 'Нет в наличии' }}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Описание:</span>
@@ -105,8 +203,8 @@
             <div class="detail-row">
               <span class="detail-label">Технические характеристики:</span>
               <ul class="specs-list">
-                <li v-for="spec in selectedProduct.specs" :key="spec">
-                  {{ spec }}
+                <li v-for="(value, key) in selectedProduct.specifications" :key="key">
+                  <strong>{{ key }}:</strong> {{ value }}
                 </li>
               </ul>
             </div>
@@ -123,141 +221,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, computed } from 'vue'
-
-const activeCategory = ref('all')
-const dialogVisible = ref(false)
-const selectedProduct = ref(null)
-
-const products = ref([
-  {
-    id: 1,
-    title: 'Газоанализатор ГАН-1',
-    description: 'Промышленный газоанализатор для контроля воздуха рабочей зоны',
-    fullDescription: 'Газоанализатор ГАН-1 предназначен для непрерывного контроля содержания вредных веществ в воздухе рабочей зоны промышленных предприятий.',
-    category: 'Аналитическое оборудование',
-    image: '/images/products/placeholder.svg',
-    tags: ['Газоанализ', 'Промышленность'],
-    specs: [
-      'Диапазон измерения: 0-100 мг/м³',
-      'Погрешность: ±5%',
-      'Время отклика: не более 30 сек',
-      'Температура эксплуатации: -40°C до +50°C'
-    ]
-  },
-  {
-    id: 2,
-    title: 'Хроматограф ХРОМ-2',
-    description: 'Лабораторный хроматограф для анализа сложных смесей',
-    fullDescription: 'Хроматограф ХРОМ-2 предназначен для качественного и количественного анализа сложных смесей органических и неорганических соединений.',
-    category: 'Аналитическое оборудование',
-    image: '/images/products/placeholder.svg',
-    tags: ['Хроматография', 'Лаборатория'],
-    specs: [
-      'Детектор: ПИД, ДТП',
-      'Чувствительность: 10⁻¹² г/с',
-      'Диапазон температур: 20-400°C',
-      'Программирование температуры'
-    ]
-  },
-  {
-    id: 3,
-    title: 'Датчик кислорода ДК-1',
-    description: 'Электрохимический датчик для измерения концентрации кислорода',
-    fullDescription: 'Датчик кислорода ДК-1 предназначен для измерения объемной доли кислорода в газовых смесях.',
-    category: 'Датчики и сенсоры',
-    image: '/images/products/placeholder.svg',
-    tags: ['Датчик', 'Кислород'],
-    specs: [
-      'Диапазон: 0-25% об.',
-      'Точность: ±0.1% об.',
-      'Срок службы: 2 года',
-      'Рабочая температура: -20°C до +50°C'
-    ]
-  },
-  {
-    id: 4,
-    title: 'Система мониторинга СМ-1',
-    description: 'Комплексная система экологического мониторинга',
-    fullDescription: 'Система мониторинга СМ-1 предназначена для комплексного контроля параметров окружающей среды на промышленных объектах.',
-    category: 'Системы контроля',
-    image: '/images/products/placeholder.svg',
-    tags: ['Мониторинг', 'Экология'],
-    specs: [
-      'Количество каналов: до 32',
-      'Интерфейс: RS-485, Ethernet',
-      'Протокол: Modbus RTU/TCP',
-      'Встроенная память: 4 ГБ'
-    ]
-  },
-  {
-    id: 5,
-    title: 'Газосигнализатор ГС-3',
-    description: 'Портативный газосигнализатор для обнаружения утечек',
-    fullDescription: 'Газосигнализатор ГС-3 предназначен для обнаружения утечек горючих газов и паров в промышленных и бытовых условиях.',
-    category: 'Датчики и сенсоры',
-    image: '/images/products/placeholder.svg',
-    tags: ['Газосигнализатор', 'Безопасность'],
-    specs: [
-      'Тип сенсора: каталитический',
-      'Порог срабатывания: 10% НКПР',
-      'Время отклика: 10 сек',
-      'Автономность: 24 часа'
-    ]
-  },
-  {
-    id: 6,
-    title: 'Анализатор жидкости АЖ-1',
-    description: 'Автоматический анализатор для контроля качества воды',
-    fullDescription: 'Анализатор жидкости АЖ-1 предназначен для автоматического контроля показателей качества воды в системах водоподготовки.',
-    category: 'Аналитическое оборудование',
-    image: '/images/products/placeholder.svg',
-    tags: ['Водоподготовка', 'Анализ воды'],
-    specs: [
-      'Параметры: pH, ОВП, проводимость',
-      'Точность: ±0.01 pH',
-      'Автокалибровка',
-      'Выход: 4-20 мА'
-    ]
-  }
-])
-
-const filteredProducts = computed(() => {
-  if (activeCategory.value === 'all') {
-    return products.value
-  }
-  
-  const categoryMap = {
-    'analytical': 'Аналитическое оборудование',
-    'sensors': 'Датчики и сенсоры',
-    'systems': 'Системы контроля'
-  }
-  
-  return products.value.filter(p => p.category === categoryMap[activeCategory.value])
-})
-
-function showProductDetails(product) {
-  selectedProduct.value = product
-  dialogVisible.value = true
-}
-
-function requestQuote(product) {
-  dialogVisible.value = false
-  alert(`Запрос на "${product.title}" отправлен. Мы свяжемся с вами!`)
-}
-
-useHead({
-  title: 'Продукция - ГосНИИХиманалит',
-  meta: [
-    { 
-      name: 'description', 
-      content: 'Каталог продукции ГосНИИХиманалит: газоанализаторы, хроматографы, датчики, системы мониторинга' 
-    }
-  ]
-})
-</script>
 
 <style scoped>
 .products-page {
@@ -279,7 +242,19 @@ useHead({
   text-align: center;
 }
 
-/* Фильтры */
+.loading,
+.empty,
+.error {
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
+
+.error {
+  color: #dc2626;
+}
+
 .filters {
   margin-bottom: 2rem;
   display: flex;
@@ -311,7 +286,6 @@ useHead({
   border-color: #005700;
 }
 
-/* Сетка продуктов */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -341,6 +315,7 @@ useHead({
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .product-image {
@@ -367,6 +342,7 @@ useHead({
   color: #6b7280;
   margin-bottom: 1rem;
   flex: 1;
+  font-size: 14px;
 }
 
 .product-tags {
@@ -383,6 +359,37 @@ useHead({
   border: 1px solid #005700;
   border-radius: 4px;
   font-size: 12px;
+}
+
+.product-tag--new {
+  background: #e3f2fd;
+  color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.product-tag--popular {
+  background: #fff3e0;
+  color: #e65100;
+  border-color: #e65100;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.price-current {
+  font-size: 20px;
+  font-weight: 700;
+  color: #005700;
+}
+
+.price-old {
+  font-size: 16px;
+  color: #999;
+  text-decoration: line-through;
 }
 
 .product-actions {
@@ -406,7 +413,6 @@ useHead({
   background: #003d00;
 }
 
-/* Модальное окно */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -476,14 +482,19 @@ useHead({
 }
 
 .specs-list {
-  list-style: disc;
-  padding-left: 1.5rem;
+  list-style: none;
+  padding-left: 0;
   margin-top: 0.5rem;
 }
 
 .specs-list li {
-  margin-bottom: 0.5rem;
+  padding: 4px 0;
+  border-bottom: 1px solid #f0f0f0;
   color: #4b5563;
+}
+
+.specs-list li strong {
+  color: #333;
 }
 
 .modal-footer {

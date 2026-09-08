@@ -194,7 +194,7 @@
               <img src="/images/himanalit_gerb.webp" alt="Герб">
             </div>
             <div class="logo-text">
-              <span class="company-name">АО «ГосНИИхиманалит»</span>
+              <span class="company-name">{{ contacts?.siteTitle || 'АО «ГосНИИхиманалит»' }}</span>
               <span class="company-subtitle">Приборы. Средства химического контроля. Услуги</span>
             </div>
           </NuxtLink>
@@ -204,9 +204,13 @@
             <div class="contact-block">
               <span class="contact-icon">📞</span>
               <div class="contact-text">
-                <span class="contact-label">Коммерческий отдел:</span>
-                <a href="tel:+78122522245" class="contact-value">+7 (812) 252-22-45</a>
-                <a href="mailto:marketing@himanalit.ru" class="contact-value">marketing@himanalit.ru</a>
+                <span class="contact-label">{{ contacts?.commercialLabel || 'Коммерческий отдел' }}:</span>
+                <a :href="'tel:' + (contacts?.commercialPhone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')" class="contact-value">
+                  {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}
+                </a>
+                <a :href="'mailto:' + (contacts?.commercialEmail || 'marketing@himanalit.ru')" class="contact-value">
+                  {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}
+                </a>
               </div>
             </div>
             
@@ -214,9 +218,13 @@
             <div class="contact-block">
               <span class="contact-icon">📞</span>
               <div class="contact-text">
-                <span class="contact-label">Секретарь:</span>
-                <a href="tel:+78127866159" class="contact-value">+7 (812) 786-61-59</a>
-                <a href="mailto:info@himanalit.ru" class="contact-value">mail@himanalit.ru</a>
+                <span class="contact-label">{{ contacts?.secretaryLabel || 'Секретарь' }}:</span>
+                <a :href="'tel:' + (contacts?.phone || '+7 (812) 786-61-59').replace(/[^0-9+]/g, '')" class="contact-value">
+                  {{ contacts?.phone || '+7 (812) 786-61-59' }}
+                </a>
+                <a :href="'mailto:' + (contacts?.email || 'mail@himanalit.ru')" class="contact-value">
+                  {{ contacts?.email || 'mail@himanalit.ru' }}
+                </a>
               </div>
             </div>
             
@@ -224,8 +232,11 @@
             <div class="contact-block">
               <span class="contact-icon">📍</span>
               <div class="contact-text">
-                <span class="contact-label">Адрес:</span>
-                <span class="contact-value">190020, Санкт-Петербург,<br>ул. Бумажная, 17</span>
+                <span class="contact-label">{{ contacts?.addressLabel || 'Адрес' }}:</span>
+                <span class="contact-value">
+                  {{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }},<br>
+                  {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}
+                </span>
               </div>
             </div>
           </div>
@@ -236,42 +247,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useContacts } from '~/composables/useContacts'  // ← new name
 
 const mobileMenuOpen = ref(false)
+const contacts = ref({})  // ← теперь contacts
 
-const services = [
-  { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
-  { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
-  { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
-  { title: 'Конструкторское бюро', path: '/uslugi/konstruktorskoe-byuro-1' },
-  { title: 'Стандартизация', path: '/uslugi/standartizaciya' },
-  { title: 'Производство', path: '/uslugi/proizvodstvo' },
-  { title: 'Аренда', path: '/uslugi/arenda' }
-]
+const contactsService = useContacts()  // ← new name
 
-const kbItems = [
-  { 
-    title: 'Центр разработки технических средств химического контроля', 
-    path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' 
-  },
-  { 
-    title: 'Полезное для инженера', 
-    path: '/konstruktorskoe-byuro/spravochnik-inzhenera' 
-  },
-  { 
-    title: 'Образование и обучение', 
-    path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' 
-  },
-  { 
-    title: 'Библиотека', 
-    path: '/konstruktorskoe-byuro/biblioteka' 
-  },
-  { 
-    title: 'Библиотека 3D', 
-    path: '/konstruktorskoe-byuro/biblioteka-3d' 
+const loadContacts = async () => {  // ← new name
+  try {
+    contacts.value = await contactsService.getContacts()
+  } catch (error) {
+    console.error('❌ Ошибка загрузки контактов:', error)
   }
-]
+}
+
+onMounted(() => {
+  loadContacts()
+})
 </script>
 
 <style scoped>
