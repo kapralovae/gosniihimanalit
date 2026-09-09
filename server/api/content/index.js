@@ -6,7 +6,7 @@ import path from 'path'
 export default defineEventHandler(async (event) => {
   try {
         
-    const contentPath = path.join(process.cwd(), 'content')
+    const contentPath = path.join(process.cwd(), 'data')
     
     if (!fs.existsSync(contentPath)) {
       return {}

@@ -1,207 +1,118 @@
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useContentService } from '~/composables/useContentService'
-
-const activeCategory = ref('all')
-const dialogVisible = ref(false)
-const selectedProduct = ref(null)
-const products = ref([])
-const categories = ref([])
-const loading = ref(true)
-const error = ref(null)
-
-const contentService = useContentService()
-
-const loadData = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    
-    console.log('🔄 Начинаем загрузку данных...')
-    
-    const [productsData, categoriesData] = await Promise.all([
-      contentService.getAllProducts(),
-      contentService.getCategories()
-    ])
-    
-    console.log('📦 Получено товаров:', productsData?.length || 0)
-    console.log('📦 Получено категорий:', categoriesData?.length || 0)
-    
-    products.value = productsData || []
-    categories.value = categoriesData || []
-    
-  } catch (err) {
-    console.error('❌ Ошибка загрузки:', err)
-    error.value = err.message
-  } finally {
-    loading.value = false
-  }
-}
-
-onMounted(() => {
-  loadData()
-})
-
-const filteredProducts = computed(() => {
-  if (!products.value || products.value.length === 0) return []
-  if (activeCategory.value === 'all') {
-    return products.value
-  }
-  return products.value.filter(p => {
-    const categorySlug = p.category?.toLowerCase().replace(/\s+/g, '-') || ''
-    return categorySlug === activeCategory.value
-  })
-})
-
-function showProductDetails(product) {
-  selectedProduct.value = product
-  dialogVisible.value = true
-}
-
-function requestQuote(product) {
-  dialogVisible.value = false
-  alert(`Запрос на "${product.name}" отправлен. Мы свяжемся с вами!`)
-}
-
-function formatPrice(price) {
-  return new Intl.NumberFormat('ru-RU').format(price)
-}
-
-useHead({
-  title: 'Продукция - ГосНИИхиманалит',
-  meta: [
-    { 
-      name: 'description', 
-      content: 'Каталог продукции ГосНИИхиманалит' 
-    }
-  ]
-})
-</script>
-
-<!-- Всё остальное (template и style) остаётся без изменений -->
-
-
 <template>
   <div class="products-page">
     <div class="container">
       <h1 class="page-title">Продукция</h1>
       
+      <!-- Фильтры -->
+      <div class="filters">
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ 'active': activeCategory === 'all' }"
+          @click="activeCategory = 'all'"
+        >
+          Все
+        </button>
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ 'active': activeCategory === 'analytical' }"
+          @click="activeCategory = 'analytical'"
+        >
+          Аналитическое оборудование
+        </button>
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ 'active': activeCategory === 'sensors' }"
+          @click="activeCategory = 'sensors'"
+        >
+          Датчики и сенсоры
+        </button>
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ 'active': activeCategory === 'systems' }"
+          @click="activeCategory = 'systems'"
+        >
+          Системы контроля
+        </button>
+      </div>
+      
       <!-- Загрузка -->
       <div v-if="loading" class="loading">
-        <p>Загрузка товаров...</p>
+        Загрузка...
       </div>
       
-      <!-- Ошибка -->
-      <div v-else-if="error" class="error">
-        <p>Ошибка загрузки: {{ error.message }}</p>
+      <!-- Пусто -->
+      <div v-else-if="products.length === 0" class="empty">
+        Товары не найдены
       </div>
       
-      <!-- Контент -->
-      <template v-else>
-        <!-- Фильтры -->
-        <div class="filters">
-          <button 
-            type="button"
-            class="filter-btn"
-            :class="{ 'active': activeCategory === 'all' }"
-            @click="activeCategory = 'all'"
-          >
-            Все
-          </button>
-          <button 
-            v-for="category in categories" 
-            :key="category.slug"
-            type="button"
-            class="filter-btn"
-            :class="{ 'active': activeCategory === category.slug }"
-            @click="activeCategory = category.slug"
-          >
-            {{ category.name }}
-          </button>
-        </div>
-        
-        <!-- Список товаров -->
-        <div class="products-grid">
-          <div 
-            v-for="product in filteredProducts" 
-            :key="product.id"
-            class="product-card"
-          >
-            <div class="product-image-wrapper">
-              <img 
-                :src="product.images?.[0] || '/images/products/placeholder.svg'" 
-                :alt="product.name"
-                class="product-image"
-              />
+      <!-- Список продуктов -->
+      <div v-else class="products-grid">
+        <div 
+          v-for="product in filteredProducts" 
+          :key="product.id"
+          class="product-card"
+        >
+          <div class="product-image-wrapper">
+            <img 
+              :src="(product.images && product.images[0]) || '/images/placeholder.svg'" 
+              :alt="product.name || 'Товар'"
+              class="product-image"
+            />
+          </div>
+          
+          <div class="product-info">
+            <h3 class="product-title">{{ product.name || 'Без названия' }}</h3>
+            <p class="product-description">{{ product.shortDescription || '' }}</p>
+            
+            <div v-if="product.specs && product.specs.length" class="product-tags">
+              <span 
+                v-for="(spec, index) in product.specs" 
+                :key="index"
+                class="product-tag"
+              >
+                {{ spec.name }}: {{ spec.value }} {{ spec.unit }}
+              </span>
             </div>
             
-            <div class="product-info">
-              <h3 class="product-title">{{ product.name }}</h3>
-              <p class="product-description">{{ product.shortDescription }}</p>
-              
-              <div class="product-tags">
-                <span class="product-tag">{{ product.category }}</span>
-                <span v-if="product.isNew" class="product-tag product-tag--new">Новинка</span>
-                <span v-if="product.isPopular" class="product-tag product-tag--popular">Популярный</span>
-              </div>
-              
-              <div class="product-price">
-                <span class="price-current">{{ formatPrice(product.price) }} ₽</span>
-                <span v-if="product.oldPrice" class="price-old">{{ formatPrice(product.oldPrice) }} ₽</span>
-              </div>
-              
-              <div class="product-actions">
-                <button 
-                  type="button"
-                  class="details-btn"
-                  @click="showProductDetails(product)"
-                >
-                  Подробнее
-                </button>
-              </div>
+            <div class="product-actions">
+              <button 
+                type="button"
+                class="details-btn"
+                @click="showProductDetails(product)"
+              >
+                Подробнее
+              </button>
             </div>
           </div>
         </div>
-        
-        <!-- Пусто -->
-        <div v-if="filteredProducts.length === 0" class="empty">
-          <p>Товаров в этой категории пока нет</p>
-        </div>
-      </template>
+      </div>
       
       <!-- Модальное окно -->
       <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
         <div class="modal-content" @click.stop>
           <div class="modal-header">
-            <h2>{{ selectedProduct?.name }}</h2>
+            <h2>{{ selectedProduct?.name || 'Товар' }}</h2>
             <button class="close-btn" @click="dialogVisible = false">✕</button>
           </div>
           
           <div v-if="selectedProduct" class="modal-body">
             <div class="detail-row">
               <span class="detail-label">Категория:</span>
-              <span>{{ selectedProduct.category }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Цена:</span>
-              <span class="price-current">{{ formatPrice(selectedProduct.price) }} ₽</span>
-              <span v-if="selectedProduct.oldPrice" class="price-old">
-                {{ formatPrice(selectedProduct.oldPrice) }} ₽
-              </span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Наличие:</span>
-              <span class="in-stock">{{ selectedProduct.inStock ? 'В наличии' : 'Нет в наличии' }}</span>
+              <span>{{ selectedProduct.category || 'Не указана' }}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Описание:</span>
-              <p>{{ selectedProduct.fullDescription }}</p>
+              <p>{{ selectedProduct.fullDescription || selectedProduct.shortDescription || '' }}</p>
             </div>
-            <div class="detail-row">
+            <div v-if="selectedProduct.specs && selectedProduct.specs.length" class="detail-row">
               <span class="detail-label">Технические характеристики:</span>
               <ul class="specs-list">
-                <li v-for="spec in selectedProduct?.specs || []" :key="spec.name || $index">
-                  <strong>{{ spec.name }}:</strong> {{ spec.value }} {{ spec.unit }}
+                <li v-for="spec in selectedProduct.specs" :key="spec.name">
+                  {{ spec.name }}: {{ spec.value }} {{ spec.unit }}
                 </li>
               </ul>
             </div>
@@ -209,15 +120,65 @@ useHead({
           
           <div class="modal-footer">
             <button class="btn-secondary" @click="dialogVisible = false">Закрыть</button>
-            <button class="btn-primary" @click="requestQuote(selectedProduct)">
-              Запросить цену
-            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+
+const products = ref([])
+const loading = ref(true)
+const activeCategory = ref('all')
+const dialogVisible = ref(false)
+const selectedProduct = ref(null)
+
+onMounted(async () => {
+  try {
+    const data = await $fetch('/api/products')
+    const allProducts = data.products || data || []
+    // Фильтруем только товары с названием
+    products.value = allProducts.filter(p => p && p.name && p.name.trim() !== '')
+  } catch (error) {
+    console.error('Ошибка загрузки:', error)
+    products.value = []
+  } finally {
+    loading.value = false
+  }
+})
+
+const filteredProducts = computed(() => {
+  if (activeCategory.value === 'all') {
+    return products.value
+  }
+  
+  const categoryMap = {
+    'analytical': 'Аналитическое оборудование',
+    'sensors': 'Датчики и сенсоры',
+    'systems': 'Системы контроля'
+  }
+  
+  return products.value.filter(p => p.category === categoryMap[activeCategory.value])
+})
+
+function showProductDetails(product) {
+  selectedProduct.value = product
+  dialogVisible.value = true
+}
+
+useHead({
+  title: 'Продукция - ГосНИИХиманалит',
+  meta: [
+    { 
+      name: 'description', 
+      content: 'Каталог продукции ГосНИИХиманалит' 
+    }
+  ]
+})
+</script>
 
 <style scoped>
 .products-page {
@@ -239,17 +200,11 @@ useHead({
   text-align: center;
 }
 
-.loading,
-.empty,
-.error {
+.loading {
   text-align: center;
-  padding: 4rem 0;
-  font-size: 1.2rem;
+  padding: 3rem;
+  font-size: 1.25rem;
   color: #6b7280;
-}
-
-.error {
-  color: #dc2626;
 }
 
 .filters {
@@ -312,7 +267,6 @@ useHead({
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .product-image {
@@ -339,7 +293,6 @@ useHead({
   color: #6b7280;
   margin-bottom: 1rem;
   flex: 1;
-  font-size: 14px;
 }
 
 .product-tags {
@@ -351,42 +304,11 @@ useHead({
 
 .product-tag {
   padding: 4px 10px;
-  background: #f0f9f0;
+  background: #f0f5f0;
   color: #005700;
   border: 1px solid #005700;
   border-radius: 4px;
   font-size: 12px;
-}
-
-.product-tag--new {
-  background: #e3f2fd;
-  color: #0d47a1;
-  border-color: #0d47a1;
-}
-
-.product-tag--popular {
-  background: #fff3e0;
-  color: #e65100;
-  border-color: #e65100;
-}
-
-.product-price {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 1rem;
-}
-
-.price-current {
-  font-size: 20px;
-  font-weight: 700;
-  color: #005700;
-}
-
-.price-old {
-  font-size: 16px;
-  color: #999;
-  text-decoration: line-through;
 }
 
 .product-actions {
@@ -410,6 +332,7 @@ useHead({
   background: #003d00;
 }
 
+/* Модальное окно */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -454,10 +377,6 @@ useHead({
   color: #6b7280;
 }
 
-.close-btn:hover {
-  color: #333;
-}
-
 .modal-body {
   padding: 1.25rem;
 }
@@ -473,31 +392,20 @@ useHead({
   margin-bottom: 0.25rem;
 }
 
-.in-stock {
-  color: #005700;
-  font-weight: 500;
-}
-
 .specs-list {
-  list-style: none;
-  padding-left: 0;
+  list-style: disc;
+  padding-left: 1.5rem;
   margin-top: 0.5rem;
 }
 
 .specs-list li {
-  padding: 4px 0;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 0.5rem;
   color: #4b5563;
-}
-
-.specs-list li strong {
-  color: #333;
 }
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
   padding: 1.25rem;
   border-top: 1px solid #e5e7eb;
 }
@@ -510,27 +418,6 @@ useHead({
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-secondary:hover {
-  border-color: #333;
-}
-
-.btn-primary {
-  padding: 10px 24px;
-  background: #005700;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-primary:hover {
-  background: #003d00;
 }
 
 @media (max-width: 1024px) {

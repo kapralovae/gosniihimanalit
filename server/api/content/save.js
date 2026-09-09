@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
       })
     }
     
-    const filePath = path.join(process.cwd(), 'content', `${file}.json`)
+    const filePath = path.join(process.cwd(), 'data', `${file}.json`)
     
     // Создаем папку, если её нет
     const dir = path.dirname(filePath)

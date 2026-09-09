@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     }
     
     // Читаем текущие товары
-    const filePath = path.join(process.cwd(), 'content', 'products.json')
+    const filePath = path.join(process.cwd(), 'data', 'products.json')
     const content = fs.readFileSync(filePath, 'utf-8')
     const data = JSON.parse(content)
     

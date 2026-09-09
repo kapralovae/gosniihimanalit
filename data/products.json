@@ -8,7 +8,7 @@
       "shortDescription": "Измерение массовой концентрации паров вредных веществ",
       "fullDescription": "Измерение массовой концентрации паров вредных веществ, объемной доли кислорода и диоксида углерода в воздухе рабочей зоны, технологических газах, а также довзрывоопасных концентраций горючих газов и поиск мест утечек. АНТ-3М применяется при проведении специальной оценки условий труда и производственного контроля для оценки вредных химических факторов.\nВозможность измерения концентраций более 80 веществ.\n",
       "images": [
-        "/images/products/ant-3m-1788959577634.webp"
+        "/images/products/ant-3m-1788967277875.webp"
       ],
       "specifications": {},
       "inStock": true,
@@ -31,7 +31,7 @@
       "shortDescription": "Тестовое описание",
       "fullDescription": "Полное тестовое описание",
       "images": [
-        "/images/products/placeholder.svg"
+        "/images/products/ant-3m-1788967260979.webp"
       ],
       "specifications": {},
       "inStock": true,
@@ -39,6 +39,23 @@
       "isPopular": false,
       "createdAt": "2026-09-09T08:18:08.260Z",
       "specs": []
+    },
+    {
+      "id": "id-1788966463385",
+      "name": "123",
+      "category": "123",
+      "price": 1,
+      "oldPrice": null,
+      "shortDescription": "123",
+      "fullDescription": "123",
+      "specs": [],
+      "images": [
+        "/images/products/placeholder.svg"
+      ],
+      "inStock": true,
+      "isNew": false,
+      "isPopular": false,
+      "createdAt": "2026-09-09T15:07:43.385Z"
     }
   ]
 }

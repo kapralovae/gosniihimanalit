@@ -5,7 +5,7 @@ import path from 'path'
 
 export default defineEventHandler(async (event) => {
   const file = event.context.params.file
-  const filePath = path.join(process.cwd(), 'content', `${file}.json`)
+  const filePath = path.join(process.cwd(), 'data', `${file}.json`)
   
   if (!fs.existsSync(filePath)) {
     throw createError({ statusCode: 404, message: 'File not found' })
