@@ -1,128 +1,119 @@
 <template>
-  <div class="service-page">
+  <div class="arenda-page">
     <div class="container">
-      <!-- Хлебные крошки -->
-      <nav class="breadcrumb">
-        <NuxtLink to="/">Главная</NuxtLink>
-        <span class="separator">/</span>
-        <NuxtLink to="/uslugi">Услуги</NuxtLink>
-        <span class="separator">/</span>
-        <span class="current">Аренда</span>
-      </nav>
+      <h1 class="page-title">{{ data?.title || 'Аренда помещений' }}</h1>
       
-      <h1 class="page-title">Аренда оборудования</h1>
+      <p class="page-description">{{ data?.description || '' }}</p>
       
-      <div class="service-content">
-        <p class="service-intro">
-          АО "ГосНИИхиманалит" предоставляет в аренду оборудование для
-          химического анализа и контроля.
-        </p>
-        
-        <h2 class="section-subtitle">Доступное оборудование</h2>
-        <div class="equipment-grid">
-          <div 
-            v-for="equipment in equipmentList" 
-            :key="equipment.id"
-            class="equipment-card"
-          >
-            <div class="equipment-image-wrapper">
-              <img 
-                :src="equipment.image" 
-                :alt="equipment.name"
-                class="equipment-image"
-              />
+      <!-- Фильтры -->
+      <div class="filters">
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ active: activeStatus === 'all' }"
+          @click="activeStatus = 'all'"
+        >
+          Все
+        </button>
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ active: activeStatus === 'available' }"
+          @click="activeStatus = 'available'"
+        >
+          Свободно
+        </button>
+        <button 
+          type="button"
+          class="filter-btn"
+          :class="{ active: activeStatus === 'rented' }"
+          @click="activeStatus = 'rented'"
+        >
+          Сдано
+        </button>
+      </div>
+      
+      <!-- Список помещений -->
+      <div class="arenda-grid">
+        <div 
+          v-for="item in filteredItems" 
+          :key="item.id"
+          class="arenda-card"
+          :class="{ rented: item.status === 'rented' }"
+        >
+          <div class="card-image">
+            <img 
+              :src="item.image || '/images/arenda/placeholder.jpg'" 
+              :alt="item.name"
+            />
+            <span class="status-badge" :class="item.status">
+              {{ item.status === 'available' ? 'Свободно' : 'Сдано' }}
+            </span>
+          </div>
+          
+          <div class="card-content">
+            <h3 class="card-title">{{ item.name }}</h3>
+            <p class="card-description">{{ item.description }}</p>
+            
+            <div class="card-specs">
+              <div class="spec-item">
+                <span>📐</span>
+                <span>{{ item.area }}</span>
+              </div>
+              <div class="spec-item">
+                <span>🏗️</span>
+                <span>{{ item.floor }}</span>
+              </div>
+              <div class="spec-item">
+                <span>📏</span>
+                <span>{{ item.ceilingHeight }}</span>
+              </div>
+              <div class="spec-item">
+                <span>⚡</span>
+                <span>{{ item.powerSupply }}</span>
+              </div>
             </div>
             
-            <div class="equipment-info">
-              <h3>{{ equipment.name }}</h3>
-              <p>{{ equipment.description }}</p>
-              
-              <div class="equipment-details">
-                <div class="detail-item">
-                  <span class="detail-label">Цена:</span>
-                  <span class="detail-value">{{ equipment.price }}</span>
-                </div>
-                <div class="detail-item">
-                  <span class="detail-label">Срок:</span>
-                  <span class="detail-value">{{ equipment.period }}</span>
-                </div>
-              </div>
-              
+            <div class="card-features">
+              <span 
+                v-for="feature in item.features" 
+                :key="feature"
+                class="feature-tag"
+              >
+                {{ feature }}
+              </span>
+            </div>
+            
+            <div class="card-footer">
+              <span class="card-price">{{ item.price }}</span>
               <button 
                 type="button"
-                class="rent-button"
-                @click="rentEquipment(equipment)"
+                class="btn-primary"
+                :disabled="item.status === 'rented'"
+                @click="showDetails(item)"
               >
-                Арендовать
+                {{ item.status === 'available' ? 'Подробнее' : 'Занято' }}
               </button>
             </div>
           </div>
         </div>
-        
-        <h2 class="section-subtitle">Условия аренды</h2>
-        <div class="conditions-grid">
-          <div 
-            v-for="condition in conditions" 
-            :key="condition.title"
-            class="condition-item"
-          >
-            <span class="condition-icon">{{ condition.icon }}</span>
-            <h4>{{ condition.title }}</h4>
-            <p>{{ condition.description }}</p>
-          </div>
-        </div>
-        
-        <h2 class="section-subtitle">Преимущества аренды</h2>
-        <div class="advantages-grid">
-          <div 
-            v-for="advantage in advantages" 
-            :key="advantage"
-            class="advantage-item"
-          >
-            <span class="advantage-icon">✓</span>
-            <span>{{ advantage }}</span>
-          </div>
-        </div>
       </div>
       
-      <!-- Модальное окно аренды -->
-      <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
-        <div class="modal-content" @click.stop>
-          <div class="modal-header">
-            <h2>Заявка на аренду</h2>
-            <button class="close-btn" @click="dialogVisible = false">✕</button>
+      <!-- Контакты -->
+      <div class="contacts-section">
+        <h2 class="section-title">По вопросам аренды</h2>
+        <div class="contacts-info">
+          <div class="contact-item">
+            <span>📞</span>
+            <a :href="'tel:' + (data?.contacts?.phone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')">
+              {{ data?.contacts?.phone || '+7 (812) 252-22-45' }}
+            </a>
           </div>
-          
-          <div class="modal-body">
-            <div class="form-group">
-              <label class="form-label">Оборудование</label>
-              <input v-model="rentForm.equipment" type="text" class="form-input" disabled />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Организация</label>
-              <input v-model="rentForm.company" type="text" class="form-input" placeholder="Название организации" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Контактное лицо</label>
-              <input v-model="rentForm.contact" type="text" class="form-input" placeholder="ФИО" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Телефон</label>
-              <input v-model="rentForm.phone" type="tel" class="form-input" placeholder="+7 (___) ___-__-__" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Срок аренды</label>
-              <div class="date-range">
-                <input v-model="rentForm.startDate" type="date" class="form-input" />
-                <span class="date-separator">—</span>
-                <input v-model="rentForm.endDate" type="date" class="form-input" />
-              </div>
-            </div>
-          </div>
-          
-          <div class="modal-footer">
-            <button class="btn-secondary" @click="dialogVisible = false">Отмена</button>
-            <button class="btn-primary" @click="submitRent">Отправить заявку</button>
+          <div class="contact-item">
+            <span>✉️</span>
+            <a :href="'mailto:' + (data?.contacts?.email || 'arenda@himanalit.ru')">
+              {{ data?.contacts?.email || 'arenda@himanalit.ru' }}
+            </a>
           </div>
         </div>
       </div>
@@ -131,119 +122,42 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-const dialogVisible = ref(false)
+const activeStatus = ref('all')
 
-const equipmentList = [
-  {
-    id: 1,
-    name: 'Газоанализатор ГАН-1',
-    description: 'Портативный газоанализатор для контроля воздуха',
-    price: '5 000 ₽/день',
-    period: 'от 1 дня',
-    image: '/images/equipment/gas-analyzer.jpg'
-  },
-  {
-    id: 2,
-    name: 'Хроматограф ХРОМ-2',
-    description: 'Лабораторный хроматограф для анализа смесей',
-    price: '15 000 ₽/день',
-    period: 'от 7 дней',
-    image: '/images/equipment/chromatograph.jpg'
-  },
-  {
-    id: 3,
-    name: 'Спектрометр СП-1',
-    description: 'Атомно-абсорбционный спектрометр',
-    price: '12 000 ₽/день',
-    period: 'от 5 дней',
-    image: '/images/equipment/spectrometer.jpg'
-  },
-  {
-    id: 4,
-    name: 'Датчики кислорода',
-    description: 'Комплект датчиков для измерения кислорода',
-    price: '1 000 ₽/день',
-    period: 'от 1 дня',
-    image: '/images/equipment/sensors.jpg'
-  },
-  {
-    id: 5,
-    name: 'Система мониторинга',
-    description: 'Комплексная система экологического контроля',
-    price: '20 000 ₽/день',
-    period: 'от 30 дней',
-    image: '/images/equipment/monitoring.jpg'
-  },
-  {
-    id: 6,
-    name: 'Термокамера',
-    description: 'Климатическая камера для испытаний',
-    price: '8 000 ₽/день',
-    period: 'от 3 дней',
-    image: '/images/equipment/thermal-chamber.jpg'
-  }
-]
-
-const conditions = [
-  { icon: '📄', title: 'Договор', description: 'Заключение договора аренды' },
-  { icon: '💰', title: 'Оплата', description: 'Предоплата 100% или поэтапная' },
-  { icon: '🚚', title: 'Доставка', description: 'Самовывоз или доставка' },
-  { icon: '🛠️', title: 'Обслуживание', description: 'Техническая поддержка' }
-]
-
-const advantages = [
-  'Экономия на покупке оборудования',
-  'Возможность тестирования перед покупкой',
-  'Гибкие условия аренды',
-  'Техническая поддержка',
-  'Обучение персонала',
-  'Замена оборудования при необходимости',
-  'Актуальные модели',
-  'Быстрое оформление'
-]
-
-const rentForm = ref({
-  equipment: '',
-  company: '',
-  contact: '',
-  phone: '',
-  startDate: '',
-  endDate: ''
+const { data } = await useAsyncData('arenda', async () => {
+  const response = await $fetch('/api/content')
+  return response.arenda || {}
 })
 
-function rentEquipment(equipment) {
-  rentForm.value.equipment = equipment.name
-  dialogVisible.value = true
-}
+const items = computed(() => data.value?.items || [])
+const contacts = computed(() => data.value?.contacts || {})
 
-function submitRent() {
-  dialogVisible.value = false
-  alert('Заявка на аренду отправлена! Мы свяжемся с вами.')
-  rentForm.value = {
-    equipment: '',
-    company: '',
-    contact: '',
-    phone: '',
-    startDate: '',
-    endDate: ''
+const filteredItems = computed(() => {
+  if (activeStatus.value === 'all') {
+    return items.value
   }
+  return items.value.filter(item => item.status === activeStatus.value)
+})
+
+function showDetails(item) {
+  alert(`Помещение: ${item.name}\nПлощадь: ${item.area}\nЦена: ${item.price}\n\n${item.description}`)
 }
 
 useHead({
-  title: 'Аренда оборудования - ГосНИИхиманалит',
+  title: 'Аренда помещений - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Аренда оборудования в ГосНИИхиманалит: газоанализаторы, хроматографы, спектрометры' 
+      content: 'Аренда производственных, офисных и складских помещений от АО «ГосНИИхиманалит»' 
     }
   ]
 })
 </script>
 
 <style scoped>
-.service-page {
+.arenda-page {
   min-height: 100vh;
   padding: 2rem 0;
 }
@@ -254,351 +168,242 @@ useHead({
   padding: 0 20px;
 }
 
-/* Хлебные крошки */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 2rem;
-  font-size: 14px;
-}
-
-.breadcrumb a {
-  color: #005700;
-  text-decoration: none;
-}
-
-.breadcrumb a:hover {
-  text-decoration: underline;
-}
-
-.separator {
-  color: #9ca3af;
-}
-
-.current {
-  color: #6b7280;
-}
-
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
   color: #005700;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
-.service-intro {
+.page-description {
+  text-align: center;
   font-size: 1.125rem;
-  color: #4b5563;
-  line-height: 1.8;
+  color: #6b7280;
   margin-bottom: 2rem;
 }
 
-.section-subtitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #005700;
-  margin: 2rem 0 1rem;
+/* Фильтры */
+.filters {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 
-/* Оборудование */
-.equipment-grid {
+.filter-btn {
+  padding: 10px 24px;
+  background: #fff;
+  color: #333;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-btn:hover {
+  border-color: #005700;
+  color: #005700;
+}
+
+.filter-btn.active {
+  background: #005700;
+  color: #fff;
+  border-color: #005700;
+}
+
+/* Сетка */
+.arenda-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
-.equipment-card {
+/* Карточка */
+.arenda-card {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s;
 }
 
-.equipment-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.arenda-card:hover {
   transform: translateY(-5px);
-  border-color: #005700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-.equipment-image-wrapper {
-  width: 100%;
-  height: 180px;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.arenda-card.rented {
+  opacity: 0.7;
+}
+
+.card-image {
+  position: relative;
+  height: 200px;
   overflow: hidden;
 }
 
-.equipment-image {
+.card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.equipment-info {
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status-badge.available {
+  background: #22c55e;
+}
+
+.status-badge.rented {
+  background: #6b7280;
+}
+
+.card-content {
   padding: 1.25rem;
 }
 
-.equipment-info h3 {
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
   color: #333;
   margin-bottom: 0.5rem;
-  font-size: 1.125rem;
 }
 
-.equipment-info p {
+.card-description {
   color: #6b7280;
   font-size: 14px;
   margin-bottom: 1rem;
+  line-height: 1.5;
 }
 
-.equipment-details {
+.card-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  margin-bottom: 1rem;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.card-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.feature-tag {
+  padding: 2px 10px;
+  background: #f0f9f0;
+  color: #005700;
+  border: 1px solid #005700;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.card-footer {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background: #f8fafc;
-  border-radius: 4px;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
 }
 
-.detail-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.detail-label {
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.detail-value {
-  font-weight: 600;
+.card-price {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #005700;
 }
 
-.rent-button {
-  width: 100%;
-  padding: 12px;
+.btn-primary {
+  padding: 8px 20px;
   background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
   font-size: 14px;
-  font-weight: 500;
   cursor: pointer;
   transition: background 0.3s;
 }
 
-.rent-button:hover {
+.btn-primary:hover:not(:disabled) {
   background: #003d00;
 }
 
-/* Условия */
-.conditions-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 2rem;
+.btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
 }
 
-.condition-item {
-  text-align: center;
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-left: 4px solid #005700;
-  border-radius: 8px;
-}
-
-.condition-icon {
-  font-size: 30px;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.condition-item h4 {
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.condition-item p {
-  color: #6b7280;
-  font-size: 14px;
-}
-
-/* Преимущества */
-.advantages-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.advantage-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0.75rem 1rem;
+/* Контакты */
+.contacts-section {
   background: #f8fafc;
-  border-radius: 4px;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
 }
 
-.advantage-icon {
-  color: #005700;
-  font-weight: 700;
-  font-size: 18px;
-}
-
-/* Модальное окно */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 20px;
-}
-
-.modal-content {
-  background: #fff;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h2 {
-  font-size: 1.25rem;
-  color: #333;
-}
-
-.close-btn {
-  background: none;
-  border: none;
+.section-title {
   font-size: 1.5rem;
-  cursor: pointer;
-  color: #6b7280;
-}
-
-.modal-body {
-  padding: 1.25rem;
-}
-
-.form-group {
+  font-weight: 700;
+  color: #005700;
   margin-bottom: 1rem;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
+.contacts-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
-.form-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #005700;
-}
-
-.date-range {
+.contact-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  font-size: 1.1rem;
 }
 
-.date-separator {
-  color: #6b7280;
+.contact-item a {
+  color: #005700;
+  text-decoration: none;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 1.25rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.btn-secondary {
-  padding: 10px 24px;
-  background: #fff;
-  color: #333;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.btn-primary {
-  padding: 10px 24px;
-  background: #005700;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background: #003d00;
+.contact-item a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 1024px) {
-  .equipment-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .conditions-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .arenda-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .equipment-grid {
+  .arenda-grid {
     grid-template-columns: 1fr;
   }
   
-  .conditions-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .advantages-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .date-range {
+  .contacts-info {
     flex-direction: column;
-    gap: 5px;
-  }
-  
-  .page-title {
-    font-size: 2rem;
+    align-items: center;
   }
 }
 </style>

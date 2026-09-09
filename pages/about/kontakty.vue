@@ -23,7 +23,7 @@
                 <span class="contact-icon">📍</span>
                 <div>
                   <h4>Адрес</h4>
-                  <p>190000, Санкт-Петербург, ул. Примерная, д. 1</p>
+                  <p>{{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }}, {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}</p>
                 </div>
               </div>
               
@@ -33,8 +33,8 @@
                 <span class="contact-icon">📞</span>
                 <div>
                   <h4>Телефон</h4>
-                  <p>+7 (812) 345-67-89 - приемная</p>
-                  <p>+7 (812) 345-67-90 - отдел продаж</p>
+                  <p>{{ contacts?.commercialLabel || 'Коммерческий отдел' }}: {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}</p>
+                  <p>{{ contacts?.secretaryLabel || 'Секретарь' }}: {{ contacts?.phone || '+7 (812) 786-61-59' }}</p>
                 </div>
               </div>
               
@@ -44,8 +44,8 @@
                 <span class="contact-icon">✉️</span>
                 <div>
                   <h4>Email</h4>
-                  <p>info@himanalit.ru - общие вопросы</p>
-                  <p>marketing@himanalit.ru - отдел продаж</p>
+                  <p>{{ contacts?.commercialLabel || 'Коммерческий отдел' }}: {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}</p>
+                  <p>{{ contacts?.secretaryLabel || 'Секретарь' }}: {{ contacts?.email || 'mail@himanalit.ru' }}</p>
                 </div>
               </div>
               
@@ -182,7 +182,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useContacts } from '~/composables/useContacts'
+
+const contacts = ref({})
+const contactsService = useContacts()
+
+const loadContacts = async () => {
+  try {
+    contacts.value = await contactsService.getContacts()
+  } catch (error) {
+    console.error('❌ Ошибка загрузки контактов:', error)
+  }
+}
+
+onMounted(() => {
+  loadContacts()
+})
 
 const feedbackForm = ref({
   name: '',

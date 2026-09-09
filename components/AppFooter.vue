@@ -32,36 +32,46 @@
           <div class="footer-contacts">
             <!-- Коммерческий отдел -->
             <div class="footer-contact-block">
-              <span class="footer-contact-title">Коммерческий отдел:</span>
+              <span class="footer-contact-title">{{ contacts?.commercialLabel || 'Коммерческий отдел' }}</span>
               <div class="footer-contact-item">
                 <span>📞</span>
-                <a href="tel:+78122522245" class="footer-contact-link">+7 (812) 252-22-45</a>
+                <a :href="'tel:' + (contacts?.commercialPhone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')" class="footer-contact-link">
+                  {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}
+                </a>
               </div>
               <div class="footer-contact-item">
                 <span>✉️</span>
-                <a href="mailto:marketing@himanalit.ru" class="footer-contact-link">marketing@himanalit.ru</a>
+                <a :href="'mailto:' + (contacts?.commercialEmail || 'marketing@himanalit.ru')" class="footer-contact-link">
+                  {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}
+                </a>
               </div>
             </div>
             
             <!-- Секретарь -->
             <div class="footer-contact-block">
-              <span class="footer-contact-title">Секретарь:</span>
+              <span class="footer-contact-title">{{ contacts?.secretaryLabel || 'Секретарь' }}</span>
               <div class="footer-contact-item">
                 <span>📞</span>
-                <a href="tel:+78127866159" class="footer-contact-link">+7 (812) 786-61-59</a>
+                <a :href="'tel:' + (contacts?.phone || '+7 (812) 786-61-59').replace(/[^0-9+]/g, '')" class="footer-contact-link">
+                  {{ contacts?.phone || '+7 (812) 786-61-59' }}
+                </a>
               </div>
               <div class="footer-contact-item">
                 <span>✉️</span>
-                <a href="mailto:mail@himanalit.ru" class="footer-contact-link">mail@himanalit.ru</a>
+                <a :href="'mailto:' + (contacts?.email || 'mail@himanalit.ru')" class="footer-contact-link">
+                  {{ contacts?.email || 'mail@himanalit.ru' }}
+                </a>
               </div>
             </div>
             
             <!-- Адрес -->
             <div class="footer-contact-block">
-              <span class="footer-contact-title">Адрес:</span>
+              <span class="footer-contact-title">{{ contacts?.addressLabel || 'Адрес' }}</span>
               <div class="footer-contact-item">
                 <span>📍</span>
-                <span class="footer-contact-text">190020, Санкт-Петербург, ул. Бумажная, 17</span>
+                <span class="footer-contact-text">
+                  {{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }}, {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}
+                </span>
               </div>
             </div>
           </div>
@@ -71,13 +81,31 @@
       <div class="footer-divider"></div>
       
       <div class="footer-bottom">
-        <span>© {{ new Date().getFullYear() }} АО «ГосНИИхиманалит». Все права защищены.</span>
+        <span>© {{ new Date().getFullYear() }} {{ contacts?.siteTitle || 'АО «ГосНИИхиманалит»' }}. Все права защищены.</span>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { useContacts } from '~/composables/useContacts'
+
+const contacts = ref({})
+const contactsService = useContacts()
+
+const loadContacts = async () => {
+  try {
+    contacts.value = await contactsService.getContacts()
+  } catch (error) {
+    console.error('❌ Ошибка загрузки контактов в Footer:', error)
+  }
+}
+
+onMounted(() => {
+  loadContacts()
+})
+
 const services = [
   { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
   { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
@@ -135,11 +163,6 @@ h4 {
 
 .footer-title-link:hover h4 {
   color: #4cc94a;
-}
-
-.footer-text {
-  line-height: 1.6;
-  font-size: 0.875rem;
 }
 
 .footer-links {

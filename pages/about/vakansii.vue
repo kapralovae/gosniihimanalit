@@ -152,107 +152,26 @@ const selectedDepartment = ref('')
 const selectedType = ref('')
 const dialogVisible = ref(false)
 
-const departments = [
-  'Конструкторское бюро',
-  'Производство',
-  'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
-  'Метрология',
-  'Администрация'
-]
+// 🔥 Загружаем данные из админки
+const { data } = await useAsyncData('vacancies', async () => {
+  const response = await $fetch('/api/content')
+  return response.vacancies || {}
+})
 
-const vacancies = ref([
-  {
-    id: 1,
-    title: 'Инженер-конструктор',
-    department: 'Конструкторское бюро',
-    type: 'Полная занятость',
-    salary: '80 000 - 120 000 ₽',
-    location: 'Санкт-Петербург',
-    requirements: [
-      'Высшее техническое образование',
-      'Опыт работы от 3 лет',
-      'Знание AutoCAD, SolidWorks',
-      'Опыт в разработке оборудования'
-    ]
-  },
-  {
-    id: 2,
-    title: 'Химик-аналитик',
-    department: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
-    type: 'Полная занятость',
-    salary: '60 000 - 90 000 ₽',
-    location: 'Санкт-Петербург',
-    requirements: [
-      'Высшее химическое образование',
-      'Опыт работы от 2 лет',
-      'Знание методов анализа',
-      'Опыт работы с хроматографом'
-    ]
-  },
-  {
-    id: 3,
-    title: 'Инженер-метролог',
-    department: 'Метрология',
-    type: 'Полная занятость',
-    salary: '70 000 - 100 000 ₽',
-    location: 'Санкт-Петербург',
-    requirements: [
-      'Высшее техническое образование',
-      'Опыт работы от 2 лет',
-      'Знание законодательства в области метрологии',
-      'Опыт поверки средств измерений'
-    ]
-  },
-  {
-    id: 4,
-    title: 'Технолог производства',
-    department: 'Производство',
-    type: 'Полная занятость',
-    salary: '65 000 - 95 000 ₽',
-    location: 'Санкт-Петербург',
-    requirements: [
-      'Высшее техническое образование',
-      'Опыт работы от 3 лет',
-      'Знание технологических процессов',
-      'Опыт в машиностроении'
-    ]
-  },
-  {
-    id: 5,
-    title: 'Программист',
-    department: 'Конструкторское бюро',
-    type: 'Удаленная работа',
-    salary: '90 000 - 150 000 ₽',
-    location: 'Удаленно',
-    requirements: [
-      'Опыт разработки ПО от 3 лет',
-      'Знание C++, Python',
-      'Опыт работы с микроконтроллерами',
-      'Знание протоколов передачи данных'
-    ]
-  },
-  {
-    id: 6,
-    title: 'Менеджер по продажам',
-    department: 'Администрация',
-    type: 'Полная занятость',
-    salary: '50 000 + % от продаж',
-    location: 'Санкт-Петербург',
-    requirements: [
-      'Опыт в продажах от 2 лет',
-      'Знание технической продукции',
-      'Навыки ведения переговоров',
-      'Готовность к командировкам'
-    ]
-  }
-])
+const vacanciesData = computed(() => data.value || {})
+const items = computed(() => vacanciesData.value.items || [])
+const benefits = computed(() => vacanciesData.value.benefits || [])
 
-const benefits = [
-  { icon: '💰', title: 'Достойная оплата', description: 'Конкурентная заработная плата' },
-  { icon: '🏅', title: 'Развитие', description: 'Возможности для профессионального роста' },
-  { icon: '🏠', title: 'Соцпакет', description: 'Полный социальный пакет' },
-  { icon: '⏰', title: 'Гибкий график', description: 'Возможность гибкого графика' }
-]
+// 🔥 Фильтруем только активные вакансии
+const vacancies = computed(() => {
+  return items.value.filter(v => v.active !== false)
+})
+
+// 🔥 Отделы для фильтра
+const departments = computed(() => {
+  const depts = new Set(vacancies.value.map(v => v.department).filter(Boolean))
+  return [...depts]
+})
 
 const filteredVacancies = computed(() => {
   return vacancies.value.filter(vacancy => {

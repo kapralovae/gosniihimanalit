@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useContentService } from '~/composables/useContentService'
 
 const activeCategory = ref('all')
 const dialogVisible = ref(false)
@@ -9,10 +10,8 @@ const categories = ref([])
 const loading = ref(true)
 const error = ref(null)
 
-// Используем composable
 const contentService = useContentService()
 
-// Загрузка данных через onMounted (клиентская загрузка)
 const loadData = async () => {
   try {
     loading.value = true
@@ -39,12 +38,10 @@ const loadData = async () => {
   }
 }
 
-// Загружаем при монтировании компонента
 onMounted(() => {
   loadData()
 })
 
-// Фильтрация
 const filteredProducts = computed(() => {
   if (!products.value || products.value.length === 0) return []
   if (activeCategory.value === 'all') {
@@ -203,8 +200,8 @@ useHead({
             <div class="detail-row">
               <span class="detail-label">Технические характеристики:</span>
               <ul class="specs-list">
-                <li v-for="(value, key) in selectedProduct.specifications" :key="key">
-                  <strong>{{ key }}:</strong> {{ value }}
+                <li v-for="spec in selectedProduct?.specs || []" :key="spec.name || $index">
+                  <strong>{{ spec.name }}:</strong> {{ spec.value }} {{ spec.unit }}
                 </li>
               </ul>
             </div>

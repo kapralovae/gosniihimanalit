@@ -251,11 +251,11 @@ import { ref, onMounted } from 'vue'
 import { useContacts } from '~/composables/useContacts'  // ← new name
 
 const mobileMenuOpen = ref(false)
-const contacts = ref({})  // ← теперь contacts
+const contacts = ref({})
 
-const contactsService = useContacts()  // ← new name
+const contactsService = useContacts()
 
-const loadContacts = async () => {  // ← new name
+const loadContacts = async () => {
   try {
     contacts.value = await contactsService.getContacts()
   } catch (error) {
@@ -266,6 +266,26 @@ const loadContacts = async () => {  // ← new name
 onMounted(() => {
   loadContacts()
 })
+
+// 🔥 ДОБАВЬ ЭТО:
+const services = [
+  { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
+  { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
+  { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
+  { title: 'Конструкторское бюро', path: '/uslugi/konstruktorskoe-byuro-1' },
+  { title: 'Стандартизация', path: '/uslugi/standartizaciya' },
+  { title: 'Производство', path: '/uslugi/proizvodstvo' },
+  { title: 'Аренда', path: '/uslugi/arenda' }
+]
+
+const kbItems = [
+  { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
+  { title: 'Образование и обучение', path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' },
+  { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
+  { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
+  { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
+]
+
 </script>
 
 <style scoped>
