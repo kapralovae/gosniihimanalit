@@ -1,16 +1,23 @@
-import fs from 'fs'
-import path from 'path'
+import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async () => {
-  const filePath = path.join(process.cwd(), 'data', 'products.json')
+  const supabaseUrl = process.env.SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_ANON_KEY
   
-  if (!fs.existsSync(filePath)) {
-    return { products: [] }
+  if (!supabaseUrl || !supabaseKey) {
+    return []
   }
   
-  const content = fs.readFileSync(filePath, 'utf-8')
-  const data = JSON.parse(content)
+  const supabase = createClient(supabaseUrl, supabaseKey)
   
-  // Возвращаем массив товаров
-  return data.products || data || []
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+  
+  if (error) {
+    console.error('Ошибка Supabase:', error.message)
+    return []
+  }
+  
+  return data || []
 })

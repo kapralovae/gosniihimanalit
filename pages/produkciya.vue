@@ -57,16 +57,12 @@
           class="product-card"
         >
           <div class="product-image-wrapper">
-            <img 
-              :src="(product.images && product.images[0]) || '/images/placeholder.svg'" 
-              :alt="product.name || 'Товар'"
-              class="product-image"
-            />
+            <img :src="(product.images && product.images[0]) || '/images/placeholder.svg'" :alt="product.name || 'Товар'" />
           </div>
           
           <div class="product-info">
-            <h3 class="product-title">{{ product.name || 'Без названия' }}</h3>
-            <p class="product-description">{{ product.shortDescription || '' }}</p>
+            <h3 class="product-title">{{ product.title }}</h3>
+            <p class="product-description">{{ product.description || '' }}</p>
             
             <div v-if="product.specs && product.specs.length" class="product-tags">
               <span 
@@ -95,7 +91,7 @@
       <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
         <div class="modal-content" @click.stop>
           <div class="modal-header">
-            <h2>{{ selectedProduct?.name || 'Товар' }}</h2>
+            <h2>{{ selectedProduct?.title  || 'Товар' }}</h2>
             <button class="close-btn" @click="dialogVisible = false">✕</button>
           </div>
           
@@ -139,9 +135,7 @@ const selectedProduct = ref(null)
 onMounted(async () => {
   try {
     const data = await $fetch('/api/products')
-    const allProducts = data.products || data || []
-    // Фильтруем только товары с названием
-    products.value = allProducts.filter(p => p && p.name && p.name.trim() !== '')
+    products.value = data || []
   } catch (error) {
     console.error('Ошибка загрузки:', error)
     products.value = []
