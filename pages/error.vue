@@ -18,7 +18,7 @@
 
 <script setup>
 useHead({
-  title: '404 - Страница не найдена - ГосНИИХиманалит'
+  title: '404 - Страница не найдена - ГосНИИхиманалит'
 })
 </script>
 
@@ -45,7 +45,7 @@ useHead({
 .error-code {
   font-size: 6rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 1rem;
 }
 
@@ -66,7 +66,7 @@ useHead({
   align-items: center;
   gap: 10px;
   padding: 14px 30px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -77,7 +77,7 @@ useHead({
 }
 
 .back-button:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 .home-icon {

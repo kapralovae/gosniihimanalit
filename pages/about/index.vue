@@ -5,7 +5,7 @@
       
       <div class="about-content">
         <p class="about-intro">
-          АО "ГосНИИХиманалит" - одно из ведущих научно-производственных предприятий
+          АО "ГосНИИхиманалит" - одно из ведущих научно-производственных предприятий
           России в области разработки и производства технических средств химического контроля.
         </p>
         
@@ -111,11 +111,11 @@ const certificates = [
 ]
 
 useHead({
-  title: 'О организации - ГосНИИХиманалит',
+  title: 'О организации - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'О компании ГосНИИХиманалит: история, контакты, вакансии, сертификаты' 
+      content: 'О компании ГосНИИхиманалит: история, контакты, вакансии, сертификаты' 
     }
   ]
 })
@@ -136,7 +136,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -171,7 +171,7 @@ useHead({
 .section-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 35px rgba(41, 176, 38, 0.15);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .section-icon {
@@ -191,7 +191,7 @@ useHead({
 }
 
 .section-link-text {
-  color: #29b026;
+  color: #005700;
   font-weight: 500;
 }
 
@@ -200,7 +200,7 @@ useHead({
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin: 3rem 0 2rem;
   position: relative;
 }
@@ -210,7 +210,7 @@ useHead({
   display: block;
   width: 60px;
   height: 3px;
-  background: #29b026;
+  background: #005700;
   margin: 10px auto 0;
 }
 
@@ -232,7 +232,7 @@ useHead({
 .stat-value {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 0.5rem;
 }
 
@@ -282,7 +282,7 @@ useHead({
   display: inline-block;
   padding: 4px 12px;
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 500;

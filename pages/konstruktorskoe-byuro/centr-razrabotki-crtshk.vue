@@ -146,11 +146,11 @@ const steps = [
 ]
 
 useHead({
-  title: 'Центр разработки ТСХК - ГосНИИХиманалит',
+  title: 'Центр разработки ТСХК - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Центр разработки технических средств химического контроля ГосНИИХиманалит' 
+      content: 'Центр разработки технических средств химического контроля ГосНИИхиманалит' 
     }
   ]
 })
@@ -178,7 +178,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -197,7 +197,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -212,7 +212,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -236,7 +236,7 @@ useHead({
 .direction-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .direction-icon {
@@ -312,7 +312,7 @@ useHead({
 
 .status.in-production {
   background: #f0f9f0;
-  color: #29b026;
+  color: #005700;
 }
 
 /* Процесс разработки */
@@ -345,12 +345,12 @@ useHead({
 }
 
 .step-item.completed .step-number {
-  background: #29b026;
+  background: #005700;
   color: #fff;
 }
 
 .step-item.active .step-number {
-  background: #1a7a1a;
+  background: #003d00;
   color: #fff;
   box-shadow: 0 0 0 4px rgba(41, 176, 38, 0.2);
 }
@@ -381,7 +381,7 @@ useHead({
 }
 
 .patent-title {
-  color: #29b026;
+  color: #005700;
   margin-bottom: 1rem;
   font-size: 1.125rem;
 }

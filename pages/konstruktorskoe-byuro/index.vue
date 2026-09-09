@@ -4,7 +4,7 @@
       <h1 class="page-title">Конструкторское бюро</h1>
       
       <p class="kb-intro">
-        Конструкторское бюро АО "ГосНИИХиманалит" - центр разработки и
+        Конструкторское бюро АО "ГосНИИхиманалит" - центр разработки и
         проектирования технических средств химического контроля.
       </p>
       
@@ -25,37 +25,15 @@
       
       <!-- Последние разработки -->
       <h2 class="section-title">Последние разработки</h2>
-      <div class="developments-carousel">
+      <div class="developments-list">
         <div 
-          v-for="(development, index) in developments" 
+          v-for="development in developments" 
           :key="development.title"
-          class="development-slide"
-          :class="{ 'active': currentSlide === index }"
+          class="development-card"
         >
-          <img 
-            :src="development.image" 
-            :alt="development.title"
-            class="development-image"
-          />
-          <div class="development-info">
-            <h3>{{ development.title }}</h3>
-            <p>{{ development.description }}</p>
-          </div>
-        </div>
-        
-        <!-- Кнопки переключения -->
-        <button class="carousel-btn prev" @click="prevSlide">←</button>
-        <button class="carousel-btn next" @click="nextSlide">→</button>
-        
-        <!-- Индикаторы -->
-        <div class="carousel-indicators">
-          <button 
-            v-for="(development, index) in developments" 
-            :key="index"
-            class="indicator"
-            :class="{ 'active': currentSlide === index }"
-            @click="currentSlide = index"
-          ></button>
+          <span class="development-icon">🔬</span>
+          <h3>{{ development.title }}</h3>
+          <p>{{ development.description }}</p>
         </div>
       </div>
     </div>
@@ -89,7 +67,7 @@ const sections = [
   },
   {
     icon: '📝',
-    title: 'Справочник инженера',
+    title: 'Полезное для инженера',
     description: 'Справочные материалы для инженеров',
     path: '/konstruktorskoe-byuro/spravochnik-inzhenera'
   },
@@ -136,11 +114,11 @@ onBeforeUnmount(() => {
 })
 
 useHead({
-  title: 'Конструкторское бюро - ГосНИИХиманалит',
+  title: 'Конструкторское бюро - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Конструкторское бюро ГосНИИХиманалит: разработка, обучение, библиотека, справочники' 
+      content: 'Конструкторское бюро ГосНИИхиманалит: разработка, обучение, библиотека, справочники' 
     }
   ]
 })
@@ -161,7 +139,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -195,7 +173,7 @@ useHead({
 .section-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 35px rgba(41, 176, 38, 0.15);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .section-icon {
@@ -217,7 +195,7 @@ useHead({
 }
 
 .section-link-text {
-  color: #29b026;
+  color: #005700;
   font-weight: 500;
 }
 
@@ -226,7 +204,7 @@ useHead({
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin: 3rem 0 2rem;
   position: relative;
 }
@@ -236,7 +214,7 @@ useHead({
   display: block;
   width: 60px;
   height: 3px;
-  background: #29b026;
+  background: #005700;
   margin: 10px auto 0;
 }
 
@@ -340,7 +318,7 @@ useHead({
 }
 
 .indicator.active {
-  background: #29b026;
+  background: #005700;
   transform: scale(1.3);
 }
 

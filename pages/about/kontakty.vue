@@ -23,7 +23,7 @@
                 <span class="contact-icon">📍</span>
                 <div>
                   <h4>Адрес</h4>
-                  <p>190000, Санкт-Петербург, ул. Примерная, д. 1</p>
+                  <p>{{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }}, {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}</p>
                 </div>
               </div>
               
@@ -33,8 +33,8 @@
                 <span class="contact-icon">📞</span>
                 <div>
                   <h4>Телефон</h4>
-                  <p>+7 (812) 345-67-89 - приемная</p>
-                  <p>+7 (812) 345-67-90 - отдел продаж</p>
+                  <p>{{ contacts?.commercialLabel || 'Коммерческий отдел' }}: {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}</p>
+                  <p>{{ contacts?.secretaryLabel || 'Секретарь' }}: {{ contacts?.phone || '+7 (812) 786-61-59' }}</p>
                 </div>
               </div>
               
@@ -44,8 +44,8 @@
                 <span class="contact-icon">✉️</span>
                 <div>
                   <h4>Email</h4>
-                  <p>info@gosniihimanalit.ru - общие вопросы</p>
-                  <p>sales@gosniihimanalit.ru - отдел продаж</p>
+                  <p>{{ contacts?.commercialLabel || 'Коммерческий отдел' }}: {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}</p>
+                  <p>{{ contacts?.secretaryLabel || 'Секретарь' }}: {{ contacts?.email || 'mail@himanalit.ru' }}</p>
                 </div>
               </div>
               
@@ -66,11 +66,11 @@
               <div class="requisites-list">
                 <div class="requisite-item">
                   <span class="requisite-label">Полное наименование:</span>
-                  <span>Акционерное общество "ГосНИИХиманалит"</span>
+                  <span>Акционерное общество "ГосНИИхиманалит"</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">Сокращенное наименование:</span>
-                  <span>АО "ГосНИИХиманалит"</span>
+                  <span>АО "ГосНИИхиманалит"</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">ИНН:</span>
@@ -182,7 +182,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useContacts } from '~/composables/useContacts'
+
+const contacts = ref({})
+const contactsService = useContacts()
+
+const loadContacts = async () => {
+  try {
+    contacts.value = await contactsService.getContacts()
+  } catch (error) {
+    console.error('❌ Ошибка загрузки контактов:', error)
+  }
+}
+
+onMounted(() => {
+  loadContacts()
+})
 
 const feedbackForm = ref({
   name: '',
@@ -212,11 +228,11 @@ function openMap() {
 }
 
 useHead({
-  title: 'Контакты - ГосНИИХиманалит',
+  title: 'Контакты - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Контакты ГосНИИХиманалит: адрес, телефон, email, реквизиты, форма обратной связи' 
+      content: 'Контакты ГосНИИхиманалит: адрес, телефон, email, реквизиты, форма обратной связи' 
     }
   ]
 })
@@ -244,7 +260,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -263,7 +279,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -277,14 +293,14 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
 .info-card {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-left: 4px solid #29b026;
+  border-left: 4px solid #005700;
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -360,7 +376,7 @@ useHead({
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .form-textarea {
@@ -374,7 +390,7 @@ useHead({
 
 .btn-primary {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -385,7 +401,7 @@ useHead({
 }
 
 .btn-primary:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 .btn-secondary {
@@ -425,8 +441,8 @@ useHead({
   margin-top: 1rem;
   padding: 10px 20px;
   background: transparent;
-  color: #29b026;
-  border: 2px solid #29b026;
+  color: #005700;
+  border: 2px solid #005700;
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
@@ -434,7 +450,7 @@ useHead({
 }
 
 .map-btn:hover {
-  background: #29b026;
+  background: #005700;
   color: #fff;
 }
 

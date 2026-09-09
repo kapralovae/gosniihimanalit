@@ -14,8 +14,8 @@
       
       <div class="service-content">
         <p class="service-intro">
-          Отдел стандартизации АО "ГосНИИХиманалит" разрабатывает стандарты
-          и нормативные документы в области химического контроля.
+          АО "ГосНИИхиманалит" разрабатывает стандарты
+          и нормативные документы в области химической промышленности.
         </p>
         
         <h2 class="section-subtitle">Услуги в области стандартизации</h2>
@@ -30,35 +30,7 @@
             <p>{{ service.description }}</p>
           </div>
         </div>
-        
-        <h2 class="section-subtitle">Разработанные стандарты</h2>
-        <div class="standards-table">
-          <div class="table-header">
-            <span class="col-number">Номер</span>
-            <span class="col-title">Название</span>
-            <span class="col-year">Год</span>
-            <span class="col-status">Статус</span>
-          </div>
-          
-          <div 
-            v-for="standard in standards" 
-            :key="standard.number"
-            class="table-row"
-          >
-            <span class="col-number">{{ standard.number }}</span>
-            <span class="col-title">{{ standard.title }}</span>
-            <span class="col-year">{{ standard.year }}</span>
-            <span class="col-status">
-              <span 
-                class="status"
-                :class="{ 'active': standard.status === 'Действует' }"
-              >
-                {{ standard.status }}
-              </span>
-            </span>
-          </div>
-        </div>
-        
+               
         <h2 class="section-subtitle">Нормативная документация</h2>
         <div class="documents">
           <div 
@@ -102,11 +74,6 @@ const services = [
     description: 'Экспертиза нормативной документации'
   },
   {
-    icon: '📊',
-    title: 'Гармонизация',
-    description: 'Приведение к международным стандартам'
-  },
-  {
     icon: '⚙️',
     title: 'Методики',
     description: 'Разработка методик измерений'
@@ -116,14 +83,6 @@ const services = [
     title: 'Документация',
     description: 'Разработка технической документации'
   }
-]
-
-const standards = [
-  { number: 'ГОСТ Р 12345-2020', title: 'Газоанализаторы. Общие технические требования', year: 2020, status: 'Действует' },
-  { number: 'ГОСТ Р 12346-2021', title: 'Методы химического анализа', year: 2021, status: 'Действует' },
-  { number: 'ТУ 26.51.53-001', title: 'Технические условия на газоанализаторы', year: 2022, status: 'Действует' },
-  { number: 'МИ 1234-2019', title: 'Методика поверки газоанализаторов', year: 2019, status: 'Действует' },
-  { number: 'СТО 001-2023', title: 'Стандарт организации. Системы мониторинга', year: 2023, status: 'Разрабатывается' }
 ]
 
 const documents = [
@@ -150,11 +109,11 @@ function toggleDocument(title) {
 }
 
 useHead({
-  title: 'Стандартизация - ГосНИИХиманалит',
+  title: 'Стандартизация - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Стандартизация в ГосНИИХиманалит: разработка стандартов, технических условий, методик измерений' 
+      content: 'Стандартизация в ГосНИИхиманалит: разработка стандартов, технических условий, методик измерений' 
     }
   ]
 })
@@ -182,7 +141,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -201,7 +160,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -216,7 +175,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -240,7 +199,7 @@ useHead({
 .service-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .service-icon {
@@ -259,67 +218,6 @@ useHead({
   font-size: 14px;
 }
 
-/* Таблица стандартов */
-.standards-table {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 1fr 2fr 0.5fr 1fr;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 1fr 2fr 0.5fr 1fr;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  align-items: center;
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-row:nth-child(even) {
-  background: #fafafa;
-}
-
-.col-number {
-  font-weight: 500;
-  color: #333;
-}
-
-.col-title {
-  color: #4b5563;
-}
-
-.col-year {
-  color: #6b7280;
-}
-
-.status {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.status.active {
-  background: #f0f9f0;
-  color: #29b026;
-}
 
 /* Документация */
 .documents {
@@ -354,7 +252,7 @@ useHead({
 
 .toggle {
   font-size: 24px;
-  color: #29b026;
+  color: #005700;
   font-weight: 700;
 }
 

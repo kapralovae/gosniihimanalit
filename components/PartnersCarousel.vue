@@ -1,7 +1,7 @@
 <template>
   <div class="partners-carousel">
     <div class="carousel-container">
-      <div class="carousel-slide">
+      <div class="carousel-slide" :key="currentIndex">
         <div 
           v-for="(partner, index) in getCurrentPartners()" 
           :key="`${currentIndex}-${index}`"
@@ -40,7 +40,7 @@ const props = defineProps({
   },
   interval: {
     type: Number,
-    default: 1000
+    default: 3000
   },
   visibleCount: {
     type: Number,
@@ -64,10 +64,6 @@ const slidesPerView = computed(() => {
   }
 })
 
-const totalSlides = computed(() => {
-  return props.partners.length
-})
-
 function getCurrentPartners() {
   const result = []
   for (let i = 0; i < slidesPerView.value; i++) {
@@ -78,7 +74,6 @@ function getCurrentPartners() {
 }
 
 function nextSlide() {
-  // Сдвигаем на 1 позицию
   currentIndex.value = (currentIndex.value + 1) % props.partners.length
 }
 
@@ -114,12 +109,25 @@ onBeforeUnmount(() => {
 
 .carousel-container {
   width: 100%;
+  overflow: hidden;
 }
 
 .carousel-slide {
   display: flex;
   gap: 30px;
   padding: 0 60px;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .partner-item {
@@ -156,8 +164,8 @@ onBeforeUnmount(() => {
   width: 36px;
   height: 36px;
   background: #fff;
-  color: #29b026;
-  border: 2px solid #29b026;
+  color: #005700;
+  border: 2px solid #005700;
   border-radius: 50%;
   cursor: pointer;
   z-index: 10;
@@ -169,7 +177,7 @@ onBeforeUnmount(() => {
 }
 
 .carousel-arrow:hover {
-  background: #29b026;
+  background: #005700;
   color: #fff;
 }
 

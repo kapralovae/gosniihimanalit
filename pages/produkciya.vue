@@ -39,32 +39,38 @@
         </button>
       </div>
       
+      <!-- Загрузка -->
+      <div v-if="loading" class="loading">
+        Загрузка...
+      </div>
+      
+      <!-- Пусто -->
+      <div v-else-if="products.length === 0" class="empty">
+        Товары не найдены
+      </div>
+      
       <!-- Список продуктов -->
-      <div class="products-grid">
+      <div v-else class="products-grid">
         <div 
           v-for="product in filteredProducts" 
           :key="product.id"
           class="product-card"
         >
           <div class="product-image-wrapper">
-            <img 
-              :src="product.image" 
-              :alt="product.title"
-              class="product-image"
-            />
+            <img :src="(product.images && product.images[0]) || '/images/placeholder.svg'" :alt="product.name || 'Товар'" />
           </div>
           
           <div class="product-info">
             <h3 class="product-title">{{ product.title }}</h3>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">{{ product.description || '' }}</p>
             
-            <div class="product-tags">
+            <div v-if="product.specs && product.specs.length" class="product-tags">
               <span 
-                v-for="tag in product.tags" 
-                :key="tag"
+                v-for="(spec, index) in product.specs" 
+                :key="index"
                 class="product-tag"
               >
-                {{ tag }}
+                {{ spec.name }}: {{ spec.value }} {{ spec.unit }}
               </span>
             </div>
             
@@ -85,28 +91,24 @@
       <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
         <div class="modal-content" @click.stop>
           <div class="modal-header">
-            <h2>{{ selectedProduct?.title }}</h2>
+            <h2>{{ selectedProduct?.title  || 'Товар' }}</h2>
             <button class="close-btn" @click="dialogVisible = false">✕</button>
           </div>
           
           <div v-if="selectedProduct" class="modal-body">
             <div class="detail-row">
               <span class="detail-label">Категория:</span>
-              <span>{{ selectedProduct.category }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Наличие:</span>
-              <span class="in-stock">В наличии</span>
+              <span>{{ selectedProduct.category || 'Не указана' }}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Описание:</span>
-              <p>{{ selectedProduct.fullDescription }}</p>
+              <p>{{ selectedProduct.fullDescription || selectedProduct.shortDescription || '' }}</p>
             </div>
-            <div class="detail-row">
+            <div v-if="selectedProduct.specs && selectedProduct.specs.length" class="detail-row">
               <span class="detail-label">Технические характеристики:</span>
               <ul class="specs-list">
-                <li v-for="spec in selectedProduct.specs" :key="spec">
-                  {{ spec }}
+                <li v-for="spec in selectedProduct.specs" :key="spec.name">
+                  {{ spec.name }}: {{ spec.value }} {{ spec.unit }}
                 </li>
               </ul>
             </div>
@@ -114,9 +116,6 @@
           
           <div class="modal-footer">
             <button class="btn-secondary" @click="dialogVisible = false">Закрыть</button>
-            <button class="btn-primary" @click="requestQuote(selectedProduct)">
-              Запросить цену
-            </button>
           </div>
         </div>
       </div>
@@ -125,104 +124,25 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
+const products = ref([])
+const loading = ref(true)
 const activeCategory = ref('all')
 const dialogVisible = ref(false)
 const selectedProduct = ref(null)
 
-const products = ref([
-  {
-    id: 1,
-    title: 'Газоанализатор ГАН-1',
-    description: 'Промышленный газоанализатор для контроля воздуха рабочей зоны',
-    fullDescription: 'Газоанализатор ГАН-1 предназначен для непрерывного контроля содержания вредных веществ в воздухе рабочей зоны промышленных предприятий.',
-    category: 'Аналитическое оборудование',
-    image: '/images/products/placeholder.svg',
-    tags: ['Газоанализ', 'Промышленность'],
-    specs: [
-      'Диапазон измерения: 0-100 мг/м³',
-      'Погрешность: ±5%',
-      'Время отклика: не более 30 сек',
-      'Температура эксплуатации: -40°C до +50°C'
-    ]
-  },
-  {
-    id: 2,
-    title: 'Хроматограф ХРОМ-2',
-    description: 'Лабораторный хроматограф для анализа сложных смесей',
-    fullDescription: 'Хроматограф ХРОМ-2 предназначен для качественного и количественного анализа сложных смесей органических и неорганических соединений.',
-    category: 'Аналитическое оборудование',
-    image: '/images/products/placeholder.svg',
-    tags: ['Хроматография', 'Лаборатория'],
-    specs: [
-      'Детектор: ПИД, ДТП',
-      'Чувствительность: 10⁻¹² г/с',
-      'Диапазон температур: 20-400°C',
-      'Программирование температуры'
-    ]
-  },
-  {
-    id: 3,
-    title: 'Датчик кислорода ДК-1',
-    description: 'Электрохимический датчик для измерения концентрации кислорода',
-    fullDescription: 'Датчик кислорода ДК-1 предназначен для измерения объемной доли кислорода в газовых смесях.',
-    category: 'Датчики и сенсоры',
-    image: '/images/products/placeholder.svg',
-    tags: ['Датчик', 'Кислород'],
-    specs: [
-      'Диапазон: 0-25% об.',
-      'Точность: ±0.1% об.',
-      'Срок службы: 2 года',
-      'Рабочая температура: -20°C до +50°C'
-    ]
-  },
-  {
-    id: 4,
-    title: 'Система мониторинга СМ-1',
-    description: 'Комплексная система экологического мониторинга',
-    fullDescription: 'Система мониторинга СМ-1 предназначена для комплексного контроля параметров окружающей среды на промышленных объектах.',
-    category: 'Системы контроля',
-    image: '/images/products/placeholder.svg',
-    tags: ['Мониторинг', 'Экология'],
-    specs: [
-      'Количество каналов: до 32',
-      'Интерфейс: RS-485, Ethernet',
-      'Протокол: Modbus RTU/TCP',
-      'Встроенная память: 4 ГБ'
-    ]
-  },
-  {
-    id: 5,
-    title: 'Газосигнализатор ГС-3',
-    description: 'Портативный газосигнализатор для обнаружения утечек',
-    fullDescription: 'Газосигнализатор ГС-3 предназначен для обнаружения утечек горючих газов и паров в промышленных и бытовых условиях.',
-    category: 'Датчики и сенсоры',
-    image: '/images/products/placeholder.svg',
-    tags: ['Газосигнализатор', 'Безопасность'],
-    specs: [
-      'Тип сенсора: каталитический',
-      'Порог срабатывания: 10% НКПР',
-      'Время отклика: 10 сек',
-      'Автономность: 24 часа'
-    ]
-  },
-  {
-    id: 6,
-    title: 'Анализатор жидкости АЖ-1',
-    description: 'Автоматический анализатор для контроля качества воды',
-    fullDescription: 'Анализатор жидкости АЖ-1 предназначен для автоматического контроля показателей качества воды в системах водоподготовки.',
-    category: 'Аналитическое оборудование',
-    image: '/images/products/placeholder.svg',
-    tags: ['Водоподготовка', 'Анализ воды'],
-    specs: [
-      'Параметры: pH, ОВП, проводимость',
-      'Точность: ±0.01 pH',
-      'Автокалибровка',
-      'Выход: 4-20 мА'
-    ]
+onMounted(async () => {
+  try {
+    const data = await $fetch('/api/products')
+    products.value = data || []
+  } catch (error) {
+    console.error('Ошибка загрузки:', error)
+    products.value = []
+  } finally {
+    loading.value = false
   }
-])
+})
 
 const filteredProducts = computed(() => {
   if (activeCategory.value === 'all') {
@@ -243,17 +163,12 @@ function showProductDetails(product) {
   dialogVisible.value = true
 }
 
-function requestQuote(product) {
-  dialogVisible.value = false
-  alert(`Запрос на "${product.title}" отправлен. Мы свяжемся с вами!`)
-}
-
 useHead({
   title: 'Продукция - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Каталог продукции ГосНИИХиманалит: газоанализаторы, хроматографы, датчики, системы мониторинга' 
+      content: 'Каталог продукции ГосНИИХиманалит' 
     }
   ]
 })
@@ -274,12 +189,18 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
 
-/* Фильтры */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.25rem;
+  color: #6b7280;
+}
+
 .filters {
   margin-bottom: 2rem;
   display: flex;
@@ -301,17 +222,16 @@ useHead({
 }
 
 .filter-btn:hover {
-  border-color: #29b026;
-  color: #29b026;
+  border-color: #005700;
+  color: #005700;
 }
 
 .filter-btn.active {
-  background: #29b026;
+  background: #005700;
   color: #fff;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
-/* Сетка продуктов */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -331,7 +251,7 @@ useHead({
 .product-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .product-image-wrapper {
@@ -378,9 +298,9 @@ useHead({
 
 .product-tag {
   padding: 4px 10px;
-  background: #f0f9f0;
-  color: #29b026;
-  border: 1px solid #29b026;
+  background: #f0f5f0;
+  color: #005700;
+  border: 1px solid #005700;
   border-radius: 4px;
   font-size: 12px;
 }
@@ -392,7 +312,7 @@ useHead({
 
 .details-btn {
   padding: 10px 24px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -403,7 +323,7 @@ useHead({
 }
 
 .details-btn:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 /* Модальное окно */
@@ -451,10 +371,6 @@ useHead({
   color: #6b7280;
 }
 
-.close-btn:hover {
-  color: #333;
-}
-
 .modal-body {
   padding: 1.25rem;
 }
@@ -468,11 +384,6 @@ useHead({
   font-weight: 600;
   color: #333;
   margin-bottom: 0.25rem;
-}
-
-.in-stock {
-  color: #29b026;
-  font-weight: 500;
 }
 
 .specs-list {
@@ -489,7 +400,6 @@ useHead({
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
   padding: 1.25rem;
   border-top: 1px solid #e5e7eb;
 }
@@ -502,27 +412,6 @@ useHead({
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-secondary:hover {
-  border-color: #333;
-}
-
-.btn-primary {
-  padding: 10px 24px;
-  background: #29b026;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-primary:hover {
-  background: #1a7a1a;
 }
 
 @media (max-width: 1024px) {

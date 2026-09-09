@@ -10,104 +10,159 @@
         <span class="current">Аналитическая химия</span>
       </nav>
       
-      <h1 class="page-title">Аналитическая химия</h1>
+      <h1 class="page-title">Испытательная химико-аналитическая лаборатория</h1>
       
       <div class="service-content">
-        <p class="service-intro">
-          Лаборатория аналитической химии выполняет широкий спектр исследований
-          химического состава веществ и материалов.
-        </p>
-        
-        <h2 class="section-subtitle">Методы анализа</h2>
-        <div class="methods-grid">
-          <div 
-            v-for="method in methods" 
-            :key="method.title"
-            class="method-card"
-          >
-            <div class="method-header">
-              <span class="method-icon">{{ method.icon }}</span>
-              <h3>{{ method.title }}</h3>
-            </div>
-            <p>{{ method.description }}</p>
+        <!-- Информация о лаборатории -->
+        <div class="info-card">
+          <p class="service-intro">
+            Испытательная химико-аналитическая лаборатория АО «ГосНИИхиманалит» — структурная организация
+            АО «Корпорация «Росхимзащита».
+          </p>
+          <div class="accreditation-info">
+            <p><strong>Номер записи в РАЛ Росаккредитации:</strong> RA.RU.21HH60</p>
+            <p><strong>Дата внесения:</strong> 04.12.2018</p>
+            <p><strong>Номер записи в РАЛ Росстандарта:</strong> РОСС СОБ 7.00128.2021</p>
           </div>
         </div>
         
-        <h2 class="section-subtitle">Объекты анализа</h2>
-        <div class="tabs">
-          <div class="tab-buttons">
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'water' }"
-              @click="activeTab = 'water'"
-            >
-              Вода
-            </button>
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'air' }"
-              @click="activeTab = 'air'"
-            >
-              Воздух
-            </button>
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'soil' }"
-              @click="activeTab = 'soil'"
-            >
-              Почва
-            </button>
-            <button 
-              type="button"
-              class="tab-btn"
-              :class="{ 'active': activeTab === 'materials' }"
-              @click="activeTab = 'materials'"
-            >
-              Материалы
-            </button>
-          </div>
-          
-          <div class="tab-content">
-            <ul v-if="activeTab === 'water'" class="analysis-list">
-              <li>Питьевая вода</li>
-              <li>Сточные воды</li>
-              <li>Природные воды</li>
-              <li>Технологические воды</li>
-            </ul>
-            
-            <ul v-if="activeTab === 'air'" class="analysis-list">
-              <li>Атмосферный воздух</li>
-              <li>Воздух рабочей зоны</li>
-              <li>Промышленные выбросы</li>
-            </ul>
-            
-            <ul v-if="activeTab === 'soil'" class="analysis-list">
-              <li>Почвы и грунты</li>
-              <li>Донные отложения</li>
-              <li>Отходы производства</li>
-            </ul>
-            
-            <ul v-if="activeTab === 'materials'" class="analysis-list">
-              <li>Металлы и сплавы</li>
-              <li>Полимеры</li>
-              <li>Химические реактивы</li>
-            </ul>
+        <!-- История аккредитации -->
+        <div class="info-card">
+          <p>
+            Испытательная химико-аналитическая лаборатория АО «ГосНИИхиманалит» с 2005 года аккредитована
+            Федеральным агентством по техническому регулированию и метрологии (Росстандарт) на техническую компетентность.
+          </p>
+          <p>
+            Поскольку лаборатория выполняет работы в сфере обороны и безопасности государства, ее аккредитация
+            и подтверждение компетентности на сегодняшний день остаётся в введении Росстандарта.
+          </p>
+          <p>
+            В 2013 году лаборатория внесена в реестр организаций, оказывающих услуги по проведению аттестации
+            рабочих мест по условиям труда (с 1 января 2014 г. специальной оценки условий труда).
+          </p>
+          <p>
+            С 2006 года система менеджмента качества АО «ГосНИИхиманалит» подтверждена сертификатом соответствия
+            (ГОСТ ISO 9001-2015, ГОСТ РВ 0015-002-2012).
+          </p>
+          <p>
+            В 2018 году лаборатория аккредитована национальным органом по аккредитации — Федеральной службой по аккредитации
+            (Росаккредитация), являющейся федеральным органом исполнительной власти, и действующей в соответствии
+            с Федеральным законом от 28 декабря 2013 года № 412-ФЗ «Об аккредитации в национальной системе аккредитации».
+          </p>
+          <p>
+            Лицензии ФСБ и ФСТЭК России, полученные АО «ГосНИИхиманалит», позволяют лаборатории выполнять работы для спец. заказчиков.
+            В Санкт-Петербурге единственная организация, имеющая лицензию ФСБ.
+          </p>
+        </div>
+        
+        <!-- Специализация -->
+        <h2 class="section-subtitle">Специализация</h2>
+        <div class="info-card">
+          <p>
+            Лаборатория специализируется на проведении химико-аналитических исследований высокотоксичных веществ
+            в окружающей среде (воздух, вода, почва), в воздухе рабочей зоны, в частности отравляющих веществ.
+            На право проведения данных работ получена лицензия Министерства промышленности и торговли РФ.
+          </p>
+          <p>
+            Область работы — научные исследования, химический анализ, испытания, экологические проверки, заключения,
+            техническое и химико-аналитическое сопровождение технологических процессов на производствах.
+          </p>
+          <p>
+            Лаборатория выполняет работы любой сложности в различных направлениях. Лаборатория имеет большой опыт
+            в проведении качественного и количественного анализа. Оборудование лаборатории и опыт сотрудников позволяет
+            проводить идентификацию соединений и веществ с высокой точностью.
+          </p>
+        </div>
+        
+        <!-- Ресурсы и опыт -->
+        <h2 class="section-subtitle">Ресурсы и опыт</h2>
+        <div class="info-card">
+          <p>
+            Лаборатория располагает подготовленными площадями и уникальным оборудованием для выполнения работ.
+            Персонал лаборатории имеет большой опыт проведения химико-аналитических научно-исследовательских работ.
+          </p>
+          <p>
+            Лаборатория, помимо промышленных загрязнителей, имеет большой опыт и работает с отравляющими веществами,
+            ирритантами (веществами раздражающего действия), компонентами ракетных топлив, сильнодействующими ядовитыми веществами (СДЯВ)
+            (в том числе боевыми и военного назначения).
+          </p>
+          <p>
+            В рамках своей области аккредитации лаборатория может проводить широкий спектр работ: услуги по производственному
+            и экологическому контролю, специальной оценке условий труда. Среди заказчиков: оборонно-промышленный комплекс,
+            МЧС, МВД, ФСБ, ФСО, учреждения здравоохранения, промышленные предприятия.
+          </p>
+        </div>
+        
+        <!-- Выполненные работы -->
+        <h2 class="section-subtitle">Работы, выполненные специалистами лаборатории</h2>
+        <div class="clients-grid">
+          <div v-for="client in clients" :key="client.category" class="client-category">
+            <h3>{{ client.category }}</h3>
+            <p>{{ client.names }}</p>
           </div>
         </div>
         
-        <h2 class="section-subtitle">Оборудование</h2>
-        <div class="equipment-list">
-          <div 
-            v-for="equipment in equipmentList" 
-            :key="equipment"
-            class="equipment-item"
-          >
-            <span class="equipment-icon">🔬</span>
-            <h3>{{ equipment }}</h3>
-          </div>
+        <!-- Задачи -->
+        <h2 class="section-subtitle">Задачи лаборатории</h2>
+        <div class="info-card">
+          <p>Одними из наиболее востребованных задач, выполняемыми лабораторией является:</p>
+          <ul class="capabilities-list">
+            <li><span class="list-icon">✓</span>Производственный и санитарно-гигиенический контроль</li>
+            <li><span class="list-icon">✓</span>Экологический контроль и мониторинг</li>
+            <li><span class="list-icon">✓</span>Контроль санитарно-защитных зон предприятий</li>
+          </ul>
+        </div>
+        
+        <!-- Физические факторы -->
+        <h2 class="section-subtitle">Физические факторы</h2>
+        <div class="info-card">
+          <ul class="capabilities-list">
+            <li><span class="list-icon">✓</span>Электромагнитное излучение (ЭМИ), магнитное и электрическое поле промышленной частоты, радиочастотного диапазона</li>
+            <li><span class="list-icon">✓</span>Вибрация (общая и локальная)</li>
+            <li><span class="list-icon">✓</span>Световая среда (освещенность, уровень пульсации, блесткость)</li>
+            <li><span class="list-icon">✓</span>Измерение параметров микроклимата (в теплый и холодный период)</li>
+            <li><span class="list-icon">✓</span>Звуковая среда (инфразвук, ультразвук; производственный шум и звук слышимого диапазона)</li>
+            <li><span class="list-icon">✓</span>Аэроионный состав воздуха</li>
+            <li><span class="list-icon">✓</span>Микроклимат в теплый и холодный период (влажность, скорость движения воздуха, температура, тепловая нагрузка среды (ТНС-индекс), уровень инфракрасного (теплового) излучения)</li>
+            <li><span class="list-icon">✓</span>Ультрафиолетовое (УФ) излучение</li>
+          </ul>
+        </div>
+        
+        <!-- Химический анализ -->
+        <h2 class="section-subtitle">Химический анализ</h2>
+        <div class="info-card">
+          <ul class="capabilities-list">
+            <li><span class="list-icon">✓</span>Парогазовые смеси и воздух испытательных камер</li>
+            <li><span class="list-icon">✓</span>Воздух рабочей зоны</li>
+            <li><span class="list-icon">✓</span>Атмосферный воздух, включая воздух замкнутых помещений жилых и общественных зданий, селитебной территории, дворовых территорий и жилых застроек, улиц, дорог</li>
+            <li><span class="list-icon">✓</span>Питьевая вода, включая расфасованную в емкости (минеральной и столовой), централизованных систем водоснабжения, систем горячего водоснабжения, нецентрализованных систем водоснабжения (скважин и колодцев)</li>
+            <li><span class="list-icon">✓</span>Природная вода, включая поверхностную, подземную, морскую, источники водоснабжения, грунтовую, талую, купально-плавательных бассейнов и аквапарков, снежный покров, атмосферные осадки</li>
+            <li><span class="list-icon">✓</span>Сточная вода, включая очищенную, промышленную, ливневую, хозяйственно-бытовую воду</li>
+            <li><span class="list-icon">✓</span>Грунт — включая горные породы, почвы, техногенные образования (в том числе отходы производства и потребления), органические удобрения (компосты), торфы, строительные конструкции, водные вытяжки материалов различного состава, твердые объекты окружающей среды, а также производственные и бытовые отходы</li>
+            <li><span class="list-icon">✓</span>Донные отложения — включая илы, шлам сточных вод, осадки (в том числе сброженные), осадок сточных вод, водные вытяжки материалов различного состава, твердые объекты окружающей среды</li>
+          </ul>
+        </div>
+        
+        <!-- Особенности -->
+        <h2 class="section-subtitle">Особенности</h2>
+        <div class="info-card">
+          <p>
+            Лаборатория АО «ГосНИИхиманалит» является единственной в России, аккредитованной на проведение измерений
+            содержания боевых отравляющих веществ в воздухе рабочей зоны, атмосферном воздухе, промышленных выбросах,
+            водах (сточных и природных), грунтах.
+          </p>
+          <p>Лаборатория работает со следующими отравляющими веществами:</p>
+          <ul class="capabilities-list">
+            <li><span class="list-icon">✓</span>Зарин (О-изопропилметилфторфосфонат)</li>
+            <li><span class="list-icon">✓</span>Зоман (пинаколиловый эфир метилфторфосфоновой кислоты, О-(1,2,2-триметилпропил) метилфторфосфонат)</li>
+            <li><span class="list-icon">✓</span>Вещество типа Vx (О-этиловый S-2-(N, N-диизопропил-амино) этиловый эфир метилфосфоновой кислоты, О-изобутил-бета-N-диэтиламиноэтантиоловый эфир метилфосфоновой кислоты)</li>
+            <li><span class="list-icon">✓</span>Иприт (2,2-дихлордиэтилсульфид, бис-2-хлорэтиловый тиоэфир)</li>
+            <li><span class="list-icon">✓</span>Люизит (2-хлорвинилдихлорарсин)</li>
+          </ul>
+          <p>
+            Кроме этого лаборатория имеет большой опыт работы с сильнодействующими ядовитыми веществами (СДЯВ).
+            Лаборатория имеет все необходимые разрешительные документы и технические средства для работы с веществами подобного класса.
+          </p>
         </div>
       </div>
     </div>
@@ -115,57 +170,26 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const activeTab = ref('water')
-
-const methods = [
-  {
-    icon: '🔬',
-    title: 'Хроматография',
-    description: 'Газовая и жидкостная хроматография для анализа сложных смесей'
-  },
-  {
-    icon: '⚗️',
-    title: 'Спектрометрия',
-    description: 'Атомно-абсорбционная и ИК-спектрометрия для определения элементного состава'
-  },
-  {
-    icon: '🧪',
-    title: 'Титриметрия',
-    description: 'Классические методы количественного анализа'
-  },
-  {
-    icon: '⚖️',
-    title: 'Гравиметрия',
-    description: 'Весовой анализ для определения содержания веществ'
-  },
-  {
-    icon: '📊',
-    title: 'Электрохимия',
-    description: 'Потенциометрия, кондуктометрия, вольтамперометрия'
-  },
-  {
-    icon: '🔍',
-    title: 'Микроскопия',
-    description: 'Оптическая и электронная микроскопия материалов'
-  }
-]
-
-const equipmentList = [
-  'Газовый хроматограф',
-  'Жидкостный хроматограф',
-  'Атомно-абсорбционный спектрометр',
-  'ИК-Фурье спектрометр',
-  'Масс-спектрометр'
+const clients = [
+  { category: 'Спец. объекты', names: 'Федеральное управление по безопасному хранению и уничтожению химического оружия, ФГУП «Атомфлот»' },
+  { category: 'Оборонно-промышленный комплекс', names: 'ФГУП «Завод им. Морозова», НПО «Импульс», ОАО «НПО «СПЛАВ»' },
+  { category: 'Химическая промышленность', names: 'АО «Завод художественных красок «Невская палитра», ООО «Тикурилла»' },
+  { category: 'Нефтехимическая отрасль', names: 'ОАО «РПК-Высоцк «ЛУКОЙЛ», ООО «Транснефть»' },
+  { category: 'МЧС', names: 'ФГКУ «37 отряд ФПС по Ленинградской области»' },
+  { category: 'Транспорт', names: 'ГУП «Петербургский Метрополитен», СПб ГУП «ПАССАЖИРАВТОТРАНС» (автобусные парки), Северо-Западный бассейновый филиал ФГУП «Росморпорт» (вспомогательные суда и ледоколы), АО «Авиакомпания «Россия», Филиал «Аэронавигация Северо-Запада» Архангельский центр ОВД' },
+  { category: 'Наука и образование', names: 'ФГБОУ ВПО «ГУМРФ имени адмирала С.О.Макарова», Санкт-Петербургский государственный университет аэрокосмического приборостроения' },
+  { category: 'Культура и искусство', names: 'Большой Санкт-Петербургский государственный цирк' },
+  { category: 'Учреждения здравоохранения', names: 'Смоленская областная клиническая стоматологическая поликлиника, Саратовский медицинский центр Федерального медико-биологического агентства, Центр гигиены и эпидемиологии Федерального медико-биологического агентства' },
+  { category: 'Морские порты', names: 'ПАО «Мурманский Морской Торговый Порт», ООО «Порт Выборгский»' },
+  { category: 'Другие', names: 'ООО «Евровзрывпром», ООО «Лабиринт», ЗАО «Вилаш», АО «Респираторный комплекс», ООО «Ленинградский краностроительный завод»' }
 ]
 
 useHead({
-  title: 'Аналитическая химия - ГосНИИХиманалит',
+  title: 'Аналитическая химия - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Аналитическая химия в ГосНИИХиманалит: хроматография, спектрометрия, анализ воды, воздуха, почвы' 
+      content: 'Испытательная химико-аналитическая лаборатория ГосНИИхиманалит: анализ отравляющих веществ, экологический контроль' 
     }
   ]
 })
@@ -190,10 +214,11 @@ useHead({
   gap: 8px;
   margin-bottom: 2rem;
   font-size: 14px;
+  flex-wrap: wrap;
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -210,9 +235,9 @@ useHead({
 }
 
 .page-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -221,173 +246,106 @@ useHead({
   font-size: 1.125rem;
   color: #4b5563;
   line-height: 1.8;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
-/* Методы */
-.methods-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 2rem;
+.info-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #005700;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.method-card {
-  padding: 1.5rem;
+.info-card p {
+  color: #4b5563;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.accreditation-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f0f5f0;
+  border-radius: 4px;
+}
+
+.accreditation-info p {
+  margin-bottom: 0.5rem;
+}
+
+.capabilities-list {
+  list-style: none;
+  padding: 0;
+}
+
+.capabilities-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.capabilities-list li:last-child {
+  border-bottom: none;
+}
+
+.list-icon {
+  color: #005700;
+  font-weight: 700;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Клиенты */
+.clients-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.client-category {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  transition: all 0.3s;
+  padding: 1rem 1.5rem;
 }
 
-.method-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-  border-color: #29b026;
-}
-
-.method-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 1rem;
-}
-
-.method-icon {
-  font-size: 30px;
-}
-
-.method-header h3 {
-  color: #333;
-  font-size: 1.125rem;
-}
-
-.method-card p {
-  color: #6b7280;
-  font-size: 14px;
-}
-
-/* Табы */
-.tabs {
-  margin-bottom: 2rem;
-}
-
-.tab-buttons {
-  display: flex;
-  gap: 10px;
-  border-bottom: 2px solid #e5e7eb;
-  flex-wrap: wrap;
-}
-
-.tab-btn {
-  padding: 10px 20px;
-  background: transparent;
-  color: #6b7280;
-  border: none;
-  border-bottom: 3px solid transparent;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.tab-btn:hover {
-  color: #29b026;
-}
-
-.tab-btn.active {
-  color: #29b026;
-  border-bottom-color: #29b026;
-}
-
-.tab-content {
-  padding: 1rem 0;
-}
-
-.analysis-list {
-  list-style: disc;
-  padding-left: 1.5rem;
-}
-
-.analysis-list li {
+.client-category h3 {
+  color: #005700;
   margin-bottom: 0.5rem;
+  font-size: 16px;
+}
+
+.client-category p {
   color: #4b5563;
-}
-
-/* Оборудование */
-.equipment-list {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-}
-
-.equipment-item {
-  text-align: center;
-  padding: 1.5rem;
-  background: #f0f9f0;
-  border-radius: 8px;
-}
-
-.equipment-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.equipment-item h3 {
-  color: #333;
   font-size: 14px;
-}
-
-@media (max-width: 1024px) {
-  .methods-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .equipment-list {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
-  .methods-grid {
+  .clients-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .equipment-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .tab-buttons {
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .tab-btn {
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .tab-btn.active {
-    border-left: 3px solid #29b026;
-    border-bottom: 1px solid #e5e7eb;
   }
   
   .page-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
-}
-
-@media (max-width: 480px) {
-  .equipment-list {
-    grid-template-columns: 1fr;
+  
+  .section-subtitle {
+    font-size: 1.25rem;
   }
 }
 </style>

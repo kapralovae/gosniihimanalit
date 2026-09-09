@@ -2,16 +2,11 @@
   <footer class="app-footer">
     <div class="container">
       <div class="footer-grid">
+        <!-- Услуги -->
         <div class="footer-col">
-          <h4>О компании</h4>
-          <p class="footer-text">
-            АО "ГосНИИХиманалит" - ведущее научно-производственное предприятие
-            в области химического анализа и контроля.
-          </p>
-        </div>
-        
-        <div class="footer-col">
-          <h4>Услуги</h4>
+          <NuxtLink to="/uslugi" class="footer-title-link">
+            <h4>Услуги</h4>
+          </NuxtLink>
           <ul class="footer-links">
             <li v-for="service in services" :key="service.path">
               <NuxtLink :to="service.path">{{ service.title }}</NuxtLink>
@@ -19,8 +14,11 @@
           </ul>
         </div>
         
+        <!-- Конструкторское бюро -->
         <div class="footer-col">
-          <h4>Конструкторское бюро</h4>
+          <NuxtLink to="/konstruktorskoe-byuro/centr-razrabotki-crtshk" class="footer-title-link">
+            <h4>Конструкторское бюро</h4>
+          </NuxtLink>
           <ul class="footer-links">
             <li v-for="item in kbItems" :key="item.path">
               <NuxtLink :to="item.path">{{ item.title }}</NuxtLink>
@@ -28,19 +26,54 @@
           </ul>
         </div>
         
+        <!-- Контакты -->
         <div class="footer-col">
           <h4>Контакты</h4>
-          <div class="footer-contact">
-            <span>📍</span>
-            <span>190000, Санкт-Петербург, ул. Примерная, д. 1</span>
-          </div>
-          <div class="footer-contact">
-            <span>📞</span>
-            <span>+7 (812) 345-67-89</span>
-          </div>
-          <div class="footer-contact">
-            <span>✉️</span>
-            <span>info@gosniihimanalit.ru</span>
+          <div class="footer-contacts">
+            <!-- Коммерческий отдел -->
+            <div class="footer-contact-block">
+              <span class="footer-contact-title">{{ contacts?.commercialLabel || 'Коммерческий отдел' }}</span>
+              <div class="footer-contact-item">
+                <span>📞</span>
+                <a :href="'tel:' + (contacts?.commercialPhone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')" class="footer-contact-link">
+                  {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}
+                </a>
+              </div>
+              <div class="footer-contact-item">
+                <span>✉️</span>
+                <a :href="'mailto:' + (contacts?.commercialEmail || 'marketing@himanalit.ru')" class="footer-contact-link">
+                  {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}
+                </a>
+              </div>
+            </div>
+            
+            <!-- Секретарь -->
+            <div class="footer-contact-block">
+              <span class="footer-contact-title">{{ contacts?.secretaryLabel || 'Секретарь' }}</span>
+              <div class="footer-contact-item">
+                <span>📞</span>
+                <a :href="'tel:' + (contacts?.phone || '+7 (812) 786-61-59').replace(/[^0-9+]/g, '')" class="footer-contact-link">
+                  {{ contacts?.phone || '+7 (812) 786-61-59' }}
+                </a>
+              </div>
+              <div class="footer-contact-item">
+                <span>✉️</span>
+                <a :href="'mailto:' + (contacts?.email || 'mail@himanalit.ru')" class="footer-contact-link">
+                  {{ contacts?.email || 'mail@himanalit.ru' }}
+                </a>
+              </div>
+            </div>
+            
+            <!-- Адрес -->
+            <div class="footer-contact-block">
+              <span class="footer-contact-title">{{ contacts?.addressLabel || 'Адрес' }}</span>
+              <div class="footer-contact-item">
+                <span>📍</span>
+                <span class="footer-contact-text">
+                  {{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }}, {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -48,20 +81,33 @@
       <div class="footer-divider"></div>
       
       <div class="footer-bottom">
-        <span>© {{ new Date().getFullYear() }} АО "ГосНИИХиманалит". Все права защищены.</span>
-        <div class="footer-social">
-          <a href="#" class="social-link" aria-label="Поделиться">🔗</a>
-          <a href="#" class="social-link" aria-label="Чат">💬</a>
-          <a href="#" class="social-link" aria-label="Видео">▶️</a>
-        </div>
+        <span>© {{ new Date().getFullYear() }} {{ contacts?.siteTitle || 'АО «ГосНИИхиманалит»' }}. Все права защищены.</span>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { useContacts } from '~/composables/useContacts'
+
+const contacts = ref({})
+const contactsService = useContacts()
+
+const loadContacts = async () => {
+  try {
+    contacts.value = await contactsService.getContacts()
+  } catch (error) {
+    console.error('❌ Ошибка загрузки контактов в Footer:', error)
+  }
+}
+
+onMounted(() => {
+  loadContacts()
+})
+
 const services = [
-  { title: 'Испытательный центр', path: '/uslugi/ispytatelnyj-centr' },
+  { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
   { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
   { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
   { title: 'Конструкторское бюро', path: '/uslugi/konstruktorskoe-byuro-1' },
@@ -71,10 +117,10 @@ const services = [
 ]
 
 const kbItems = [
-  { title: 'Центр разработки ТСХК', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
+  { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
   { title: 'Образование и обучение', path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' },
   { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
-  { title: 'Справочник инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
+  { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
   { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
 ]
 </script>
@@ -95,19 +141,28 @@ const kbItems = [
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 40px;
+  align-items: start;
+}
+
+.footer-col {
+  min-width: 0;
+}
+
+.footer-title-link {
+  text-decoration: none;
 }
 
 h4 {
   color: #fff;
   margin-bottom: 1rem;
   font-size: 1.125rem;
+  transition: color 0.3s;
 }
 
-.footer-text {
-  line-height: 1.6;
-  font-size: 0.875rem;
+.footer-title-link:hover h4 {
+  color: #4cc94a;
 }
 
 .footer-links {
@@ -122,19 +177,57 @@ h4 {
 .footer-links a {
   color: #d1d5db;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: all 0.3s;
+  font-size: 14px;
 }
 
 .footer-links a:hover {
-  color: #60a5fa;
+  color: #4cc94a;
+  padding-left: 5px;
 }
 
-.footer-contact {
+.footer-contacts {
+  margin-top: 1rem;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.footer-contact-title {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.footer-contact-link {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-contact-link:hover {
+  color: #4cc94a;
+}
+
+.footer-contact-text {
+  color: #d1d5db;
+  line-height: 1.4;
 }
 
 .footer-divider {
@@ -143,38 +236,22 @@ h4 {
 }
 
 .footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
 }
 
-.footer-social {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.social-link {
-  color: #d1d5db;
-  text-decoration: none;
-  font-size: 1.25rem;
-  transition: color 0.3s;
-}
-
-.social-link:hover {
-  color: #60a5fa;
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
 }
 
 @media (max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 20px;
-  }
-  
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
   }
 }
 </style>

@@ -307,11 +307,11 @@ function previewModel(model) {
 }
 
 useHead({
-  title: 'Библиотека 3D - ГосНИИХиманалит',
+  title: 'Библиотека 3D - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Библиотека 3D моделей ГосНИИХиманалит: модели оборудования, датчиков, компонентов' 
+      content: 'Библиотека 3D моделей ГосНИИхиманалит: модели оборудования, датчиков, компонентов' 
     }
   ]
 })
@@ -339,7 +339,7 @@ useHead({
 }
 
 .breadcrumb a {
-  color: #29b026;
+  color: #005700;
   text-decoration: none;
 }
 
@@ -358,7 +358,7 @@ useHead({
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #29b026;
+  color: #005700;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -373,7 +373,7 @@ useHead({
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #29b026;
+  color: #005700;
   margin: 2rem 0 1rem;
 }
 
@@ -405,7 +405,7 @@ useHead({
 
 .search-input:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .filters {
@@ -425,7 +425,7 @@ useHead({
 
 .filter-select:focus {
   outline: none;
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 /* Сетка моделей */
@@ -447,7 +447,7 @@ useHead({
 .model-card:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateY(-5px);
-  border-color: #29b026;
+  border-color: #005700;
 }
 
 .model-preview {
@@ -467,7 +467,7 @@ useHead({
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   padding: 2px 8px;
   border-radius: 4px;
@@ -512,7 +512,7 @@ useHead({
 .download-btn {
   flex: 1;
   padding: 8px;
-  background: #29b026;
+  background: #005700;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -522,7 +522,7 @@ useHead({
 }
 
 .download-btn:hover {
-  background: #1a7a1a;
+  background: #003d00;
 }
 
 .preview-btn {
@@ -538,8 +538,8 @@ useHead({
 }
 
 .preview-btn:hover {
-  border-color: #29b026;
-  color: #29b026;
+  border-color: #005700;
+  color: #005700;
 }
 
 /* Популярные модели */
@@ -620,7 +620,7 @@ useHead({
 }
 
 .format-card h4 {
-  color: #29b026;
+  color: #005700;
   margin-bottom: 0.5rem;
 }
 
