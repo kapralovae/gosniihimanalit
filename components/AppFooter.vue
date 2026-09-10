@@ -30,48 +30,35 @@
         <div class="footer-col">
           <h4>Контакты</h4>
           <div class="footer-contacts">
-            <!-- Коммерческий отдел -->
             <div class="footer-contact-block">
-              <span class="footer-contact-title">{{ contacts?.commercialLabel || 'Коммерческий отдел' }}</span>
-              <div class="footer-contact-item">
+              <span class="footer-contact-title">{{ contacts?.commercial_label || 'Коммерческий отдел' }}</span>
+              <div v-if="contacts?.commercial_phone" class="footer-contact-item">
                 <span>📞</span>
-                <a :href="'tel:' + (contacts?.commercialPhone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')" class="footer-contact-link">
-                  {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}
-                </a>
+                <a :href="'tel:' + contacts.commercial_phone.replace(/[^0-9+]/g, '')" class="footer-contact-link">{{ contacts.commercial_phone }}</a>
               </div>
-              <div class="footer-contact-item">
+              <div v-if="contacts?.commercial_email" class="footer-contact-item">
                 <span>✉️</span>
-                <a :href="'mailto:' + (contacts?.commercialEmail || 'marketing@himanalit.ru')" class="footer-contact-link">
-                  {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}
-                </a>
+                <a :href="'mailto:' + contacts.commercial_email" class="footer-contact-link">{{ contacts.commercial_email }}</a>
               </div>
             </div>
             
-            <!-- Секретарь -->
             <div class="footer-contact-block">
-              <span class="footer-contact-title">{{ contacts?.secretaryLabel || 'Секретарь' }}</span>
-              <div class="footer-contact-item">
+              <span class="footer-contact-title">{{ contacts?.secretary_label || 'Секретарь' }}</span>
+              <div v-if="contacts?.secretary_phone" class="footer-contact-item">
                 <span>📞</span>
-                <a :href="'tel:' + (contacts?.phone || '+7 (812) 786-61-59').replace(/[^0-9+]/g, '')" class="footer-contact-link">
-                  {{ contacts?.phone || '+7 (812) 786-61-59' }}
-                </a>
+                <a :href="'tel:' + contacts.secretary_phone.replace(/[^0-9+]/g, '')" class="footer-contact-link">{{ contacts.secretary_phone }}</a>
               </div>
-              <div class="footer-contact-item">
+              <div v-if="contacts?.secretary_email" class="footer-contact-item">
                 <span>✉️</span>
-                <a :href="'mailto:' + (contacts?.email || 'mail@himanalit.ru')" class="footer-contact-link">
-                  {{ contacts?.email || 'mail@himanalit.ru' }}
-                </a>
+                <a :href="'mailto:' + contacts.secretary_email" class="footer-contact-link">{{ contacts.secretary_email }}</a>
               </div>
             </div>
             
-            <!-- Адрес -->
             <div class="footer-contact-block">
-              <span class="footer-contact-title">{{ contacts?.addressLabel || 'Адрес' }}</span>
+              <span class="footer-contact-title">{{ contacts?.address_label || 'Адрес' }}</span>
               <div class="footer-contact-item">
                 <span>📍</span>
-                <span class="footer-contact-text">
-                  {{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }}, {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}
-                </span>
+                <span class="footer-contact-text" v-html="formatAddress(contacts?.address)"></span>
               </div>
             </div>
           </div>
@@ -81,30 +68,14 @@
       <div class="footer-divider"></div>
       
       <div class="footer-bottom">
-        <span>© {{ new Date().getFullYear() }} {{ contacts?.siteTitle || 'АО «ГосНИИхиманалит»' }}. Все права защищены.</span>
+        <span>© {{ new Date().getFullYear() }} {{ contacts?.site_title || 'АО «ГосНИИхиманалит»' }}. Все права защищены.</span>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useContacts } from '~/composables/useContacts'
-
-const contacts = ref({})
-const contactsService = useContacts()
-
-const loadContacts = async () => {
-  try {
-    contacts.value = await contactsService.getContacts()
-  } catch (error) {
-    console.error('❌ Ошибка загрузки контактов в Footer:', error)
-  }
-}
-
-onMounted(() => {
-  loadContacts()
-})
+const { data: contacts } = await useFetch('/api/contacts')
 
 const services = [
   { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
@@ -123,6 +94,20 @@ const kbItems = [
   { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
   { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
 ]
+
+function formatAddress(address) {
+  if (!address) {
+    return '190020, Санкт-Петербург,<br>ул. Бумажная, 17'
+  }
+  const parts = address.split(',').map(s => s.trim())
+  if (parts.length >= 3) {
+    return parts[0] + ', ' + parts[1] + ',<br>' + parts.slice(2).join(', ')
+  }
+  if (parts.length === 2) {
+    return parts[0] + ',<br>' + parts[1]
+  }
+  return address
+}
 </script>
 
 <style scoped>

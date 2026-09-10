@@ -1,9 +1,7 @@
 <template>
   <div class="arenda-page">
     <div class="container">
-      <h1 class="page-title">{{ data?.title || 'Аренда помещений' }}</h1>
-      
-      <p class="page-description">{{ data?.description || '' }}</p>
+      <h1 class="page-title">Аренда помещений</h1>
       
       <!-- Фильтры -->
       <div class="filters">
@@ -33,8 +31,11 @@
         </button>
       </div>
       
+      <div v-if="loading" class="loading">Загрузка...</div>
+      <div v-else-if="items.length === 0" class="empty">Помещения не найдены</div>
+      
       <!-- Список помещений -->
-      <div class="arenda-grid">
+      <div v-else class="arenda-grid">
         <div 
           v-for="item in filteredItems" 
           :key="item.id"
@@ -56,28 +57,28 @@
             <p class="card-description">{{ item.description }}</p>
             
             <div class="card-specs">
-              <div class="spec-item">
+              <div v-if="item.area" class="spec-item">
                 <span>📐</span>
                 <span>{{ item.area }}</span>
               </div>
-              <div class="spec-item">
+              <div v-if="item.floor" class="spec-item">
                 <span>🏗️</span>
                 <span>{{ item.floor }}</span>
               </div>
-              <div class="spec-item">
+              <div v-if="item.ceiling_height" class="spec-item">
                 <span>📏</span>
-                <span>{{ item.ceilingHeight }}</span>
+                <span>{{ item.ceiling_height }}</span>
               </div>
-              <div class="spec-item">
+              <div v-if="item.power_supply" class="spec-item">
                 <span>⚡</span>
-                <span>{{ item.powerSupply }}</span>
+                <span>{{ item.power_supply }}</span>
               </div>
             </div>
             
-            <div class="card-features">
+            <div v-if="item.features && item.features.length" class="card-features">
               <span 
-                v-for="feature in item.features" 
-                :key="feature"
+                v-for="(feature, i) in item.features" 
+                :key="i"
                 class="feature-tag"
               >
                 {{ feature }}
@@ -105,15 +106,11 @@
         <div class="contacts-info">
           <div class="contact-item">
             <span>📞</span>
-            <a :href="'tel:' + (data?.contacts?.phone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')">
-              {{ data?.contacts?.phone || '+7 (812) 252-22-45' }}
-            </a>
+            <a href="tel:+78122522245">+7 (812) 252-22-45</a>
           </div>
           <div class="contact-item">
             <span>✉️</span>
-            <a :href="'mailto:' + (data?.contacts?.email || 'arenda@himanalit.ru')">
-              {{ data?.contacts?.email || 'arenda@himanalit.ru' }}
-            </a>
+            <a href="mailto:marketing@himanalit.ru">marketing@himanalit.ru</a>
           </div>
         </div>
       </div>
@@ -122,17 +119,22 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const activeStatus = ref('all')
+const items = ref([])
+const loading = ref(true)
 
-const { data } = await useAsyncData('arenda', async () => {
-  const response = await $fetch('/api/content')
-  return response.arenda || {}
+onMounted(async () => {
+  try {
+    items.value = await $fetch('/api/arenda') || []
+  } catch (e) {
+    console.error('Ошибка загрузки аренды:', e)
+    items.value = []
+  } finally {
+    loading.value = false
+  }
 })
-
-const items = computed(() => data.value?.items || [])
-const contacts = computed(() => data.value?.contacts || {})
 
 const filteredItems = computed(() => {
   if (activeStatus.value === 'all') {

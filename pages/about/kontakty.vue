@@ -22,8 +22,8 @@
               <div class="contact-item">
                 <span class="contact-icon">📍</span>
                 <div>
-                  <h4>Адрес</h4>
-                  <p>{{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }}, {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}</p>
+                  <h4>{{ contacts?.address_label || 'Адрес' }}</h4>
+                  <p v-html="formatAddress(contacts?.address)"></p>
                 </div>
               </div>
               
@@ -32,20 +32,28 @@
               <div class="contact-item">
                 <span class="contact-icon">📞</span>
                 <div>
-                  <h4>Телефон</h4>
-                  <p>{{ contacts?.commercialLabel || 'Коммерческий отдел' }}: {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}</p>
-                  <p>{{ contacts?.secretaryLabel || 'Секретарь' }}: {{ contacts?.phone || '+7 (812) 786-61-59' }}</p>
+                  <h4>{{ contacts?.commercial_label || 'Коммерческий отдел' }}</h4>
+                  <p v-if="contacts?.commercial_phone">
+                    <a :href="'tel:' + contacts.commercial_phone.replace(/[^0-9+]/g, '')">{{ contacts.commercial_phone }}</a>
+                  </p>
+                  <p v-if="contacts?.commercial_email">
+                    <a :href="'mailto:' + contacts.commercial_email">{{ contacts.commercial_email }}</a>
+                  </p>
                 </div>
               </div>
               
               <div class="divider"></div>
               
               <div class="contact-item">
-                <span class="contact-icon">✉️</span>
+                <span class="contact-icon">📞</span>
                 <div>
-                  <h4>Email</h4>
-                  <p>{{ contacts?.commercialLabel || 'Коммерческий отдел' }}: {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}</p>
-                  <p>{{ contacts?.secretaryLabel || 'Секретарь' }}: {{ contacts?.email || 'mail@himanalit.ru' }}</p>
+                  <h4>{{ contacts?.secretary_label || 'Секретарь' }}</h4>
+                  <p v-if="contacts?.secretary_phone">
+                    <a :href="'tel:' + contacts.secretary_phone.replace(/[^0-9+]/g, '')">{{ contacts.secretary_phone }}</a>
+                  </p>
+                  <p v-if="contacts?.secretary_email">
+                    <a :href="'mailto:' + contacts.secretary_email">{{ contacts.secretary_email }}</a>
+                  </p>
                 </div>
               </div>
               
@@ -66,11 +74,11 @@
               <div class="requisites-list">
                 <div class="requisite-item">
                   <span class="requisite-label">Полное наименование:</span>
-                  <span>Акционерное общество "ГосНИИхиманалит"</span>
+                  <span>Акционерное общество "ГосНИИХиманалит"</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">Сокращенное наименование:</span>
-                  <span>АО "ГосНИИхиманалит"</span>
+                  <span>АО "ГосНИИХиманалит"</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">ИНН:</span>
@@ -107,32 +115,17 @@
               <form class="feedback-form" @submit.prevent="submitFeedback">
                 <div class="form-group">
                   <label class="form-label">Ваше имя</label>
-                  <input 
-                    v-model="feedbackForm.name" 
-                    type="text"
-                    class="form-input"
-                    placeholder="Введите ваше имя"
-                  />
+                  <input v-model="feedbackForm.name" type="text" class="form-input" placeholder="Введите ваше имя" />
                 </div>
                 
                 <div class="form-group">
                   <label class="form-label">Email</label>
-                  <input 
-                    v-model="feedbackForm.email" 
-                    type="email"
-                    class="form-input"
-                    placeholder="email@example.com"
-                  />
+                  <input v-model="feedbackForm.email" type="email" class="form-input" placeholder="email@example.com" />
                 </div>
                 
                 <div class="form-group">
                   <label class="form-label">Телефон</label>
-                  <input 
-                    v-model="feedbackForm.phone" 
-                    type="tel"
-                    class="form-input"
-                    placeholder="+7 (___) ___-__-__"
-                  />
+                  <input v-model="feedbackForm.phone" type="tel" class="form-input" placeholder="+7 (___) ___-__-__" />
                 </div>
                 
                 <div class="form-group">
@@ -149,12 +142,7 @@
                 
                 <div class="form-group">
                   <label class="form-label">Сообщение</label>
-                  <textarea 
-                    v-model="feedbackForm.message" 
-                    class="form-textarea"
-                    rows="6"
-                    placeholder="Введите ваше сообщение"
-                  ></textarea>
+                  <textarea v-model="feedbackForm.message" class="form-textarea" rows="6" placeholder="Введите ваше сообщение"></textarea>
                 </div>
                 
                 <div class="form-actions">
@@ -182,23 +170,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useContacts } from '~/composables/useContacts'
+import { ref } from 'vue'
 
-const contacts = ref({})
-const contactsService = useContacts()
-
-const loadContacts = async () => {
-  try {
-    contacts.value = await contactsService.getContacts()
-  } catch (error) {
-    console.error('❌ Ошибка загрузки контактов:', error)
-  }
-}
-
-onMounted(() => {
-  loadContacts()
-})
+const { data: contacts } = await useFetch('/api/contacts')
 
 const feedbackForm = ref({
   name: '',
@@ -208,8 +182,22 @@ const feedbackForm = ref({
   message: ''
 })
 
+function formatAddress(address) {
+  if (!address) {
+    return '190020, Санкт-Петербург,<br>ул. Бумажная, 17'
+  }
+  const parts = address.split(',').map(s => s.trim())
+  if (parts.length >= 3) {
+    return parts[0] + ', ' + parts[1] + ',<br>' + parts.slice(2).join(', ')
+  }
+  if (parts.length === 2) {
+    return parts[0] + ',<br>' + parts[1]
+  }
+  return address
+}
+
 function submitFeedback() {
-  alert('Сообщение отправлено! Мы свяжемся с вами.')
+  alert('Сообщение отправлено!')
   resetForm()
 }
 
@@ -228,11 +216,11 @@ function openMap() {
 }
 
 useHead({
-  title: 'Контакты - ГосНИИхиманалит',
+  title: 'Контакты - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Контакты ГосНИИхиманалит: адрес, телефон, email, реквизиты, форма обратной связи' 
+      content: 'Контакты ГосНИИХиманалит: адрес, телефон, email, реквизиты' 
     }
   ]
 })
@@ -250,13 +238,13 @@ useHead({
   padding: 0 20px;
 }
 
-/* Хлебные крошки */
 .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 2rem;
   font-size: 14px;
+  flex-wrap: wrap;
 }
 
 .breadcrumb a {
@@ -297,6 +285,10 @@ useHead({
   margin: 2rem 0 1rem;
 }
 
+.section-subtitle:first-child {
+  margin-top: 0;
+}
+
 .info-card {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -326,6 +318,15 @@ useHead({
   margin-bottom: 0.25rem;
 }
 
+.contact-item a {
+  color: #005700;
+  text-decoration: none;
+}
+
+.contact-item a:hover {
+  text-decoration: underline;
+}
+
 .divider {
   border-top: 1px solid #e5e7eb;
   margin: 1rem 0;
@@ -349,7 +350,6 @@ useHead({
   min-width: 200px;
 }
 
-/* Форма */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -369,7 +369,7 @@ useHead({
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.3s;
+  font-family: inherit;
 }
 
 .form-input:focus,
@@ -412,21 +412,20 @@ useHead({
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s;
 }
 
 .btn-secondary:hover {
-  border-color: #333;
+  border-color: #005700;
+  color: #005700;
 }
 
-/* Карта */
 .map-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 300px;
-  background: #f0f9f0;
+  background: #f0f5f0;
   border-radius: 8px;
   padding: 2rem;
   text-align: center;

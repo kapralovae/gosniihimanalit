@@ -194,8 +194,8 @@
               <img src="/images/himanalit_gerb.webp" alt="Герб">
             </div>
             <div class="logo-text">
-              <span class="company-name">{{ contacts?.siteTitle || 'АО «ГосНИИхиманалит»' }}</span>
-              <span class="company-subtitle">Приборы. Средства химического контроля. Услуги</span>
+              <span class="company-name">{{ contacts?.site_title || 'АО «ГосНИИхиманалит»' }}</span>
+              <span class="company-subtitle">{{ contacts?.hero_title || 'Приборы. Средства химического контроля. Услуги' }}</span>
             </div>
           </NuxtLink>
           
@@ -204,12 +204,12 @@
             <div class="contact-block">
               <span class="contact-icon">📞</span>
               <div class="contact-text">
-                <span class="contact-label">{{ contacts?.commercialLabel || 'Коммерческий отдел' }}:</span>
-                <a :href="'tel:' + (contacts?.commercialPhone || '+7 (812) 252-22-45').replace(/[^0-9+]/g, '')" class="contact-value">
-                  {{ contacts?.commercialPhone || '+7 (812) 252-22-45' }}
+                <span class="contact-label">{{ contacts?.commercial_label || 'Коммерческий отдел' }}:</span>
+                <a v-if="contacts?.commercial_phone" :href="'tel:' + contacts.commercial_phone.replace(/[^0-9+]/g, '')" class="contact-value">
+                  {{ contacts.commercial_phone }}
                 </a>
-                <a :href="'mailto:' + (contacts?.commercialEmail || 'marketing@himanalit.ru')" class="contact-value">
-                  {{ contacts?.commercialEmail || 'marketing@himanalit.ru' }}
+                <a v-if="contacts?.commercial_email" :href="'mailto:' + contacts.commercial_email" class="contact-value">
+                  {{ contacts.commercial_email }}
                 </a>
               </div>
             </div>
@@ -218,12 +218,12 @@
             <div class="contact-block">
               <span class="contact-icon">📞</span>
               <div class="contact-text">
-                <span class="contact-label">{{ contacts?.secretaryLabel || 'Секретарь' }}:</span>
-                <a :href="'tel:' + (contacts?.phone || '+7 (812) 786-61-59').replace(/[^0-9+]/g, '')" class="contact-value">
-                  {{ contacts?.phone || '+7 (812) 786-61-59' }}
+                <span class="contact-label">{{ contacts?.secretary_label || 'Секретарь' }}:</span>
+                <a v-if="contacts?.secretary_phone" :href="'tel:' + contacts.secretary_phone.replace(/[^0-9+]/g, '')" class="contact-value">
+                  {{ contacts.secretary_phone }}
                 </a>
-                <a :href="'mailto:' + (contacts?.email || 'mail@himanalit.ru')" class="contact-value">
-                  {{ contacts?.email || 'mail@himanalit.ru' }}
+                <a v-if="contacts?.secretary_email" :href="'mailto:' + contacts.secretary_email" class="contact-value">
+                  {{ contacts.secretary_email }}
                 </a>
               </div>
             </div>
@@ -232,11 +232,8 @@
             <div class="contact-block">
               <span class="contact-icon">📍</span>
               <div class="contact-text">
-                <span class="contact-label">{{ contacts?.addressLabel || 'Адрес' }}:</span>
-                <span class="contact-value">
-                  {{ contacts?.addressIndex || '190020' }}, {{ contacts?.addressCity || 'Санкт-Петербург' }},<br>
-                  {{ contacts?.addressStreet || 'ул. Бумажная' }}, {{ contacts?.addressHouse || '17' }}
-                </span>
+                <span class="contact-label">{{ contacts?.address_label || 'Адрес' }}:</span>
+                <span class="contact-value" v-html="formatAddress(contacts?.address)"></span>
               </div>
             </div>
           </div>
@@ -247,27 +244,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useContacts } from '~/composables/useContacts'  // ← new name
+import { ref } from 'vue'
 
 const mobileMenuOpen = ref(false)
-const contacts = ref({})
 
-const contactsService = useContacts()
+const { data: contacts } = await useFetch('/api/contacts')
 
-const loadContacts = async () => {
-  try {
-    contacts.value = await contactsService.getContacts()
-  } catch (error) {
-    console.error('❌ Ошибка загрузки контактов:', error)
-  }
-}
-
-onMounted(() => {
-  loadContacts()
-})
-
-// 🔥 ДОБАВЬ ЭТО:
 const services = [
   { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
   { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
@@ -285,6 +267,23 @@ const kbItems = [
   { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
   { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
 ]
+
+function formatAddress(address) {
+  if (!address) {
+    return '190020, Санкт-Петербург,<br>ул. Бумажная, 17'
+  }
+  // Разбиваем по запятым
+  const parts = address.split(',').map(s => s.trim())
+  // Если 3+ части: "индекс, город, улица" → переносим после города
+  if (parts.length >= 3) {
+    return parts[0] + ', ' + parts[1] + ',<br>' + parts.slice(2).join(', ')
+  }
+  // Если 2 части: "индекс, всё остальное" → переносим после индекса? Нет — оставим как есть
+  if (parts.length === 2) {
+    return parts[0] + ',<br>' + parts[1]
+  }
+  return address
+}
 
 </script>
 

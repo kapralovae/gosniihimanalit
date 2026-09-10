@@ -57,7 +57,11 @@
           class="product-card"
         >
           <div class="product-image-wrapper">
-            <img :src="(product.images && product.images[0]) || '/images/placeholder.svg'" :alt="product.name || 'Товар'" />
+            <img 
+              :src="product.image_url || '/images/placeholder.svg'" 
+              :alt="product.title || 'Товар'" 
+              class="product-image"
+            />
           </div>
           
           <div class="product-info">
@@ -91,7 +95,7 @@
       <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
         <div class="modal-content" @click.stop>
           <div class="modal-header">
-            <h2>{{ selectedProduct?.title  || 'Товар' }}</h2>
+            <h2>{{ selectedProduct?.title || 'Товар' }}</h2>
             <button class="close-btn" @click="dialogVisible = false">✕</button>
           </div>
           
@@ -102,7 +106,7 @@
             </div>
             <div class="detail-row">
               <span class="detail-label">Описание:</span>
-              <p>{{ selectedProduct.fullDescription || selectedProduct.shortDescription || '' }}</p>
+              <p>{{ selectedProduct.description || '' }}</p>
             </div>
             <div v-if="selectedProduct.specs && selectedProduct.specs.length" class="detail-row">
               <span class="detail-label">Технические характеристики:</span>
@@ -137,7 +141,7 @@ onMounted(async () => {
     const data = await $fetch('/api/products')
     products.value = data || []
   } catch (error) {
-    console.error('Ошибка загрузки:', error)
+    console.error('Ошибка:', error)
     products.value = []
   } finally {
     loading.value = false
@@ -266,7 +270,9 @@ useHead({
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 10px;
+  background: #f8fafc;
 }
 
 .product-info {

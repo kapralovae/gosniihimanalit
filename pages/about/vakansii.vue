@@ -146,42 +146,37 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
+const vacancies = ref([])
+const loading = ref(true)
 const selectedDepartment = ref('')
 const selectedType = ref('')
 const dialogVisible = ref(false)
 
-// 🔥 Загружаем данные из админки
-const { data } = await useAsyncData('vacancies', async () => {
-  const response = await $fetch('/api/content')
-  return response.vacancies || {}
+onMounted(async () => {
+  try {
+    const data = await $fetch('/api/vacancies') || []
+    // Показываем только активные
+    vacancies.value = data.filter(v => v.active)
+  } catch (e) {
+    console.error('Ошибка загрузки вакансий:', e)
+    vacancies.value = []
+  } finally {
+    loading.value = false
+  }
 })
 
-const vacanciesData = computed(() => data.value || {})
-const items = computed(() => vacanciesData.value.items || [])
-const benefits = computed(() => vacanciesData.value.benefits || [])
-
-// 🔥 Фильтруем только активные вакансии
-const vacancies = computed(() => {
-  return items.value.filter(v => v.active !== false)
-})
-
-// 🔥 Отделы для фильтра
 const departments = computed(() => {
-  const depts = new Set(vacancies.value.map(v => v.department).filter(Boolean))
-  return [...depts]
+  const set = new Set(vacancies.value.map(v => v.department).filter(Boolean))
+  return Array.from(set)
 })
 
 const filteredVacancies = computed(() => {
-  return vacancies.value.filter(vacancy => {
-    const matchesDepartment = !selectedDepartment.value || 
-      vacancy.department === selectedDepartment.value
-    
-    const matchesType = !selectedType.value || 
-      vacancy.type === getTypeLabel(selectedType.value)
-    
-    return matchesDepartment && matchesType
+  return vacancies.value.filter(v => {
+    const matchDept = !selectedDepartment.value || v.department === selectedDepartment.value
+    const matchType = !selectedType.value || v.type === getTypeLabel(selectedType.value)
+    return matchDept && matchType
   })
 })
 
@@ -209,20 +204,15 @@ function applyVacancy(vacancy) {
 function submitApply() {
   dialogVisible.value = false
   alert('Отклик отправлен! Мы рассмотрим вашу кандидатуру.')
-  applyForm.value = {
-    vacancy: '',
-    name: '',
-    email: '',
-    phone: ''
-  }
+  applyForm.value = { vacancy: '', name: '', email: '', phone: '' }
 }
 
 useHead({
-  title: 'Вакансии - ГосНИИхиманалит',
+  title: 'Вакансии - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Вакансии в ГосНИИхиманалит: инженеры, химики, программисты. Присоединяйтесь к нашей команде!' 
+      content: 'Вакансии в ГосНИИхиманалит: инженеры, химики, программисты' 
     }
   ]
 })
