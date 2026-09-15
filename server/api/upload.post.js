@@ -14,7 +14,6 @@ export default defineEventHandler(async (event) => {
     .replace(/[^a-zA-Z0-9а-яА-Я]/g, '-')
   const fileName = `${name}-${Date.now()}${ext}`
   
-  // Сохраняем в public/uploads
   const uploadDir = path.join(process.cwd(), 'public', 'uploads')
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true })
@@ -22,15 +21,6 @@ export default defineEventHandler(async (event) => {
   
   const filePath = path.join(uploadDir, fileName)
   fs.writeFileSync(filePath, file.data)
-  
-  // Копируем в .output/public/uploads если есть
-  const outputDir = path.join(process.cwd(), '.output', 'public', 'uploads')
-  if (fs.existsSync(path.join(process.cwd(), '.output'))) {
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true })
-    }
-    fs.copyFileSync(filePath, path.join(outputDir, fileName))
-  }
   
   return {
     success: true,
