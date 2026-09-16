@@ -10,71 +10,81 @@
         <span class="current">Метрология и поверка</span>
       </nav>
       
-      <h1 class="page-title">Метрология и поверка</h1>
+      <!-- Заголовок -->
+      <div class="page-header">
+        <h1 class="page-title">Метрологический центр</h1>
+        <p class="page-subtitle">АО «ГосНИИхиманалит» предлагает услуги:</p>
+      </div>
       
-      <div class="service-content">
-        <p class="service-intro">
-          Служба метрологии АО "ГосНИИхиманалит" выполняет поверку и калибровку
-          средств измерений в соответствии с требованиями законодательства РФ.
-        </p>
-        
-        <h2 class="section-subtitle">Виды поверки</h2>
-        <div class="types-grid">
-          <div 
-            v-for="type in verificationTypes" 
-            :key="type.title"
-            class="type-card"
-          >
-            <span class="type-icon">{{ type.icon }}</span>
-            <h3>{{ type.title }}</h3>
-            <p>{{ type.description }}</p>
+      <div class="services-content">
+        <!-- Услуга 1: Аттестация испытательного оборудования -->
+        <div class="service-block">
+          <div class="service-header">
+            
+            <h2 class="service-title">Аттестация испытательного оборудования</h2>
+          </div>
+          <ul class="service-list">
+            <li>Аттестация температурных измерений (сушильных шкафов, климатических камер, муфельных печей, холодильников)</li>
+            <li>Аттестация измерений давления (климатические и барокамеры)</li>
+            <li>Аттестация физико-химических измерений (газодинамические установки)</li>
+            <li>Аттестация электрических измерений</li>
+          </ul>
+          <div class="service-note">
+            Аттестация проводится на основании <strong>ГОСТ Р 8.568-2017</strong> 
+            «Аттестация испытательного оборудования. Основные положения».
           </div>
         </div>
         
-        <h2 class="section-subtitle">Наши услуги</h2>
-        <div class="services-table">
-          <div class="table-header">
-            <span class="col-name">Услуга</span>
-            <span class="col-duration">Срок выполнения</span>
-            <span class="col-price">Стоимость</span>
-            <span class="col-action">Действия</span>
+        <!-- Услуга 2: Поверка средств измерения -->
+        <div class="service-block">
+          <div class="service-header">
+            
+            <h2 class="service-title">Поверка средств измерения</h2>
           </div>
-          
-          <div 
-            v-for="service in services" 
-            :key="service.name"
-            class="table-row"
-          >
-            <span class="col-name">{{ service.name }}</span>
-            <span class="col-duration">{{ service.duration }}</span>
-            <span class="col-price">{{ service.price }}</span>
-            <span class="col-action">
-              <button 
-                type="button"
-                class="order-btn"
-                @click="orderService(service)"
-              >
-                Заказать
-              </button>
-            </span>
+          <p class="service-intro">
+            Поверка средств измерения в соответствии с областью аккредитации российского 
+            и иностранного производства:
+          </p>
+          <ul class="service-list">
+            <li>Газоанализаторов</li>
+            <li>Датчиков и первичных преобразователей состава газов</li>
+            <li>Средств измерений параметров состояния воздуха рабочей зоны</li>
+            <li>Сигнализаторов газоаналитических отечественных</li>
+            <li>Сигнализаторов газоаналитических импортных</li>
+            <li>Анализаторов-течеискателей</li>
+            <li>Установок газодинамических</li>
+          </ul>
+        </div>
+        
+        <!-- Услуга 3 -->
+        <div class="service-block compact">
+          <div class="service-header">
+            
+            <h2 class="service-title">Испытание средств измерения, утверждение их типа</h2>
           </div>
         </div>
         
-        <h2 class="section-subtitle">Документация</h2>
-        <div class="documents">
-          <div 
-            v-for="doc in documents" 
-            :key="doc.title"
-            class="document-item"
-          >
-            <div class="document-header" @click="toggleDocument(doc.title)">
-              <h3>{{ doc.title }}</h3>
-              <span class="toggle">{{ openDocs.includes(doc.title) ? '−' : '+' }}</span>
-            </div>
-            <div v-if="openDocs.includes(doc.title)" class="document-content">
-              <p>{{ doc.content }}</p>
-            </div>
+        <!-- Услуга 4 -->
+        <div class="service-block compact">
+          <div class="service-header">
+            
+            <h2 class="service-title">Разработка документов метрологического обеспечения</h2>
           </div>
+        </div>
+      </div>
+      
+      <!-- Контактный блок -->
+      <div class="contacts-block">
+        <h2 class="contacts-title">По вопросам метрологии и поверки</h2>
+        <div class="contacts-info">
+          <a href="tel:+78127866159" class="contact-item">
+            <span class="contact-icon">📞</span>
+            <span>+7 (812) 786-61-59</span>
+          </a>
+          <a href="mailto:mail@himanalit.ru" class="contact-item">
+            <span class="contact-icon">✉️</span>
+            <span>mail@himanalit.ru</span>
+          </a>
         </div>
       </div>
     </div>
@@ -82,74 +92,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const openDocs = ref([])
-
-const verificationTypes = [
-  {
-    icon: '📏',
-    title: 'Первичная поверка',
-    description: 'Проводится при выпуске средств измерений'
-  },
-  {
-    icon: '🔄',
-    title: 'Периодическая поверка',
-    description: 'Проводится в процессе эксплуатации'
-  },
-  {
-    icon: '🔧',
-    title: 'Внеочередная поверка',
-    description: 'После ремонта или повреждения'
-  },
-  {
-    icon: '📄',
-    title: 'Калибровка',
-    description: 'Определение метрологических характеристик'
-  }
-]
-
-const services = [
-  { name: 'Поверка газоанализаторов', duration: '5 дней', price: 'от 5 000 ₽' },
-  { name: 'Поверка хроматографов', duration: '10 дней', price: 'от 15 000 ₽' },
-  { name: 'Калибровка датчиков', duration: '3 дня', price: 'от 3 000 ₽' },
-  { name: 'Поверка средств измерений давления', duration: '7 дней', price: 'от 8 000 ₽' },
-  { name: 'Калибровка термометров', duration: '2 дня', price: 'от 2 000 ₽' }
-]
-
-const documents = [
-  {
-    title: 'Свидетельство об аккредитации',
-    content: 'Метрологическая служба аккредитована в соответствии с требованиями...'
-  },
-  {
-    title: 'Область аккредитации',
-    content: 'Перечень средств измерений, подлежащих поверке и калибровке...'
-  },
-  {
-    title: 'Положение о метрологической службе',
-    content: 'Основные положения и регламент работы метрологической службы...'
-  }
-]
-
-function toggleDocument(title) {
-  if (openDocs.value.includes(title)) {
-    openDocs.value = openDocs.value.filter(d => d !== title)
-  } else {
-    openDocs.value.push(title)
-  }
-}
-
-function orderService(service) {
-  alert(`Заявка на "${service.name}" принята!`)
-}
-
 useHead({
-  title: 'Метрология и поверка - ГосНИИхиманалит',
+  title: 'Метрология и поверка - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Метрология и поверка в ГосНИИхиманалит: поверка газоанализаторов, калибровка средств измерений' 
+      content: 'Метрологический центр ГосНИИХиманалит: аттестация испытательного оборудования, поверка средств измерений, утверждение типа' 
     }
   ]
 })
@@ -162,7 +110,7 @@ useHead({
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -174,6 +122,7 @@ useHead({
   gap: 8px;
   margin-bottom: 2rem;
   font-size: 14px;
+  flex-wrap: wrap;
 }
 
 .breadcrumb a {
@@ -193,200 +142,190 @@ useHead({
   color: #6b7280;
 }
 
+/* Заголовок */
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
 .page-title {
   font-size: 2.5rem;
   font-weight: 700;
   color: #005700;
-  margin-bottom: 2rem;
-  text-align: center;
+  margin-bottom: 0.75rem;
 }
 
-.service-intro {
-  font-size: 1.125rem;
+.page-subtitle {
+  font-size: 1.25rem;
   color: #4b5563;
-  line-height: 1.8;
-  margin-bottom: 2rem;
+  font-weight: 500;
 }
 
-.section-subtitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #005700;
-  margin: 2rem 0 1rem;
+/* Секции услуг */
+.services-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-/* Виды поверки */
-.types-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 2rem;
-}
-
-.type-card {
-  text-align: center;
-  padding: 1.5rem;
+.service-block {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
+  padding: 1.75rem;
   transition: all 0.3s;
 }
 
-.type-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
+.service-block:hover {
+  box-shadow: 0 8px 24px rgba(0, 87, 0, 0.08);
   border-color: #005700;
 }
 
-.type-icon {
-  font-size: 40px;
-  display: block;
+.service-block.compact {
+  padding: 1.25rem 1.75rem;
+}
+
+.service-header {
   margin-bottom: 1rem;
 }
 
-.type-card h3 {
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 16px;
+
+.service-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #005700;
+  line-height: 1.3;
 }
 
-.type-card p {
-  color: #6b7280;
-  font-size: 14px;
+.service-intro {
+  color: #4b5563;
+  margin-bottom: 1rem;
+  line-height: 1.6;
 }
 
-/* Таблица услуг */
-.services-table {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
-
-.table-header {
+/* Списки */
+.service-list {
+  list-style: none;
+  padding: 0;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 0.8fr;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e5e7eb;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
-.table-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 0.8fr;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  align-items: center;
+.service-list li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  color: #4b5563;
+  line-height: 1.6;
+  border-bottom: 1px solid #f5f5f5;
 }
 
-.table-row:last-child {
+.service-list li:last-child {
   border-bottom: none;
 }
 
-.table-row:nth-child(even) {
-  background: #fafafa;
-}
-
-.col-name {
-  font-weight: 500;
-  color: #333;
-}
-
-.col-duration,
-.col-price {
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.order-btn {
-  padding: 8px 16px;
-  background: #005700;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.order-btn:hover {
-  background: #003d00;
-}
-
-/* Документация */
-.documents {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.document-item {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.document-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.document-header:hover {
-  background: #f0f9f0;
-}
-
-.document-header h3 {
-  color: #333;
-  font-size: 16px;
-}
-
-.toggle {
-  font-size: 24px;
+.service-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
   color: #005700;
-  font-weight: 700;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
-.document-content {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #e5e7eb;
+/* Примечание */
+.service-note {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: #f0f5f0;
+  border-left: 4px solid #005700;
+  border-radius: 6px;
+  color: #333;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
-.document-content p {
-  color: #6b7280;
+.service-note strong {
+  color: #005700;
 }
 
-@media (max-width: 1024px) {
-  .types-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Контакты */
+.contacts-block {
+  margin-top: 3rem;
+  background: linear-gradient(135deg, #005700, #003d00);
+  color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
 }
 
+.contacts-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.contacts-info {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  transition: opacity 0.3s;
+}
+
+.contact-item:hover {
+  opacity: 0.8;
+}
+
+.contact-icon {
+  font-size: 1.25rem;
+}
+
+/* Адаптив */
 @media (max-width: 768px) {
-  .types-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .table-header,
-  .table-row {
-    grid-template-columns: 2fr 1fr;
-    font-size: 12px;
-  }
-  
-  .col-price,
-  .col-action {
-    display: none;
-  }
-  
   .page-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1.05rem;
+  }
+  
+  .service-block {
+    padding: 1.25rem;
+  }
+  
+  .service-title {
+    font-size: 1.1rem;
+  }
+  
+  .service-header {
+    gap: 12px;
+  }
+  
+  .service-number {
+    width: 32px;
+    height: 32px;
+    font-size: 0.95rem;
+  }
+  
+  .contacts-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .contacts-block {
+    padding: 1.5rem;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="about-page">
     <div class="container">
-      <h1 class="page-title">О организации</h1>
+      <h1 class="page-title">Об организации</h1>
       
       <div class="about-content">
         <p class="about-intro">
@@ -111,7 +111,7 @@ const certificates = [
 ]
 
 useHead({
-  title: 'О организации - ГосНИИхиманалит',
+  title: 'Об организации - ГосНИИхиманалит',
   meta: [
     { 
       name: 'description', 

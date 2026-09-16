@@ -78,9 +78,6 @@
                   </div>
                 </div>
                 
-                <NuxtLink to="/konstruktorskoe-byuro/obrazovanie-i-obuchenie" class="dropdown-item">
-                  Образование и обучение
-                </NuxtLink>
                 <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="dropdown-item">
                   Библиотека
                 </NuxtLink>
@@ -90,14 +87,14 @@
               </div>
             </div>
             
-            <!-- О организации -->
+            <!-- Об организации -->
             <div class="nav-item has-dropdown">
               <NuxtLink 
                 to="/about" 
                 class="nav-link"
                 :class="{ 'active': $route.path.startsWith('/about') }"
               >
-                О организации <span class="arrow">▼</span>
+                Об организации <span class="arrow">▼</span>
               </NuxtLink>
               <div class="dropdown-menu">
                 <NuxtLink to="/about/kontakty" class="dropdown-item">Контакты</NuxtLink>
@@ -156,9 +153,6 @@
             Формулы
           </NuxtLink>
           
-          <NuxtLink to="/konstruktorskoe-byuro/obrazovanie-i-obuchenie" class="mobile-link sub" @click="mobileMenuOpen = false">
-            Образование и обучение
-          </NuxtLink>
           <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="mobile-link sub" @click="mobileMenuOpen = false">
             Библиотека
           </NuxtLink>
@@ -169,7 +163,7 @@
         
         <div class="mobile-group">
           <NuxtLink to="/about" class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
-            О организации
+            Об организации
           </NuxtLink>
           <NuxtLink to="/about/kontakty" class="mobile-link sub" @click="mobileMenuOpen = false">
             Контакты
@@ -254,7 +248,7 @@ const services = [
   { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
   { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
   { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
-  { title: 'Конструкторское бюро', path: '/uslugi/konstruktorskoe-byuro-1' },
+  { title: 'Конструкторское бюро', path: '/konstruktorskoe-byuro' },
   { title: 'Стандартизация', path: '/uslugi/standartizaciya' },
   { title: 'Производство', path: '/uslugi/proizvodstvo' },
   { title: 'Аренда', path: '/uslugi/arenda' }
@@ -262,7 +256,6 @@ const services = [
 
 const kbItems = [
   { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
-  { title: 'Образование и обучение', path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' },
   { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
   { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
   { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }

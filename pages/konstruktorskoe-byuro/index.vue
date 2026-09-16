@@ -54,12 +54,6 @@ const sections = [
     path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk'
   },
   {
-    icon: '📚',
-    title: 'Образование и обучение',
-    description: 'Обучение и повышение квалификации специалистов',
-    path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie'
-  },
-  {
     icon: '📖',
     title: 'Библиотека',
     description: 'Техническая литература и документация',

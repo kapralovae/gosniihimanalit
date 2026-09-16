@@ -4,6 +4,32 @@
     <div class="carousel-wrapper">
       <SimpleCarousel :slides="slides" :interval="5000" />
     </div>
+
+    <!-- Об организации -->
+    <section class="about-section">
+      <div class="container">
+        <h2 class="section-title">Об организации</h2>
+        <div class="about-content">
+          <p>
+            <strong>АО «ГосНИИхиманалит»</strong> — научно-производственное предприятие,
+            специализирующееся на разработке и производстве технических средств
+            химического контроля, проведении испытаний и метрологических работ.
+          </p>
+          <p>
+            Предприятие основано в 1970 году и с тех пор является одним из ведущих
+            центров в области аналитического приборостроения и химического анализа
+            в России.
+          </p>
+          <p>
+            Мы выполняем полный цикл работ: от научных исследований и проектирования
+            до серийного производства и сервисного обслуживания.
+          </p>
+          <NuxtLink to="/about" class="about-link">
+            Подробнее о нас →
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
     
     <!-- Наши партнеры -->
     <div class="partners-section">
@@ -59,7 +85,7 @@ useHead({
 
 <style scoped>
 .home-page {
-  min-height: 100vh;
+  min-height: 80vh;
   background: #fff;
 }
 
@@ -71,6 +97,62 @@ useHead({
 
 .carousel-wrapper {
   width: 100%;
+}
+
+.about-section {
+  padding: 4rem 0;
+  position: relative;
+  background-image: url('/images/gosnii.webp');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.about-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 87, 0, 0.75);
+  z-index: 0;
+}
+
+.about-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.about-section .section-title {
+  color: #fff;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-content p {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.about-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #4cc94a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.about-link:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* Блок партнеров */

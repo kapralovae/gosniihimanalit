@@ -7,150 +7,135 @@
         <span class="separator">/</span>
         <NuxtLink to="/konstruktorskoe-byuro">Конструкторское бюро</NuxtLink>
         <span class="separator">/</span>
-        <span class="current">ЦРТСХК</span>
+        <span class="current">Центр разработки технических средств химического контроля</span>
       </nav>
       
-      <h1 class="page-title">Центр разработки технических средств химического контроля</h1>
+      <!-- Заголовок -->
+      <div class="page-header">
+        <h1 class="page-title">Центр разработки технических средств химического контроля (ЦРТСХК)</h1>
+      </div>
       
-      <div class="kb-content">
-        <p class="kb-intro">
-          Центр разработки технических средств химического контроля (ЦРТСХК) занимается
-          созданием современных технических средств химического контроля для различных
-          отраслей промышленности.
+      <!-- Вводный блок -->
+      <div class="intro-card">
+        <p>
+          На базе предприятия создан специализированный центр разработки приборов и систем РХБЗ контроля и защиты,
+          приборов и систем для самых различных отраслей промышленности и науки, оборонных задач.
         </p>
-        
-        <h2 class="section-subtitle">Направления разработок</h2>
-        <div class="directions-grid">
-          <div 
-            v-for="direction in directions" 
-            :key="direction.title"
-            class="direction-card"
-          >
-            <span class="direction-icon">{{ direction.icon }}</span>
-            <h3>{{ direction.title }}</h3>
-            <p>{{ direction.description }}</p>
-          </div>
+      </div>
+      
+      <!-- О центре -->
+      <div class="info-card">
+        <h2 class="section-subtitle">О центре</h2>
+        <p>
+          В ЦРТСХК трудятся высококвалифицированные ученые, инженеры-конструкторы, разработчики электроники,
+          программисты систем высокого и низкого уровней, технические писатели, инженеры-технологи.
+        </p>
+        <p>
+          В центре трудятся высококвалифицированные инженеры-разработчики электроники, программисты, инженеры-конструкторы,
+          инженеры-технологи, способные реализовать широкий спектр задач и идей в разнообразных сферах.
+        </p>
+        <p>
+          Дружелюбная атмосфера, молодой и сплоченный коллектив, современное оснащение, человеко-ориентированная культура,
+          нацеленность на реальный результат, современные технологии управления проектами располагают к эффективной
+          и качественной работе.
+        </p>
+      </div>
+      
+      <!-- Компетенции центра -->
+      <h2 class="section-title">В компетенции центра входят:</h2>
+      
+      <div class="competencies">
+        <!-- Разработка и модернизация -->
+        <div class="competency-card">
+          <h3 class="competency-title">
+            <span class="competency-icon">🔧</span>
+            Разработка и модернизация
+          </h3>
+          <ul class="competency-list">
+            <li>Носимых и стационарных приборов контроля уровня загазованности, уровня радиоактивного заражения, обитаемости</li>
+            <li>Приборов и систем контроля утечки компонентов жидких ракетных топлив (гептил, амил, гидразин)</li>
+            <li>Сложных распределенных стационарных систем газового контроля, контроля обитаемости, контроля по любым необходимым параметрам: освещенность, различные виды излучений, электрических и физических величин</li>
+            <li>Систем с электрической или оптоволоконной связью между блоками, с пультами сбора и обработки данных</li>
+            <li>АРМ Оператора</li>
+            <li>Узлов электроники (схемотехника, трассировка печатных плат, код) и функционально законченных приборов самого разнообразного назначения</li>
+            <li>Узлов оптико-электронных комплексов и платформ (контроллеров, сервоприводов, BLDC)</li>
+            <li>Источников питания (напряжения и тока, в т.ч. прецизионных) мощностью от 1 Вт до 1 кВт</li>
+            <li>Специализированного программного обеспечения под ОС Windows и Astra Linux</li>
+          </ul>
         </div>
         
-        <h2 class="section-subtitle">Разработанные изделия</h2>
-        <div class="products-table">
-          <div class="table-header">
-            <span class="col-name">Наименование</span>
-            <span class="col-type">Тип</span>
-            <span class="col-status">Статус</span>
-            <span class="col-year">Год</span>
-          </div>
-          
-          <div 
-            v-for="product in products" 
-            :key="product.name"
-            class="table-row"
-          >
-            <span class="col-name">{{ product.name }}</span>
-            <span class="col-type">{{ product.type }}</span>
-            <span class="col-status">
-              <span 
-                class="status"
-                :class="{ 'in-production': product.status === 'В производстве' }"
-              >
-                {{ product.status }}
-              </span>
-            </span>
-            <span class="col-year">{{ product.year }}</span>
-          </div>
+        <!-- Разработка приборов и систем -->
+        <div class="competency-card">
+          <h3 class="competency-title">
+            <span class="competency-icon">🔬</span>
+            Разработка приборов и систем
+          </h3>
+          <ul class="competency-list">
+            <li>Автоматического метеорологического оборудования (стационарного и переносного)</li>
+            <li>Приложений под мобильные ОС Android и веб-приложений (фронт и бэкенд)</li>
+            <li>Прототипов (автоматических, с дистанционным управлением, носимых и стационарных)</li>
+            <li>Анализаторов качества воды и технических жидкостей</li>
+            <li>Систем цифровой связи и телеметрии (LORA, LTE, Nb-IoT, FSK)</li>
+            <li>Систем лазерной подсветки</li>
+            <li>Полезных нагрузок для БПЛА</li>
+            <li>Наземных станций управления нагрузками БПЛА с цифровыми каналами связи</li>
+            <li>Медицинских приборов и приборов контроля состояния оператора</li>
+            <li>Кода для микроконтроллеров с ядром ARM (STM32, Gigadevice) на языках C, C++</li>
+            <li>Схемотехники на ПЛИС и программ конфигурации ПЛИС на System Verilog</li>
+            <li>Испытательного оборудования</li>
+            <li>Механических конструкций, механизмов и комплектующих изделий</li>
+            <li>Универсальных программируемых логических контроллеров и расширителей к ним, аналого-цифровых преобразователей, радиомодемов</li>
+            <li>Иных систем и комплексов</li>
+          </ul>
         </div>
-        
-        <h2 class="section-subtitle">Процесс разработки</h2>
-        <div class="steps">
-          <div 
-            v-for="(step, index) in steps" 
-            :key="step.title"
-            class="step-item"
-            :class="{ 'completed': index < activeStep, 'active': index === activeStep }"
-          >
-            <div class="step-number">{{ index + 1 }}</div>
-            <div class="step-info">
-              <h4>{{ step.title }}</h4>
-              <p>{{ step.description }}</p>
-            </div>
-          </div>
+      </div>
+      
+      <!-- Направления деятельности -->
+      <h2 class="section-title">Разработка специализированного ПО</h2>
+      <div class="activities-grid">
+        <div class="activity-item">
+          <span class="activity-icon">🖥️</span>
+          <p>Разработка специализированного программного обеспечения под ОС Windows и Astra Linux; приложений под мобильные ОС Android и веб-приложений (фронт и бэкенд)</p>
         </div>
-        
-        <h2 class="section-subtitle">Патенты и разработки</h2>
-        <div class="patents">
-          <div class="patent-group">
-            <h3 class="patent-title">Патенты на изобретения</h3>
-            <ul class="patent-list">
-              <li>Патент № 123456 "Газоанализатор"</li>
-              <li>Патент № 123457 "Способ определения концентрации"</li>
-              <li>Патент № 123458 "Устройство для отбора проб"</li>
-            </ul>
-          </div>
-          
-          <div class="patent-group">
-            <h3 class="patent-title">Свидетельства о регистрации</h3>
-            <ul class="patent-list">
-              <li>Свидетельство № 2020123456 на программу ЭВМ</li>
-              <li>Свидетельство № 2020123457 на базу данных</li>
-            </ul>
-          </div>
+        <div class="activity-item">
+          <span class="activity-icon">⚙️</span>
+          <p>Разработка схемотехники узлов и приборов электронной техники</p>
         </div>
+        <div class="activity-item">
+          <span class="activity-icon">📐</span>
+          <p>Разработка конструкции приборов и систем, узлов и механизмов</p>
+        </div>
+      </div>
+      
+      <!-- Работы -->
+      <h2 class="section-title">Работы</h2>
+      <div class="info-card">
+        <ul class="works-list">
+          <li>Переработка, доработка, доводка приборов и систем Заказчика</li>
+          <li>Импортозамещение в области приборостроения</li>
+          <li>Кооперации с любыми предприятиями РФ и СНГ, необходимых Заказчику</li>
+          <li>Разработка конструкторских и технологических документов</li>
+        </ul>
+      </div>
+      
+      <!-- Стандарты -->
+      <div class="standards-note">
+        <p>
+          <strong>Все разработки ведутся в соответствии с</strong> ГОСТ, ГОСТ Р, ГОСТ РВ.
+          СМК ГОСТ Р ИСО 9001-2015, ГОСТ РВ 0015-002-2020.
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const activeStep = ref(2)
-
-const directions = [
-  {
-    icon: '🔬',
-    title: 'Газоанализ',
-    description: 'Разработка газоанализаторов и сигнализаторов'
-  },
-  {
-    icon: '⚗️',
-    title: 'Хроматография',
-    description: 'Создание хроматографического оборудования'
-  },
-  {
-    icon: '📡',
-    title: 'Сенсоры',
-    description: 'Разработка датчиков и сенсоров'
-  },
-  {
-    icon: '💻',
-    title: 'Системы',
-    description: 'Комплексные системы мониторинга'
-  }
-]
-
-const products = [
-  { name: 'Газоанализатор ГАН-1', type: 'Стационарный', status: 'В производстве', year: 2020 },
-  { name: 'Газосигнализатор ГС-3', type: 'Портативный', status: 'В производстве', year: 2021 },
-  { name: 'Хроматограф ХРОМ-2', type: 'Лабораторный', status: 'В производстве', year: 2022 },
-  { name: 'Датчик кислорода ДК-1', type: 'Датчик', status: 'В производстве', year: 2023 },
-  { name: 'Система мониторинга СМ-1', type: 'Система', status: 'Разрабатывается', year: 2024 },
-  { name: 'Анализатор жидкости АЖ-1', type: 'Лабораторный', status: 'Разрабатывается', year: 2024 }
-]
-
-const steps = [
-  { title: 'Исследование', description: 'Анализ требований' },
-  { title: 'Проектирование', description: 'Разработка КД' },
-  { title: 'Изготовление', description: 'Опытный образец' },
-  { title: 'Испытания', description: 'Проверка характеристик' },
-  { title: 'Производство', description: 'Серийный выпуск' }
-]
-
 useHead({
-  title: 'Центр разработки ТСХК - ГосНИИхиманалит',
+  title: 'Центр разработки технических средств химического контроля - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Центр разработки технических средств химического контроля ГосНИИхиманалит' 
+      content: 'ЦРТСХК ГосНИИХиманалит: разработка приборов и систем РХБЗ контроля, электроники, ПО, конструкций' 
     }
   ]
 })
@@ -175,6 +160,7 @@ useHead({
   gap: 8px;
   margin-bottom: 2rem;
   font-size: 14px;
+  flex-wrap: wrap;
 }
 
 .breadcrumb a {
@@ -194,253 +180,239 @@ useHead({
   color: #6b7280;
 }
 
-.page-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #005700;
-  margin-bottom: 2rem;
+/* Заголовок */
+.page-header {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-.kb-intro {
-  font-size: 1.125rem;
-  color: #4b5563;
-  line-height: 1.8;
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #005700;
+  line-height: 1.3;
+}
+
+/* Вводный блок */
+.intro-card {
+  background: linear-gradient(135deg, #005700 0%, #003d00 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
   margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Секции */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #005700;
+  margin: 2.5rem 0 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #005700;
 }
 
 .section-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #005700;
-  margin: 2rem 0 1rem;
+  margin-bottom: 1rem;
 }
 
-/* Направления */
-.directions-grid {
+.info-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #005700;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-card p {
+  color: #4b5563;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.info-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Компетенции */
+.competencies {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
   margin-bottom: 2rem;
 }
 
-.direction-card {
-  text-align: center;
-  padding: 1.5rem;
+.competency-card {
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
+  padding: 1.5rem;
   transition: all 0.3s;
 }
 
-.direction-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
+.competency-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 87, 0, 0.1);
   border-color: #005700;
 }
 
-.direction-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.direction-card h3 {
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.direction-card p {
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-/* Таблица изделий */
-.products-table {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.2fr 0.5fr;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.2fr 0.5fr;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
+.competency-title {
+  display: flex;
   align-items: center;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #005700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f0f5f0;
 }
 
-.table-row:last-child {
+.competency-icon {
+  font-size: 24px;
+}
+
+.competency-list {
+  list-style: none;
+  padding: 0;
+}
+
+.competency-list li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.925rem;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.competency-list li:last-child {
   border-bottom: none;
 }
 
-.table-row:nth-child(even) {
-  background: #fafafa;
-}
-
-.col-name {
-  font-weight: 500;
-  color: #333;
-}
-
-.col-type,
-.col-year {
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.status {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.status.in-production {
-  background: #f0f9f0;
+.competency-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
   color: #005700;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
-/* Процесс разработки */
-.steps {
-  display: flex;
-  gap: 0;
+/* Направления деятельности */
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   margin-bottom: 2rem;
-  position: relative;
 }
 
-.step-item {
-  flex: 1;
+.activity-item {
+  background: #f0f5f0;
+  border-radius: 12px;
+  padding: 1.5rem;
   text-align: center;
-  position: relative;
-  padding: 0 10px;
-}
-
-.step-number {
-  width: 40px;
-  height: 40px;
-  background: #e5e7eb;
-  color: #6b7280;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  margin: 0 auto 0.5rem;
   transition: all 0.3s;
 }
 
-.step-item.completed .step-number {
-  background: #005700;
-  color: #fff;
+.activity-item:hover {
+  background: #e0efe0;
+  transform: translateY(-3px);
 }
 
-.step-item.active .step-number {
-  background: #003d00;
-  color: #fff;
-  box-shadow: 0 0 0 4px rgba(41, 176, 38, 0.2);
+.activity-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 0.75rem;
 }
 
-.step-info h4 {
+.activity-item p {
   color: #333;
-  margin-bottom: 0.25rem;
-  font-size: 14px;
+  font-size: 0.925rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.step-info p {
-  color: #6b7280;
-  font-size: 12px;
-}
-
-/* Патенты */
-.patents {
+/* Работы */
+.works-list {
+  list-style: none;
+  padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 10px;
 }
 
-.patent-group {
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-}
-
-.patent-title {
-  color: #005700;
-  margin-bottom: 1rem;
-  font-size: 1.125rem;
-}
-
-.patent-list {
-  list-style: disc;
-  padding-left: 1.5rem;
-}
-
-.patent-list li {
-  margin-bottom: 0.5rem;
+.works-list li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.5rem;
   color: #4b5563;
+  line-height: 1.6;
 }
 
+.works-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #005700;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Стандарты */
+.standards-note {
+  background: #f0f5f0;
+  border-left: 4px solid #005700;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.standards-note p {
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.standards-note strong {
+  color: #005700;
+}
+
+/* Адаптив */
 @media (max-width: 1024px) {
-  .directions-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .patents {
-    grid-template-columns: 1fr;
+  .activities-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .directions-grid {
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .competencies {
     grid-template-columns: 1fr;
   }
   
-  .table-header,
-  .table-row {
-    grid-template-columns: 2fr 1fr;
-    font-size: 12px;
+  .activities-grid {
+    grid-template-columns: 1fr;
   }
   
-  .col-status,
-  .col-year {
-    display: none;
+  .works-list {
+    grid-template-columns: 1fr;
   }
   
-  .steps {
-    flex-direction: column;
-    gap: 15px;
+  .section-title {
+    font-size: 1.25rem;
   }
   
-  .step-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    text-align: left;
-  }
-  
-  .step-number {
-    margin: 0;
-    flex-shrink: 0;
-  }
-  
-  .page-title {
-    font-size: 1.75rem;
+  .intro-card {
+    padding: 1.5rem;
+    font-size: 1rem;
   }
 }
 </style>

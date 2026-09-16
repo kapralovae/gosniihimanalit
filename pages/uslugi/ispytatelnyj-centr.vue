@@ -169,6 +169,88 @@
             </li>
           </ul>
         </div>
+
+        <h2 class="section-subtitle">Оборудование и виды испытаний</h2>
+        <div class="equipment-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Оборудование, вид испытаний</th>
+                <th>Основные характеристики</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Камера климатическая TXB-1000</strong> — 2 шт.<br>
+                  <small>(испытания на воздействие климатических факторов по ГОСТ РВ 0020-57.306-2019)</small>
+                </td>
+                <td>
+                  температурный диапазон, °C: от -60 до +100;<br>
+                  диапазон поддержания относительной влажности: от -30 до 98 %;<br>
+                  размер рабочей камеры (ш×в×г): 900×1000×1100 мм
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Ударный стенд STT-500</strong><br>
+                  <small>(испытания на воздействие механических факторов по ГОСТ РВ 0020-57.305-2019)</small>
+                </td>
+                <td>
+                  ударное ускорение, g: от 10 до 300;<br>
+                  грузоподъемность, кг: от 50 до 400;<br>
+                  частота ударов минуту: от 17 до 180
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Пресс настольный гидравлический «АТОМ Т40»</strong>
+                </td>
+                <td>усилие 400 кН</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Камера агрессивных сред</strong> — 2 шт.<br>
+                  <small>(испытания на воздействие специальных сред по ГОСТ РВ 0020-57.307-2019)</small>
+                </td>
+                <td>
+                  объем камеры: 0,3 м³;<br>
+                  различные агрессивные газы и аэрозоли в области аттестации
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Термостат суховоздушный ТС-1/80</strong>
+                </td>
+                <td>
+                  температурный диапазон: от 0 до +60;<br>
+                  размеры рабочей камеры (ш×в×г), мм: 396×393×496
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Газодинамические установки (ГДУ-01, ГДУ-100, ГДП-2)</strong>
+                </td>
+                <td>создание концентраций в соответствии с требованиями Заказчика</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Лазерная маркировка. Оптоволоконный гравер 30W</strong>
+                </td>
+                <td>
+                  рабочее поле, мм: 160×160;<br>
+                  мин. ширина линии, мм: 0,01
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Изготовление транспортировочной тары</strong>
+                </td>
+                <td>дерево, фанера, полимерные материалы по ГОСТ, разработка РКД на тару</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         
         <!-- Другие виды деятельности -->
         <h2 class="section-subtitle">К видам деятельности БИМЛ также относится:</h2>
@@ -216,7 +298,9 @@ const certificates = [
 </script>
 
 <style scoped>
-
+/* ============================================
+   1. ОБЩИЕ СТИЛИ СТРАНИЦЫ
+   ============================================ */
 .service-page {
   min-height: 100vh;
   padding: 2rem 0;
@@ -228,7 +312,9 @@ const certificates = [
   padding: 0 20px;
 }
 
-/* Хлебные крошки */
+/* ============================================
+   2. ХЛЕБНЫЕ КРОШКИ
+   ============================================ */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -255,6 +341,9 @@ const certificates = [
   color: #6b7280;
 }
 
+/* ============================================
+   3. ЗАГОЛОВКИ
+   ============================================ */
 .page-title {
   font-size: 2rem;
   font-weight: 700;
@@ -263,18 +352,21 @@ const certificates = [
   text-align: center;
 }
 
-.service-intro {
-  font-size: 1.125rem;
-  color: #4b5563;
-  line-height: 1.8;
-  margin-bottom: 1rem;
-}
-
 .section-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
   color: #005700;
   margin: 2rem 0 1rem;
+}
+
+/* ============================================
+   4. КАРТОЧКИ И БЛОКИ
+   ============================================ */
+.service-intro {
+  font-size: 1.125rem;
+  color: #4b5563;
+  line-height: 1.8;
+  margin-bottom: 1rem;
 }
 
 .info-card {
@@ -312,75 +404,9 @@ const certificates = [
   color: #003d00;
 }
 
-.certificates-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 1.5rem;
-}
-
-.certificate-card {
-  text-align: center;
-  padding: 1rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-}
-
-.certificate-thumbnail {
-  cursor: pointer;
-  overflow: hidden;
-  border-radius: 4px;
-  max-height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8fafc;
-  transition: opacity 0.3s;
-}
-
-.certificate-thumbnail:hover {
-  opacity: 0.8;
-}
-
-.certificate-thumbnail-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-
-/* Модальное окно */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 20px;
-  cursor: pointer;
-}
-
-.modal-image-wrapper {
-  max-width: 95vw;
-  max-height: 95vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-full-image {
-  max-width: 95vw;
-  max-height: 95vh;
-  object-fit: contain;
-  cursor: pointer;
-}
-
+/* ============================================
+   5. СПИСКИ
+   ============================================ */
 .capabilities-list {
   list-style: none;
   padding: 0;
@@ -428,6 +454,149 @@ const certificates = [
   color: #333;
 }
 
+/* ============================================
+   6. СЕРТИФИКАТЫ
+   ============================================ */
+.certificates-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 1.5rem;
+}
+
+.certificate-card {
+  text-align: center;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.certificate-thumbnail {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 4px;
+  max-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  transition: opacity 0.3s;
+}
+
+.certificate-thumbnail:hover {
+  opacity: 0.8;
+}
+
+.certificate-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ============================================
+   7. МОДАЛЬНОЕ ОКНО
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.modal-image-wrapper {
+  max-width: 95vw;
+  max-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-full-image {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* ============================================
+   8. ТАБЛИЦА ОБОРУДОВАНИЯ
+   ============================================ */
+.equipment-table {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.equipment-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.equipment-table th {
+  background: #005700;
+  color: #fff;
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.equipment-table th:last-child {
+  border-right: none;
+}
+
+.equipment-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #f0f0f0;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.925rem;
+  vertical-align: top;
+}
+
+.equipment-table td:last-child {
+  border-right: none;
+}
+
+.equipment-table tr:last-child td {
+  border-bottom: none;
+}
+
+.equipment-table tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+.equipment-table tr:hover td {
+  background: #f0f5f0;
+}
+
+.equipment-table td strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.equipment-table td small {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ============================================
+   9. АДАПТИВ (все медиа-запросы в конце)
+   ============================================ */
 @media (max-width: 768px) {
   .certificates-grid {
     grid-template-columns: 1fr;
@@ -435,6 +604,20 @@ const certificates = [
   
   .certificate-thumbnail {
     max-height: 300px;
+  }
+  
+  .equipment-table th,
+  .equipment-table td {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.25rem;
   }
 }
 </style>

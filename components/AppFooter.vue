@@ -81,7 +81,7 @@ const services = [
   { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
   { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
   { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
-  { title: 'Конструкторское бюро', path: '/uslugi/konstruktorskoe-byuro-1' },
+  { title: 'Конструкторское бюро', path: '/konstruktorskoe-byuro' },
   { title: 'Стандартизация', path: '/uslugi/standartizaciya' },
   { title: 'Производство', path: '/uslugi/proizvodstvo' },
   { title: 'Аренда', path: '/uslugi/arenda' }
@@ -89,7 +89,6 @@ const services = [
 
 const kbItems = [
   { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
-  { title: 'Образование и обучение', path: '/konstruktorskoe-byuro/obrazovanie-i-obuchenie' },
   { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
   { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
   { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }

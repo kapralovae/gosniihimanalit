@@ -4,36 +4,23 @@
       <h1 class="page-title">Услуги</h1>
       
       <p class="services-intro">
-        АО "ГосНИИхиманалит" предоставляет широкий спектр услуг в области
+        АО «ГосНИИхиманалит» предоставляет широкий спектр услуг в области
         химического анализа, испытаний и метрологии.
       </p>
       
-      <div class="services-grid">
+      <div class="services-list">
         <NuxtLink 
           v-for="service in services" 
           :key="service.path"
           :to="service.path"
-          class="service-card"
+          class="service-item"
         >
+          <span class="service-icon">{{ service.icon }}</span>
           <div class="service-content">
-            <span class="service-icon">{{ service.icon }}</span>
             <h2 class="service-title">{{ service.title }}</h2>
             <p class="service-description">{{ service.description }}</p>
-            
-            <div class="service-features">
-              <span 
-                v-for="feature in service.features" 
-                :key="feature"
-                class="feature-tag"
-              >
-                {{ feature }}
-              </span>
-            </div>
-            
-            <span class="service-button">
-              Подробнее →
-            </span>
           </div>
+          <span class="service-arrow">→</span>
         </NuxtLink>
       </div>
     </div>
@@ -43,62 +30,55 @@
 <script setup>
 const services = [
   {
-    icon: '🔬',
+    icon: '🧫',
     title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
     description: 'Комплексные испытания технических средств химического контроля',
-    path: '/uslugi/ispytatelnyj-centr',
-    features: ['Испытания', 'Сертификация', 'Аккредитация']
+    path: '/uslugi/ispytatelnyj-centr'
   },
   {
     icon: '📏',
     title: 'Метрология и поверка',
     description: 'Поверка и калибровка средств измерений',
-    path: '/uslugi/metrologiya-i-poverka',
-    features: ['Поверка', 'Калибровка', 'Метрология']
+    path: '/uslugi/metrologiya-i-poverka'
   },
   {
     icon: '⚗️',
     title: 'Аналитическая химия',
     description: 'Химический анализ веществ и материалов',
-    path: '/uslugi/analiticheskaya-himiya',
-    features: ['Анализ', 'Исследования', 'Экспертиза']
+    path: '/uslugi/analiticheskaya-himiya'
   },
   {
-    icon: '📐',
+    icon: '🖥️',
     title: 'Конструкторское бюро',
     description: 'Разработка и проектирование оборудования',
-    path: '/uslugi/konstruktorskoe-byuro-1',
-    features: ['Проектирование', 'Разработка', '3D моделирование']
+    path: '/uslugi/konstruktorskoe'
   },
   {
     icon: '📋',
     title: 'Стандартизация',
     description: 'Разработка стандартов и нормативных документов',
-    path: '/uslugi/standartizaciya',
-    features: ['Стандарты', 'Нормативы', 'Документация']
+    path: '/uslugi/standartizaciya'
   },
   {
     icon: '🏭',
     title: 'Производство',
-    description: 'Производство технических средств',
-    path: '/uslugi/proizvodstvo',
-    features: ['Производство', 'Сборка', 'Тестирование']
+    description: 'Производство технических средств химического контроля',
+    path: '/uslugi/proizvodstvo'
   },
   {
     icon: '🔑',
     title: 'Аренда',
-    description: 'Аренда оборудования для химического анализа',
-    path: '/uslugi/arenda',
-    features: ['Аренда', 'Прокат', 'Обслуживание']
+    description: 'Аренда производственных и офисных помещений',
+    path: '/uslugi/arenda'
   }
 ]
 
 useHead({
-  title: 'Услуги - ГосНИИхиманалит',
+  title: 'Услуги - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Услуги ГосНИИхиманалит: испытания, метрология, аналитическая химия, производство' 
+      content: 'Услуги ГосНИИХиманалит: испытания, метрология, аналитическая химия, производство' 
     }
   ]
 })
@@ -111,7 +91,7 @@ useHead({
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -120,105 +100,101 @@ useHead({
   font-size: 2.5rem;
   font-weight: 700;
   color: #005700;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
 .services-intro {
   text-align: center;
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   color: #6b7280;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.service-card {
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 1.25rem 1.5rem;
   background: #fff;
   border: 1px solid #e5e7eb;
+  border-left: 4px solid #005700;
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.3s;
+  transition: all 0.25s;
 }
 
-.service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 35px rgba(41, 176, 38, 0.15);
-  border-color: #005700;
-}
-
-.service-content {
-  text-align: center;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 300px;
+.service-item:hover {
+  border-left-color: #4cc94a;
+  box-shadow: 0 4px 16px rgba(0, 87, 0, 0.1);
+  transform: translateX(4px);
 }
 
 .service-icon {
-  font-size: 60px;
-  margin-bottom: 1.5rem;
+  font-size: 32px;
+  flex-shrink: 0;
+  width: 48px;
+  text-align: center;
+}
+
+.service-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .service-title {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
 }
 
 .service-description {
+  font-size: 0.9rem;
   color: #6b7280;
-  margin-bottom: 1.5rem;
-  flex: 1;
+  line-height: 1.4;
 }
 
-.service-features {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.feature-tag {
-  padding: 4px 10px;
-  background: #f0f9f0;
+.service-arrow {
+  font-size: 1.25rem;
   color: #005700;
-  border: 1px solid #005700;
-  border-radius: 4px;
-  font-size: 12px;
+  flex-shrink: 0;
+  transition: transform 0.25s;
 }
 
-.service-button {
-  margin-top: auto;
-  color: #005700;
-  font-weight: 500;
-}
-
-@media (max-width: 1024px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.service-item:hover .service-arrow {
+  transform: translateX(4px);
+  color: #4cc94a;
 }
 
 @media (max-width: 768px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .service-content {
-    min-height: 250px;
-  }
-  
   .page-title {
     font-size: 2rem;
+  }
+  
+  .service-item {
+    padding: 1rem;
+    gap: 12px;
+  }
+  
+  .service-icon {
+    font-size: 24px;
+    width: 36px;
+  }
+  
+  .service-title {
+    font-size: 0.95rem;
+  }
+  
+  .service-description {
+    font-size: 0.85rem;
   }
 }
 </style>

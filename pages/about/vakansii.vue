@@ -5,7 +5,7 @@
       <nav class="breadcrumb">
         <NuxtLink to="/">Главная</NuxtLink>
         <span class="separator">/</span>
-        <NuxtLink to="/about">О организации</NuxtLink>
+        <NuxtLink to="/about">Об организации</NuxtLink>
         <span class="separator">/</span>
         <span class="current">Вакансии</span>
       </nav>
