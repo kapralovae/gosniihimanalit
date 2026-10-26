@@ -5,7 +5,7 @@
       <nav class="breadcrumb">
         <NuxtLink to="/">Главная</NuxtLink>
         <span class="separator">/</span>
-        <NuxtLink to="/about">Об организации</NuxtLink>
+        <NuxtLink to="/about/kontakty" >Об организации</NuxtLink>
         <span class="separator">/</span>
         <span class="current">История</span>
       </nav>
@@ -39,21 +39,6 @@
                 </ul>
               </div>
             </div>
-          </div>
-        </div>
-        
-        <!-- Ключевые фигуры -->
-        <h2 class="section-title">Ключевые фигуры</h2>
-        <div class="people-grid">
-          <div 
-            v-for="person in keyPeople" 
-            :key="person.name"
-            class="person-card"
-          >
-            <div class="person-avatar">{{ person.initials }}</div>
-            <h3>{{ person.name }}</h3>
-            <p class="person-position">{{ person.position }}</p>
-            <p class="person-years">{{ person.years }}</p>
           </div>
         </div>
         
@@ -133,32 +118,6 @@ const historyEvents = [
   }
 ]
 
-const keyPeople = [
-  {
-    name: 'Иванов Иван Иванович',
-    position: 'Основатель института',
-    years: '1970-1985',
-    initials: 'ИИ'
-  },
-  {
-    name: 'Петров Петр Петрович',
-    position: 'Директор института',
-    years: '1985-2000',
-    initials: 'ПП'
-  },
-  {
-    name: 'Сидоров Алексей Иванович',
-    position: 'Генеральный директор',
-    years: '2000-2015',
-    initials: 'АС'
-  },
-  {
-    name: 'Козлов Дмитрий Сергеевич',
-    position: 'Генеральный директор',
-    years: '2015-настоящее время',
-    initials: 'ДК'
-  }
-]
 
 const awards = [
   { title: 'Премия правительства РФ', year: '2010' },
@@ -323,67 +282,6 @@ useHead({
   position: relative;
 }
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: #005700;
-  margin: 10px auto 0;
-}
-
-.people-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 3rem;
-}
-
-.person-card {
-  text-align: center;
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.person-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-}
-
-.person-avatar {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1rem;
-  background: #005700;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.person-card h3 {
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-}
-
-.person-position {
-  color: #005700;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.person-years {
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
 /* Награды */
 .awards-grid {
   display: grid;
@@ -415,14 +313,12 @@ useHead({
 }
 
 @media (max-width: 1024px) {
-  .people-grid,
   .awards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .people-grid,
   .awards-grid {
     grid-template-columns: 1fr;
   }

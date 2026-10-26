@@ -22,3 +22,19 @@ logs
 .env
 .env.*
 !.env.example
+
+# База данных (серверная, не коммитим)
+data/*.sqlite
+data/*.sqlite.bak*
+data/*.sqlite-journal
+data/*.sqlite-wal
+data/*.sqlite-shm
+
+# Пользовательские загрузки
+public/uploads/
+public/books/
+public/models/
+
+# Бэкапы
+*.bak
+*.bak-*

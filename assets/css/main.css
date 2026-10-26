@@ -12,6 +12,13 @@
   --bg-light: #f5f7fa;
   --bg-white: #ffffff;
   --border-color: #e5e7eb;
+
+    /* Новые переменные для фонов */
+  --bg-section: #e8e8e8;       /* фон секций на главной, страниц */
+  --bg-card: #ffffff;           /* фон карточек */
+  --bg-hover: #f0f9f0;          /* hover-эффекты */
+  --bg-table-alt: #f7faf7;      /* чётные строки таблиц */
+  --bg-accent: #f0f5f0;         /* плашки, акценты */
 }
 
 * {
@@ -54,14 +61,14 @@ body {
   position: relative;
 }
 
-.section-title::after {
+/* .section-title::after {
   content: '';
   display: block;
   width: 60px;
   height: 3px;
   background: var(--primary-color);
   margin: 1rem auto 0;
-}
+} */
 
 a {
   text-decoration: none;

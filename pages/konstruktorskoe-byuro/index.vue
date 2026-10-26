@@ -31,7 +31,6 @@
           :key="development.title"
           class="development-card"
         >
-          <span class="development-icon">🔬</span>
           <h3>{{ development.title }}</h3>
           <p>{{ development.description }}</p>
         </div>
@@ -48,26 +47,22 @@ let timer = null
 
 const sections = [
   {
-    icon: '🔬',
     title: 'Центр разработки технических средств химического контроля',
     description: 'Разработка технических средств химического контроля',
     path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk'
   },
   {
-    icon: '📖',
-    title: 'Библиотека',
+    title: 'Электронная библиотека',
     description: 'Техническая литература и документация',
     path: '/konstruktorskoe-byuro/biblioteka'
   },
   {
-    icon: '📝',
     title: 'Полезное для инженера',
     description: 'Справочные материалы для инженеров',
     path: '/konstruktorskoe-byuro/spravochnik-inzhenera'
   },
   {
-    icon: '📦',
-    title: 'Библиотека 3D',
+    title: 'Библиотека 3D моделей',
     description: '3D модели оборудования и компонентов',
     path: '/konstruktorskoe-byuro/biblioteka-3d'
   }
@@ -201,15 +196,6 @@ useHead({
   color: #005700;
   margin: 3rem 0 2rem;
   position: relative;
-}
-
-.section-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: #005700;
-  margin: 10px auto 0;
 }
 
 .developments-carousel {

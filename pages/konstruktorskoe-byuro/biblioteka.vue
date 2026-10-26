@@ -7,10 +7,10 @@
         <span class="separator">/</span>
         <NuxtLink to="/konstruktorskoe-byuro">Конструкторское бюро</NuxtLink>
         <span class="separator">/</span>
-        <span class="current">Библиотека</span>
+        <span class="current">Электронная библиотека</span>
       </nav>
       
-      <h1 class="page-title">Библиотека</h1>
+      <h1 class="page-title">Электронная библиотека</h1>
       
       <div class="kb-content">
         <p class="kb-intro">
@@ -31,17 +31,6 @@
           </div>
           
           <div class="filters">
-            <select v-model="selectedCategory" class="filter-select">
-              <option value="">Все категории</option>
-              <option 
-                v-for="category in categories" 
-                :key="category"
-                :value="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-            
             <select v-model="selectedType" class="filter-select">
               <option value="">Все типы</option>
               <option value="book">Книги</option>
@@ -51,21 +40,7 @@
             </select>
           </div>
         </div>
-        
-        <!-- Категории -->
-        <h2 class="section-subtitle">Категории</h2>
-        <div class="categories-grid">
-          <div 
-            v-for="category in categoriesWithCount" 
-            :key="category.name"
-            class="category-card"
-            @click="selectedCategory = category.name"
-          >
-            <span class="category-icon">{{ category.icon }}</span>
-            <span class="category-name">{{ category.name }}</span>
-            <span class="category-count">{{ category.count }}</span>
-          </div>
-        </div>
+      
         
         <!-- Список документов -->
         <h2 class="section-subtitle">Документы</h2>
@@ -76,6 +51,7 @@
             <span class="col-year">Год</span>
             <span class="col-type">Тип</span>
             <span class="col-availability">Доступ</span>
+            <span class="col-download-header">Скачать</span>
           </div>
           
           <div 
@@ -88,7 +64,7 @@
             <span class="col-author">{{ doc.author }}</span>
             <span class="col-year">{{ doc.year }}</span>
             <span class="col-type">
-              <span class="doc-type">{{ doc.type }}</span>
+              <span class="doc-type">{{ getTypeLabel(doc.type) }}</span>
             </span>
             <span class="col-availability">
               <span 
@@ -98,6 +74,17 @@
                 {{ doc.availability }}
               </span>
             </span>
+            <span class="col-download">
+              <button 
+                v-if="doc.file_url" 
+                @click.stop="downloadDocument(doc)" 
+                class="download-btn"
+                title="Скачать PDF"
+              >
+                📥 Скачать
+              </button>
+            </span>
+
           </div>
         </div>
       </div>
@@ -121,11 +108,7 @@
             </div>
             <div class="detail-row">
               <span class="detail-label">Тип:</span>
-              <span>{{ selectedDocument.type }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Категория:</span>
-              <span>{{ selectedDocument.category }}</span>
+              <span>{{ getTypeLabel(selectedDocument.type) }}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Аннотация:</span>
@@ -135,8 +118,12 @@
           
           <div class="modal-footer">
             <button class="btn-secondary" @click="dialogVisible = false">Закрыть</button>
-            <button class="btn-primary" @click="requestDocument(selectedDocument)">
-              Запросить документ
+            <button 
+              class="btn-primary" 
+              @click="downloadDocument(selectedDocument)"
+              :disabled="!selectedDocument.file_url"
+            >
+              Скачать PDF
             </button>
           </div>
         </div>
@@ -146,93 +133,37 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const searchQuery = ref('')
-const selectedCategory = ref('')
 const selectedType = ref('')
 const dialogVisible = ref(false)
 const selectedDocument = ref(null)
+const documents = ref([])
 
-const categories = [
-  'Газовый анализ',
-  'Хроматография',
-  'Спектрометрия',
-  'Метрология',
-  'Стандартизация',
-  'Химический анализ'
-]
+const loading = ref(true)
 
-const categoriesWithCount = [
-  { name: 'Газовый анализ', icon: '🔬', count: 45 },
-  { name: 'Хроматография', icon: '⚗️', count: 32 },
-  { name: 'Спектрометрия', icon: '📊', count: 28 },
-  { name: 'Метрология', icon: '📏', count: 40 },
-  { name: 'Стандартизация', icon: '📋', count: 35 },
-  { name: 'Химический анализ', icon: '🧪', count: 50 }
-]
-
-const documents = ref([
-  {
-    title: 'Основы газового анализа',
-    author: 'Иванов И.И.',
-    year: 2020,
-    type: 'Книга',
-    category: 'Газовый анализ',
-    availability: 'Свободен',
-    annotation: 'Учебное пособие по основам газового анализа, методам и средствам измерений.'
-  },
-  {
-    title: 'Газовая хроматография: теория и практика',
-    author: 'Петрова М.С.',
-    year: 2021,
-    type: 'Книга',
-    category: 'Хроматография',
-    availability: 'Занят',
-    annotation: 'Полное руководство по газовой хроматографии, включая практические рекомендации.'
-  },
-  {
-    title: 'ГОСТ Р 12345-2020',
-    author: 'Госстандарт',
-    year: 2020,
-    type: 'Стандарт',
-    category: 'Стандартизация',
-    availability: 'Свободен',
-    annotation: 'Государственный стандарт на газоанализаторы.'
-  },
-  {
-    title: 'Методика поверки газоанализаторов',
-    author: 'Коллектив авторов',
-    year: 2022,
-    type: 'Методика',
-    category: 'Метрология',
-    availability: 'Свободен',
-    annotation: 'Методика поверки газоанализаторов различных типов.'
-  },
-  {
-    title: 'Современные методы спектрального анализа',
-    author: 'Сидоров А.П.',
-    year: 2019,
-    type: 'Статья',
-    category: 'Спектрометрия',
-    availability: 'Свободен',
-    annotation: 'Обзор современных методов спектрального анализа.'
+onMounted(async () => {
+  try {
+    documents.value = await $fetch('/api/books') || []
+  } catch (e) {
+    console.error('Ошибка загрузки книг:', e)
+    documents.value = []
+  } finally {
+    loading.value = false
   }
-])
+})
 
 const filteredDocuments = computed(() => {
   return documents.value.filter(doc => {
     const matchesSearch = !searchQuery.value || 
-      doc.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      doc.author.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    const matchesCategory = !selectedCategory.value || 
-      doc.category === selectedCategory.value
+      (doc.title || '').toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      (doc.author || '').toLowerCase().includes(searchQuery.value.toLowerCase())
     
     const matchesType = !selectedType.value || 
-      doc.type === getTypeLabel(selectedType.value)
+      doc.type === selectedType.value
     
-    return matchesSearch && matchesCategory && matchesType
+    return matchesSearch && matchesType
   })
 })
 
@@ -246,14 +177,17 @@ function getTypeLabel(type) {
   return types[type] || type
 }
 
-function showDocument(row) {
-  selectedDocument.value = row
+function showDocument(doc) {
+  selectedDocument.value = doc
   dialogVisible.value = true
 }
 
-function requestDocument(document) {
-  dialogVisible.value = false
-  alert(`Запрос на документ "${document.title}" отправлен!`)
+function downloadDocument(doc) {
+  if (!doc.file_url) {
+    alert('Файл не прикреплён')
+    return
+  }
+  window.open(doc.file_url, '_blank')
 }
 
 useHead({
@@ -378,53 +312,6 @@ useHead({
   border-color: #005700;
 }
 
-/* Категории */
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
-  margin-bottom: 2rem;
-}
-
-.category-card {
-  text-align: center;
-  padding: 1rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.category-card:hover {
-  border-color: #005700;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transform: translateY(-3px);
-}
-
-.category-icon {
-  font-size: 30px;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.category-name {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 0.25rem;
-}
-
-.category-count {
-  display: inline-block;
-  padding: 2px 8px;
-  background: #005700;
-  color: #fff;
-  border-radius: 10px;
-  font-size: 12px;
-}
-
 /* Таблица документов */
 .documents-table {
   border: 1px solid #e5e7eb;
@@ -434,24 +321,26 @@ useHead({
 
 .table-header {
   display: grid;
-  grid-template-columns: 2fr 1fr 0.5fr 1fr 0.8fr;
+  grid-template-columns: 2fr 1fr 0.5fr 1fr 0.8fr 1.2fr;
   gap: 10px;
   padding: 12px 16px;
-  background: #f8fafc;
+  background: var(--bg-section);
   font-weight: 600;
   color: #333;
   border-bottom: 2px solid #e5e7eb;
+  text-align: center;
 }
 
 .table-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 0.5fr 1fr 0.8fr;
+  grid-template-columns: 2fr 1fr 0.5fr 1fr 0.8fr 1.2fr;
   gap: 10px;
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
   transition: background 0.2s;
   align-items: center;
+  text-align: center;
 }
 
 .table-row:hover {
@@ -465,6 +354,7 @@ useHead({
 .col-title {
   font-weight: 500;
   color: #333;
+  text-align: left;
 }
 
 .col-author,
@@ -588,14 +478,40 @@ useHead({
   background: #003d00;
 }
 
+.col-download {
+  display: flex;
+  justify-content: center;
+}
+
+.download-btn {
+  padding: 6px 12px;
+  background: #005700;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.download-btn:hover {
+  background: #003d00;
+}
+
+.btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.col-download-header {
+  color: #6b7280;
+  font-size: 14px;
+}
+
 @media (max-width: 1024px) {
-  .categories-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
   .table-header,
   .table-row {
-    grid-template-columns: 2fr 1fr 0.5fr 1fr;
+    grid-template-columns: 2fr 1fr 0.5fr 1fr 1.2fr;
   }
   
   .col-availability {
@@ -608,10 +524,6 @@ useHead({
     flex-direction: column;
   }
   
-  .categories-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
   .table-header,
   .table-row {
     grid-template-columns: 2fr 1fr;
@@ -619,7 +531,8 @@ useHead({
   }
   
   .col-year,
-  .col-type {
+  .col-type,
+  .col-download-header {
     display: none;
   }
   

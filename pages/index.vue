@@ -1,12 +1,31 @@
 <template>
   <div class="home-page">
-    <!-- Карусель -->
-    <div class="carousel-wrapper">
-      <SimpleCarousel :slides="slides" :interval="5000" />
-    </div>
+    <h1 class="visually-hidden">
+      АО «ГосНИИхиманалит» — научно-производственное предприятие
+    </h1>
+    <section class="hero-block">
+      <!-- Карусель -->
+      <div class="carousel-section">
+        <div class="container">
+          <h2 class="carousel-title">Продукция</h2>
+        </div>
+        <div class="carousel-wrapper">
+          <SimpleCarousel :slides="slides" :interval="5000" />
+        </div>
+      </div>
+
+      <!-- Услуги -->
+      <div class="services-section">
+        <div class="container">
+          <h2 class="services-title">Услуги</h2>
+          <ServicesCarousel :services="services" :interval="5000" :visible-count="3" />
+        </div>
+      </div>
+    </section>
+    
 
     <!-- Об организации -->
-    <section class="about-section">
+    <section class="about-section block">
       <div class="container">
         <h2 class="section-title">Об организации</h2>
         <div class="about-content">
@@ -16,7 +35,7 @@
             химического контроля, проведении испытаний и метрологических работ.
           </p>
           <p>
-            Предприятие основано в 1970 году и с тех пор является одним из ведущих
+            Предприятие основано в 1936 году и с тех пор является одним из ведущих
             центров в области аналитического приборостроения и химического анализа
             в России.
           </p>
@@ -24,7 +43,7 @@
             Мы выполняем полный цикл работ: от научных исследований и проектирования
             до серийного производства и сервисного обслуживания.
           </p>
-          <NuxtLink to="/about" class="about-link">
+          <NuxtLink to="/about/kontakty"  class="about-link">
             Подробнее о нас →
           </NuxtLink>
         </div>
@@ -43,19 +62,9 @@
 </template>
 
 <script setup>
-const slides = [
-  { image: '/images/22-1.webp' },
-  { image: '/images/104main5.webp' },
-  { image: '/images/ant-3m.webp' },
-  { image: '/images/ant-zm1.webp' },
-  { image: '/images/bezymyannyj.webp' },
-  { image: '/images/foto_gsa-r.webp' },
-  { image: '/images/foto2_gsi_1.webp' },
-  { image: '/images/gdu-01f.webp' },
-  { image: '/images/gsa-aig.webp' },
-  { image: '/images/gsa-d.webp' },
-  { image: '/images/img_20191217_162450.webp' }
-]
+import { computed } from 'vue'
+import ServicesCarousel from '~/components/ServicesCarousel.vue'
+
 
 const partners = [
   { name: 'Газпром', logo: '/images/partners/gazprom.webp' },
@@ -72,6 +81,57 @@ const partners = [
   { name: 'МЧС', logo: '/images/partners/mchs.webp' }
 ]
 
+const services = [
+  {
+    title: 'Испытательная лаборатория',
+    description: 'Испытания, поверка, аттестация оборудования',
+    path: '/uslugi/ispytatelnaya-laboratory'
+  },
+  {
+    title: 'Метрология и поверка средств измерений',
+    description: 'Поверка СИ, метрологические услуги',
+    path: '/uslugi/metrologiya-i-poverka'
+  },
+  {
+    title: 'Аналитическая химия',
+    description: 'Химический анализ, экологический мониторинг',
+    path: '/uslugi/analiticheskaya-himiya'
+  },
+  {
+    title: 'Разработка приборов и систем',
+    description: 'Разработка приборов и систем',
+    path: '/konstruktorskoe-byuro'
+  },
+  {
+    title: 'Разработка стандартов',
+    description: 'Разработка стандартов и документации',
+    path: '/uslugi/standartizaciya'
+  },
+  {
+    title: 'Производство',
+    description: 'Производство приборов и узлов химического контроля',
+    path: '/uslugi/proizvodstvo'
+  },
+  {
+    title: 'Аренда',
+    description: 'Аренда производственных и офисных помещений',
+    path: '/uslugi/arenda'
+  }
+]
+
+const { data: carouselProducts } = await useFetch('/api/products/carousel')
+
+const slides = computed(() => {
+  if (!carouselProducts.value?.length) return []
+  return carouselProducts.value.map(p => ({
+    id: p.id,
+    image: p.image_url,
+    title: p.title,
+    link: `/produkciya/${p.slug || p.id}`
+  }))
+})
+
+
 useHead({
   title: 'ГосНИИхиманалит - Научно-производственное предприятие',
   meta: [
@@ -81,13 +141,27 @@ useHead({
     }
   ]
 })
+
 </script>
 
 <style scoped>
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .home-page {
-  min-height: 80vh;
+  min-height: 100vh;
   background: #fff;
 }
+
 
 .container {
   max-width: 1200px;
@@ -95,8 +169,136 @@ useHead({
   padding: 0 20px;
 }
 
+.hero-block {
+  position: relative;
+  padding: 3rem 0;
+  background-image: url('/images/fon1.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* background: rgba(255, 255, 255, 0); */
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-block > * {
+  position: relative;
+  z-index: 1;
+}
+
+.carousel-section {
+  padding: 0 0 3rem 0;
+  /* border-bottom: 1px solid #e5e7eb; */
+  background: transparent;
+}
+
+/* Белый оверлей — приглушает картинку */
+.carousel-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* background: rgba(255, 255, 255, 0.2); */
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Контент поверх фона */
+.carousel-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.carousel-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  /* color: #005700; */
+  margin-bottom: 2rem;
+  position: relative;
+  text-decoration: dashed;
+  /* border: 1px solid #000 */
+}
+
 .carousel-wrapper {
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .carousel-section {
+    padding: 2rem 0 1.5rem;
+  }
+  
+  .carousel-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.services-section {
+  padding: 3rem 0 0 0;
+  background: transparent;
+  border-bottom: none;
+}
+
+.services-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  /* color: #005700; */
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.service-item:hover .service-arrow {
+  transform: translateX(4px);
+  color: #4cc94a;
+}
+
+@media (max-width: 768px) {
+  .services-section {
+    padding: 2rem 0;
+  }
+  
+  .services-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .services-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .service-item {
+    padding: 0.875rem 1.25rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-section {
+    padding: 2rem 0;
+  }
+  
+  .services-title {
+    font-size: 1.5rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .about-section {
@@ -115,7 +317,9 @@ useHead({
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 87, 0, 0.75);
+  /* background: rgba(0, 87, 0, 0.75); */
+  /* background: rgba(123, 171, 90, 0.8); */
+  background: rgba(122, 185, 79, 0.8);
   z-index: 0;
 }
 
@@ -158,7 +362,7 @@ useHead({
 /* Блок партнеров */
 .partners-section {
   padding: 40px 0;
-  background: #f8fafc;
+  background: var(--bg-section);
   border-top: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -170,15 +374,6 @@ useHead({
   color: #005700;
   margin-bottom: 2rem;
   position: relative;
-}
-
-.partners-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: #005700;
-  margin: 10px auto 0;
 }
 
 @media (max-width: 768px) {

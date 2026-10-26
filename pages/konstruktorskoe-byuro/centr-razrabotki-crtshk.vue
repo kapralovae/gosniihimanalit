@@ -14,18 +14,28 @@
       <div class="page-header">
         <h1 class="page-title">Центр разработки технических средств химического контроля (ЦРТСХК)</h1>
       </div>
+
+      <!-- Промо-баннер -->
+      <div class="promo-banner">
+        <img 
+          src="/images/crtshk.png" 
+          alt="ЦРТСХК — Центр разработки технических средств химического контроля"
+          class="promo-image"
+        />
+      </div>
       
       <!-- Вводный блок -->
-      <div class="intro-card">
-        <p>
-          На базе предприятия создан специализированный центр разработки приборов и систем РХБЗ контроля и защиты,
-          приборов и систем для самых различных отраслей промышленности и науки, оборонных задач.
-        </p>
-      </div>
+      <!-- <div class="intro-card">
+        
+      </div> -->
       
       <!-- О центре -->
       <div class="info-card">
         <h2 class="section-subtitle">О центре</h2>
+        <p>
+          На базе предприятия создан специализированный центр разработки приборов и систем РХБЗ контроля и защиты,
+          приборов и систем для самых различных отраслей промышленности и науки, оборонных задач.
+        </p>
         <p>
           В ЦРТСХК трудятся высококвалифицированные ученые, инженеры-конструкторы, разработчики электроники,
           программисты систем высокого и низкого уровней, технические писатели, инженеры-технологи.
@@ -42,14 +52,13 @@
       </div>
       
       <!-- Компетенции центра -->
-      <h2 class="section-title">В компетенции центра входят:</h2>
+      <h2 class="section-title text-left">Компетенции центра:</h2>
       
       <div class="competencies">
-        <!-- Разработка и модернизация -->
+        <!-- Разработка  -->
         <div class="competency-card">
           <h3 class="competency-title">
-            <span class="competency-icon">🔧</span>
-            Разработка и модернизация
+            Разработка 
           </h3>
           <ul class="competency-list">
             <li>Носимых и стационарных приборов контроля уровня загазованности, уровня радиоактивного заражения, обитаемости</li>
@@ -64,11 +73,10 @@
           </ul>
         </div>
         
-        <!-- Разработка приборов и систем -->
+        <!-- Разработка ПО -->
         <div class="competency-card">
           <h3 class="competency-title">
-            <span class="competency-icon">🔬</span>
-            Разработка приборов и систем
+            Разработка специализированного программного обеспечения
           </h3>
           <ul class="competency-list">
             <li>Автоматического метеорологического оборудования (стационарного и переносного)</li>
@@ -91,24 +99,21 @@
       </div>
       
       <!-- Направления деятельности -->
-      <h2 class="section-title">Разработка специализированного ПО</h2>
+      <!-- <h2 class="section-title translate-x-2">Разработка специализированного ПО</h2>
       <div class="activities-grid">
         <div class="activity-item">
-          <span class="activity-icon">🖥️</span>
           <p>Разработка специализированного программного обеспечения под ОС Windows и Astra Linux; приложений под мобильные ОС Android и веб-приложений (фронт и бэкенд)</p>
         </div>
         <div class="activity-item">
-          <span class="activity-icon">⚙️</span>
           <p>Разработка схемотехники узлов и приборов электронной техники</p>
         </div>
         <div class="activity-item">
-          <span class="activity-icon">📐</span>
           <p>Разработка конструкции приборов и систем, узлов и механизмов</p>
         </div>
-      </div>
+      </div> -->
       
       <!-- Работы -->
-      <h2 class="section-title">Работы</h2>
+      <!-- <h2 class="section-title -translate-y-px">Работы</h2>
       <div class="info-card">
         <ul class="works-list">
           <li>Переработка, доработка, доводка приборов и систем Заказчика</li>
@@ -116,13 +121,13 @@
           <li>Кооперации с любыми предприятиями РФ и СНГ, необходимых Заказчику</li>
           <li>Разработка конструкторских и технологических документов</li>
         </ul>
-      </div>
+      </div> -->
       
       <!-- Стандарты -->
       <div class="standards-note">
         <p>
-          <strong>Все разработки ведутся в соответствии с</strong> ГОСТ, ГОСТ Р, ГОСТ РВ.
-          СМК ГОСТ Р ИСО 9001-2015, ГОСТ РВ 0015-002-2020.
+          <strong>Все разработки ведутся в соответствии с</strong> ГОСТ, ГОСТ Р,
+          СМК ГОСТ Р ИСО 9001-2015.
         </p>
       </div>
     </div>
@@ -211,7 +216,7 @@ useHead({
   color: #005700;
   margin: 2.5rem 0 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 3px solid #005700;
+  /*border-bottom: 3px solid #005700;*/
 }
 
 .section-subtitle {
@@ -273,10 +278,6 @@ useHead({
   border-bottom: 2px solid #f0f5f0;
 }
 
-.competency-icon {
-  font-size: 24px;
-}
-
 .competency-list {
   list-style: none;
   padding: 0;
@@ -323,12 +324,6 @@ useHead({
 .activity-item:hover {
   background: #e0efe0;
   transform: translateY(-3px);
-}
-
-.activity-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 0.75rem;
 }
 
 .activity-item p {
@@ -380,6 +375,28 @@ useHead({
 
 .standards-note strong {
   color: #005700;
+}
+
+/* Промо-баннер */
+.promo-banner {
+  width: 100%;
+  margin: 0 auto 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 87, 0, 0.15);
+}
+
+.promo-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .promo-banner {
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+  }
 }
 
 /* Адаптив */

@@ -5,7 +5,7 @@
       <nav class="breadcrumb">
         <NuxtLink to="/">Главная</NuxtLink>
         <span class="separator">/</span>
-        <NuxtLink to="/about">Об организации</NuxtLink>
+        <NuxtLink to="/about/kontakty" >Об организации</NuxtLink>
         <span class="separator">/</span>
         <span class="current">Вакансии</span>
       </nav>
@@ -17,56 +17,32 @@
           Присоединяйтесь к команде профессионалов АО "ГосНИИхиманалит"!
         </p>
         
-        <!-- Фильтры -->
-        <div class="filters">
-          <select v-model="selectedDepartment" class="filter-select">
-            <option value="">Все отделы</option>
-            <option 
-              v-for="department in departments" 
-              :key="department"
-              :value="department"
-            >
-              {{ department }}
-            </option>
-          </select>
-          
-          <select v-model="selectedType" class="filter-select">
-            <option value="">Все типы занятости</option>
-            <option value="full">Полная занятость</option>
-            <option value="part">Частичная занятость</option>
-            <option value="remote">Удаленная работа</option>
-          </select>
-        </div>
-        
         <!-- Список вакансий -->
         <div class="vacancies-grid">
           <div 
-            v-for="vacancy in filteredVacancies" 
+            v-for="vacancy in vacancies" 
             :key="vacancy.id"
             class="vacancy-card"
           >
             <div class="vacancy-header">
               <h2>{{ vacancy.title }}</h2>
-              <span 
-                class="vacancy-type"
-                :class="{ 'full': vacancy.type === 'Полная занятость' }"
-              >
-                {{ vacancy.type }}
-              </span>
             </div>
             
             <div class="vacancy-details">
-              <div class="detail-item">
-                <span>🏢</span>
-                <span>{{ vacancy.department }}</span>
+              <div v-if="vacancy.type" class="vacancy-type-badge">
+                {{ vacancy.type }}
               </div>
               <div class="detail-item">
-                <span>💰</span>
-                <span>{{ vacancy.salary }}</span>
+                <span class="detail-label">Отдел:</span>
+                <span class="detail-value">{{ vacancy.department }}</span>
               </div>
               <div class="detail-item">
-                <span>📍</span>
-                <span>{{ vacancy.location }}</span>
+                <span class="detail-label">Зарплата:</span>
+                <span class="detail-value detail-salary">{{ vacancy.salary }}</span>
+              </div>
+              <div v-if="vacancy.experience" class="detail-item">
+                <span class="detail-label">Опыт:</span>
+                <span class="detail-value">{{ vacancy.experience }}</span>
               </div>
             </div>
             
@@ -91,15 +67,14 @@
         
         <!-- Преимущества работы -->
         <h2 class="section-title">Преимущества работы у нас</h2>
-        <div class="benefits-grid">
+        <div class="benefits-list">
           <div 
             v-for="benefit in benefits" 
-            :key="benefit.title"
+            :key="benefit.title" 
             class="benefit-item"
           >
-            <span class="benefit-icon">{{ benefit.icon }}</span>
-            <h4>{{ benefit.title }}</h4>
-            <p>{{ benefit.description }}</p>
+            <h4 class="benefit-title">{{ benefit.title }}</h4>
+            <p class="benefit-description">{{ benefit.description }}</p>
           </div>
         </div>
       </div>
@@ -137,7 +112,13 @@
           
           <div class="modal-footer">
             <button class="btn-secondary" @click="dialogVisible = false">Отмена</button>
-            <button class="btn-primary" @click="submitApply">Отправить</button>
+            <button 
+              class="btn-primary" 
+              :disabled="!isApplyFormValid"
+              @click="submitApply"
+            >
+              Отправить
+            </button>
           </div>
         </div>
       </div>
@@ -150,9 +131,74 @@ import { ref, computed, onMounted } from 'vue'
 
 const vacancies = ref([])
 const loading = ref(true)
-const selectedDepartment = ref('')
-const selectedType = ref('')
 const dialogVisible = ref(false)
+
+const benefits = [
+  {
+    title: 'Порядочность и культура',
+    description: 'Порядочность и человеко-ориентированную культуру взаимоотношений гарантируем.'
+  },
+  {
+    title: 'САПР и PLM',
+    description: 'Аскон Компас3D v.24, Аскон Лоцман PLM.'
+  },
+  {
+    title: 'Рабочее место',
+    description: 'Офисы класса А3-B. Комфортная кабинетная планировка, просторно и светло, 3-4 человека в помещениях 25-35 м², потолки 4 м, кондиционирование, ПК, мониторы 27"–32" (по желанию), механическая клавиатура, терминал макрос-команд, трекбол, любые инструменты и гаджеты. Современная периферия и оргтехника (цветной плоттер-сканер, цветной принтер А3, 3D-принтеры, документ-камера).'
+  },
+  {
+    title: 'Финансы',
+    description: 'Есть возможности дополнительного заработка при желании, умении и подтверждённой репутации. Переработки нечастны, оплачиваются.'
+  },
+  {
+    title: 'Внешний контур',
+    description: 'Корпоративные мероприятия Ростех. Молодёжные программы, обучение и конкурсы Ростех. Конкурсы и программы при администрации Санкт-Петербурга. Участие в семинарах и выставках.'
+  },
+  {
+    title: 'Личное портфолио',
+    description: 'Грамоты и благодарности (предприятия, заказчиков, корпоративные). Отраслевые награды. Госнаграды. Патенты (авторство, соавторство).'
+  },
+  {
+    title: 'Наука',
+    description: 'Возможность публикаций в изданиях РИНЦ. Выпуск научных статей в авторстве и соавторстве. Приветствуется научная и диссертационная работа.'
+  },
+  {
+    title: 'Технический отдел',
+    description: 'Есть полноценный профессиональный нормоконтроль.'
+  },
+  {
+    title: 'Оформление',
+    description: 'По ТК РФ, ЗП + премия. Постановление 1725 — да.'
+  },
+  {
+    title: 'Дорога',
+    description: '8-10 минут пешком от метро Нарвская, по приятной, тихой дороге. Рядом красивый и большой парк Екатерингоф — можно погулять на обеде.'
+  },
+  {
+    title: 'Паркинг',
+    description: 'Просторный внутренний охраняемый двор на любое количество авто и времени. Ещё одна парковочная охраняемая зона снаружи.'
+  },
+  {
+    title: 'Обед',
+    description: 'Своя уютная обеденная зона, кухня, холодильник, СВЧ-печь, кофемашина. Диван и подушки. Вокруг — много заведений питания на любой вкус. Обед — столько и тогда, когда комфортно вам и вашим биоритмам.'
+  },
+  {
+    title: 'График работы',
+    description: 'Полный рабочий день, время стандартно, ± обсуждаем. Учёт времени чёткий, внятный, прозрачный для всех. Ключевое — сделанное дело, а не высиживание с секундомером. Добросовестная репутация позволяет удалённую работу, когда необходимо.'
+  },
+  {
+    title: 'Командировки',
+    description: 'Крайне редко и только по желанию.'
+  },
+  {
+    title: 'Медицина',
+    description: 'Профилактическая медицина, поликлиника при ФГБУЗ «Клиническая больница № 122 имени Л. Г. Соколова» (122 медсанчасть). Бесплатное стационарное лечение любой сложности.'
+  },
+  {
+    title: 'Обучение и наставничество',
+    description: 'Научим, поможем, подбодрим. Очень приветствуем, если кроме основной сферы захотите вникнуть в смежные. Приветствуем курсы повышения квалификации.'
+  },
+]
 
 onMounted(async () => {
   try {
@@ -167,28 +213,6 @@ onMounted(async () => {
   }
 })
 
-const departments = computed(() => {
-  const set = new Set(vacancies.value.map(v => v.department).filter(Boolean))
-  return Array.from(set)
-})
-
-const filteredVacancies = computed(() => {
-  return vacancies.value.filter(v => {
-    const matchDept = !selectedDepartment.value || v.department === selectedDepartment.value
-    const matchType = !selectedType.value || v.type === getTypeLabel(selectedType.value)
-    return matchDept && matchType
-  })
-})
-
-function getTypeLabel(type) {
-  const types = {
-    'full': 'Полная занятость',
-    'part': 'Частичная занятость',
-    'remote': 'Удаленная работа'
-  }
-  return types[type] || type
-}
-
 const applyForm = ref({
   vacancy: '',
   name: '',
@@ -201,11 +225,37 @@ function applyVacancy(vacancy) {
   dialogVisible.value = true
 }
 
-function submitApply() {
-  dialogVisible.value = false
-  alert('Отклик отправлен! Мы рассмотрим вашу кандидатуру.')
-  applyForm.value = { vacancy: '', name: '', email: '', phone: '' }
+async function submitApply() {
+  if (!isApplyFormValid.value) {
+    alert('Заполните все обязательные поля')
+    return
+  }
+  
+  try {
+    const response = await $fetch('/api/apply', {
+      method: 'POST',
+      body: applyForm.value
+    })
+    
+    if (response.success) {
+      dialogVisible.value = false
+      alert('✅ Отклик отправлен! Мы рассмотрим вашу кандидатуру.')
+      applyForm.value = { vacancy: '', name: '', email: '', phone: '' }
+    } else {
+      alert('❌ Ошибка: ' + response.error)
+    }
+  } catch (error) {
+    alert('❌ Ошибка отправки: ' + error.message)
+  }
 }
+
+const isApplyFormValid = computed(() => {
+  return (
+    applyForm.value.name?.trim() &&
+    applyForm.value.email?.trim() &&
+    applyForm.value.phone?.trim()
+  )
+})
 
 useHead({
   title: 'Вакансии - ГосНИИХиманалит',
@@ -271,29 +321,6 @@ useHead({
   margin-bottom: 2rem;
 }
 
-/* Фильтры */
-.filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  justify-content: center;
-}
-
-.filter-select {
-  padding: 10px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-  min-width: 200px;
-  cursor: pointer;
-  transition: border-color 0.3s;
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: #005700;
-}
-
 /* Сетка вакансий */
 .vacancies-grid {
   display: grid;
@@ -331,28 +358,49 @@ useHead({
   color: #333;
 }
 
-.vacancy-type {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  background: #f0f9f0;
-  color: #005700;
-  white-space: nowrap;
-}
-
 .vacancy-details {
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vacancy-type-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 12px;
+  background: #f0f5f0;
+  color: #005700;
+  border: 1px solid #005700;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .detail-item {
   display: flex;
-  align-items: center;
   gap: 8px;
-  margin-bottom: 0.5rem;
-  color: #6b7280;
-  font-size: 0.875rem;
+  font-size: 14px;
+  line-height: 1.5;
 }
+
+.detail-label {
+  color: #6b7280;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.detail-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.detail-salary {
+  color: #005700;
+  font-weight: 600;
+}
+
 
 .vacancy-requirements {
   margin-bottom: 1rem;
@@ -402,43 +450,42 @@ useHead({
   position: relative;
 }
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: #005700;
-  margin: 10px auto 0;
-}
-
-.benefits-grid {
+.benefits-list {
+  max-width: 1100px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 40px;
 }
 
 .benefit-item {
-  text-align: center;
-  padding: 1.5rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.benefit-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 0.5rem;
+.benefit-item:last-child {
+  border-bottom: none;
 }
 
-.benefit-item h4 {
-  color: #333;
-  margin-bottom: 0.5rem;
+.benefit-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #005700;
+  margin-bottom: 0.35rem;
 }
 
-.benefit-item p {
-  color: #6b7280;
-  font-size: 0.875rem;
+.benefit-description {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .benefits-list {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }
 
 /* Модальное окно */
@@ -553,21 +600,11 @@ useHead({
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-  }
   
   .vacancies-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .benefits-grid {
     grid-template-columns: 1fr;
   }
   

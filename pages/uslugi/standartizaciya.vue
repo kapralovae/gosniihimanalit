@@ -31,7 +31,7 @@
           </div>
         </div>
                
-        <h2 class="section-subtitle">Нормативная документация</h2>
+        <!-- <h2 class="section-subtitle">Нормативная документация</h2>
         <div class="documents">
           <div 
             v-for="doc in documents" 
@@ -46,7 +46,7 @@
               <p>{{ doc.content }}</p>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -59,27 +59,22 @@ const openDocs = ref([])
 
 const services = [
   {
-    icon: '📄',
     title: 'Разработка стандартов',
     description: 'Создание новых стандартов и нормативных документов'
   },
   {
-    icon: '📝',
     title: 'Актуализация',
     description: 'Обновление существующих стандартов'
   },
   {
-    icon: '🔍',
     title: 'Экспертиза',
     description: 'Экспертиза нормативной документации'
   },
   {
-    icon: '⚙️',
     title: 'Методики',
     description: 'Разработка методик измерений'
   },
   {
-    icon: '📁',
     title: 'Документация',
     description: 'Разработка технической документации'
   }

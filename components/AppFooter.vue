@@ -54,7 +54,7 @@
               </div>
             </div>
             
-            <div class="footer-contact-block">
+            <div v-if="contacts?.show_address != 0" class="footer-contact-block">
               <span class="footer-contact-title">{{ contacts?.address_label || 'Адрес' }}</span>
               <div class="footer-contact-item">
                 <span>📍</span>
@@ -78,8 +78,8 @@
 const { data: contacts } = await useFetch('/api/contacts')
 
 const services = [
-  { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
-  { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
+  { title: 'Испытательная лаборатория', path: '/uslugi/ispytatelnaya-laboratory' },
+  { title: 'Метрология и поверка средств измерений', path: '/uslugi/metrologiya-i-poverka' },
   { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
   { title: 'Конструкторское бюро', path: '/konstruktorskoe-byuro' },
   { title: 'Стандартизация', path: '/uslugi/standartizaciya' },
@@ -89,9 +89,9 @@ const services = [
 
 const kbItems = [
   { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
-  { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
   { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
-  { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
+  { title: 'Электронная библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
+  { title: 'Библиотека 3D моделей', path: '/konstruktorskoe-byuro/biblioteka-3d' }
 ]
 
 function formatAddress(address) {
@@ -114,7 +114,7 @@ function formatAddress(address) {
   background: #1f2937;
   color: #d1d5db;
   padding: 3rem 0 1rem;
-  margin-top: 4rem;
+  /* margin-top: 4rem; */
 }
 
 .container {

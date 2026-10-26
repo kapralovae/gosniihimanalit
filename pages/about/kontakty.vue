@@ -5,7 +5,7 @@
       <nav class="breadcrumb">
         <NuxtLink to="/">Главная</NuxtLink>
         <span class="separator">/</span>
-        <NuxtLink to="/about">Об организации</NuxtLink>
+        <NuxtLink to="/about/kontakty" >Об организации</NuxtLink>
         <span class="separator">/</span>
         <span class="current">Контакты</span>
       </nav>
@@ -19,15 +19,18 @@
             <h2 class="section-subtitle">Контактная информация</h2>
             
             <div class="info-card">
-              <div class="contact-item">
-                <span class="contact-icon">📍</span>
-                <div>
-                  <h4>{{ contacts?.address_label || 'Адрес' }}</h4>
-                  <p v-html="formatAddress(contacts?.address)"></p>
+              <div v-if="contacts?.show_address != 0">
+                <div class="contact-item">
+                  <span class="contact-icon">📍</span>
+                  <div>
+                    <h4>{{ contacts?.address_label || 'Адрес' }}</h4>
+                    <p v-html="formatAddress(contacts?.address)"></p>
+                  </div>
                 </div>
+                <div class="divider"></div>
               </div>
               
-              <div class="divider"></div>
+              <!-- <div class="divider"></div> -->
               
               <div class="contact-item">
                 <span class="contact-icon">📞</span>
@@ -63,13 +66,13 @@
                 <span class="contact-icon">🕐</span>
                 <div>
                   <h4>Режим работы</h4>
-                  <p>Пн-Пт: 9:00 - 18:00</p>
+                  <p>Пн-Пт: 8:15 - 17:00</p>
                   <p>Сб-Вс: выходной</p>
                 </div>
               </div>
             </div>
             
-            <h2 class="section-subtitle">Реквизиты</h2>
+            <!-- <h2 class="section-subtitle">Реквизиты</h2>
             <div class="info-card">
               <div class="requisites-list">
                 <div class="requisite-item">
@@ -94,18 +97,18 @@
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">Расчетный счет:</span>
-                  <span>40702810900000012345</span>
+                  <span>40702810705000009486</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">Банк:</span>
-                  <span>ПАО "Банк Санкт-Петербург"</span>
+                  <span>ФИЛИАЛ АО АКБ "НОВИКОМБАНК" В Г.С-ПЕТЕРБУРГЕ</span>
                 </div>
                 <div class="requisite-item">
                   <span class="requisite-label">БИК:</span>
-                  <span>044030790</span>
+                  <span>044030902</span>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           
           <!-- Правая колонка -->
@@ -144,24 +147,52 @@
                   <label class="form-label">Сообщение</label>
                   <textarea v-model="feedbackForm.message" class="form-textarea" rows="6" placeholder="Введите ваше сообщение"></textarea>
                 </div>
+
+                <div class="form-group consent-group">
+                  <label class="consent-label">
+                    <input 
+                      type="checkbox" 
+                      v-model="feedbackForm.consent" 
+                      class="consent-checkbox"
+                    />
+                    <span>
+                      Я выражаю согласие на 
+                      <NuxtLink to="/about/soglasie" target="_blank" class="consent-link">
+                        передачу и обработку персональных данных
+                      </NuxtLink>
+                      в соответствии с 
+                      <NuxtLink to="/about/politika" target="_blank" class="consent-link">
+                        политикой конфиденциальности
+                      </NuxtLink> *
+                    </span>
+                  </label>
+                </div>
                 
                 <div class="form-actions">
-                  <button type="submit" class="btn-primary">Отправить сообщение</button>
+                  <button 
+                    type="submit" 
+                    class="btn-primary"
+                    :disabled="!feedbackForm.consent"
+                  >
+                    Отправить сообщение
+                  </button>
                   <button type="button" class="btn-secondary" @click="resetForm">Очистить</button>
                 </div>
               </form>
             </div>
             
-            <h2 class="section-subtitle">Схема проезда</h2>
-            <div class="info-card">
-              <div class="map-placeholder">
-                <span class="map-icon">🗺️</span>
-                <p>Карта проезда</p>
-                <button type="button" class="map-btn" @click="openMap">
-                  Открыть в Яндекс.Картах
-                </button>
+            <template v-if="contacts?.show_address != 0">
+              <h2 class="section-subtitle">Схема проезда</h2>
+              <div class="info-card">
+                <div class="map-placeholder">
+                  <span class="map-icon">🗺️</span>
+                  <p>Карта проезда</p>
+                  <button type="button" class="map-btn" @click="openMap">
+                    Открыть в Яндекс.Картах
+                  </button>
+                </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </div>
@@ -179,7 +210,8 @@ const feedbackForm = ref({
   email: '',
   phone: '',
   subject: '',
-  message: ''
+  message: '',
+  consent: false
 })
 
 function formatAddress(address) {
@@ -196,9 +228,27 @@ function formatAddress(address) {
   return address
 }
 
-function submitFeedback() {
-  alert('Сообщение отправлено!')
-  resetForm()
+async function submitFeedback() {
+  if (!feedbackForm.value.consent) {
+    alert('Необходимо согласие на обработку персональных данных')
+    return
+  }
+  
+  try {
+    const response = await $fetch('/api/feedback', {
+      method: 'POST',
+      body: feedbackForm.value
+    })
+    
+    if (response.success) {
+      alert('✅ Сообщение отправлено!')
+      resetForm()
+    } else {
+      alert('❌ Ошибка: ' + response.error)
+    }
+  } catch (error) {
+    alert('❌ Ошибка: ' + error.message)
+  }
 }
 
 function resetForm() {
@@ -207,7 +257,8 @@ function resetForm() {
     email: '',
     phone: '',
     subject: '',
-    message: ''
+    message: '',
+    consent: false
   }
 }
 
@@ -230,6 +281,28 @@ useHead({
 .contacts-page {
   min-height: 100vh;
   padding: 2rem 0;
+  position: relative;
+  background-image: url('/images/gosniihim.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+
+.contacts-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 87, 0, 0.25);
+  z-index: 0;
+}
+
+.contacts-page .container {
+  position: relative;
+  z-index: 1;
 }
 
 .container {
@@ -327,6 +400,21 @@ useHead({
   text-decoration: underline;
 }
 
+/* Белые заголовки на зелёном фоне */
+.contacts-page .breadcrumb a,
+.contacts-page .breadcrumb .current,
+.contacts-page .breadcrumb .separator {
+  color: #fff;
+}
+
+.contacts-page .page-title {
+  color: #fff;
+}
+
+.contacts-page .section-subtitle {
+  color: #fff;
+}
+
 .divider {
   border-top: 1px solid #e5e7eb;
   margin: 1rem 0;
@@ -370,6 +458,8 @@ useHead({
   border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
+  color: #333;            /* ← текст в поле */
+  background: #fff;
 }
 
 .form-input:focus,
@@ -402,6 +492,45 @@ useHead({
 
 .btn-primary:hover {
   background: #003d00;
+}
+
+.consent-group {
+  margin-top: 1rem;
+}
+
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.consent-checkbox {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  accent-color: #005700;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.consent-link {
+  color: #005700;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.consent-link:hover {
+  color: #003d00;
+}
+
+.btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .btn-secondary {

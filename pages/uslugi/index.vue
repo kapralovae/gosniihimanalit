@@ -30,43 +30,36 @@
 <script setup>
 const services = [
   {
-    icon: '🧫',
     title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)',
-    description: 'Комплексные испытания технических средств химического контроля',
-    path: '/uslugi/ispytatelnyj-centr'
+    description: 'Комплексные испытания на воздействие климатических, механических и химических факторов',
+    path: '/uslugi/ispytatelnaya-laboratory'
   },
   {
-    icon: '📏',
     title: 'Метрология и поверка',
-    description: 'Поверка и калибровка средств измерений',
+    description: 'Внесение в Реестр средств измерения, первичная и периодическая поверка средств измерений, метрология',
     path: '/uslugi/metrologiya-i-poverka'
   },
   {
-    icon: '⚗️',
     title: 'Аналитическая химия',
     description: 'Химический анализ веществ и материалов',
     path: '/uslugi/analiticheskaya-himiya'
   },
   {
-    icon: '🖥️',
     title: 'Конструкторское бюро',
     description: 'Разработка и проектирование оборудования',
-    path: '/uslugi/konstruktorskoe'
+    path: 'konstruktorskoe-byuro/centr-razrabotki-crtshk'
   },
   {
-    icon: '📋',
     title: 'Стандартизация',
     description: 'Разработка стандартов и нормативных документов',
     path: '/uslugi/standartizaciya'
   },
   {
-    icon: '🏭',
     title: 'Производство',
     description: 'Производство технических средств химического контроля',
     path: '/uslugi/proizvodstvo'
   },
   {
-    icon: '🔑',
     title: 'Аренда',
     description: 'Аренда производственных и офисных помещений',
     path: '/uslugi/arenda'

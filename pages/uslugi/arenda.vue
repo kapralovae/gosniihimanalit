@@ -3,41 +3,13 @@
     <div class="container">
       <h1 class="page-title">Аренда помещений</h1>
       
-      <!-- Фильтры -->
-      <div class="filters">
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ active: activeStatus === 'all' }"
-          @click="activeStatus = 'all'"
-        >
-          Все
-        </button>
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ active: activeStatus === 'available' }"
-          @click="activeStatus = 'available'"
-        >
-          Свободно
-        </button>
-        <button 
-          type="button"
-          class="filter-btn"
-          :class="{ active: activeStatus === 'rented' }"
-          @click="activeStatus = 'rented'"
-        >
-          Сдано
-        </button>
-      </div>
-      
       <div v-if="loading" class="loading">Загрузка...</div>
       <div v-else-if="items.length === 0" class="empty">Помещения не найдены</div>
       
       <!-- Список помещений -->
       <div v-else class="arenda-grid">
         <div 
-          v-for="item in filteredItems" 
+          v-for="item in items" 
           :key="item.id"
           class="arenda-card"
           :class="{ rented: item.status === 'rented' }"
@@ -58,20 +30,20 @@
             
             <div class="card-specs">
               <div v-if="item.area" class="spec-item">
-                <span>📐</span>
-                <span>{{ item.area }}</span>
+                <span class="spec-label">Площадь:</span>
+                <span class="spec-value">{{ item.area }}</span>
               </div>
               <div v-if="item.floor" class="spec-item">
-                <span>🏗️</span>
-                <span>{{ item.floor }}</span>
+                <span class="spec-label">Этаж:</span>
+                <span class="spec-value">{{ item.floor }}</span>
               </div>
               <div v-if="item.ceiling_height" class="spec-item">
-                <span>📏</span>
-                <span>{{ item.ceiling_height }}</span>
+                <span class="spec-label">Потолки:</span>
+                <span class="spec-value">{{ item.ceiling_height }}</span>
               </div>
               <div v-if="item.power_supply" class="spec-item">
-                <span>⚡</span>
-                <span>{{ item.power_supply }}</span>
+                <span class="spec-label">Электрика:</span>
+                <span class="spec-value">{{ item.power_supply }}</span>
               </div>
             </div>
             
@@ -90,10 +62,9 @@
               <button 
                 type="button"
                 class="btn-primary"
-                :disabled="item.status === 'rented'"
                 @click="showDetails(item)"
               >
-                {{ item.status === 'available' ? 'Подробнее' : 'Занято' }}
+                Подробнее
               </button>
             </div>
           </div>
@@ -114,16 +85,99 @@
           </div>
         </div>
       </div>
+      
+      <!-- Модальное окно -->
+      <div v-if="dialogVisible" class="modal-overlay" @click="dialogVisible = false">
+        <div class="modal-content" @click.stop>
+          <div class="modal-header">
+            <h2>{{ selectedItem?.name }}</h2>
+            <button class="close-btn" @click="dialogVisible = false">✕</button>
+          </div>
+          
+          <div v-if="selectedItem" class="modal-body">
+            <!-- Картинка -->
+            <div v-if="selectedItem.image" class="modal-image">
+              <img :src="selectedItem.image" :alt="selectedItem.name" />
+            </div>
+            
+            <!-- Статус -->
+            <div class="modal-status">
+              <span class="status-badge" :class="selectedItem.status">
+                {{ selectedItem.status === 'available' ? 'Свободно' : 'Сдано' }}
+              </span>
+            </div>
+            
+            <!-- Описание -->
+            <div v-if="selectedItem.description" class="modal-section">
+              <h3>Описание</h3>
+              <p>{{ selectedItem.description }}</p>
+            </div>
+            
+            <!-- Характеристики -->
+            <div class="modal-section">
+              <h3>Характеристики</h3>
+              <div class="modal-specs">
+                <div v-if="selectedItem.area" class="modal-spec-item">
+                  <span class="spec-label">Площадь:</span>
+                  <span class="spec-value">{{ selectedItem.area }}</span>
+                </div>
+                <div v-if="selectedItem.floor" class="modal-spec-item">
+                  <span class="spec-label">Этаж:</span>
+                  <span class="spec-value">{{ selectedItem.floor }}</span>
+                </div>
+                <div v-if="selectedItem.ceiling_height" class="modal-spec-item">
+                  <span class="spec-label">Высота потолков:</span>
+                  <span class="spec-value">{{ selectedItem.ceiling_height }}</span>
+                </div>
+                <div v-if="selectedItem.power_supply" class="modal-spec-item">
+                  <span class="spec-label">Электроснабжение:</span>
+                  <span class="spec-value">{{ selectedItem.power_supply }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Особенности -->
+            <div v-if="selectedItem.features && selectedItem.features.length" class="modal-section">
+              <h3>Особенности</h3>
+              <div class="modal-features">
+                <span 
+                  v-for="(feature, i) in selectedItem.features" 
+                  :key="i"
+                  class="feature-tag"
+                >
+                  {{ feature }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Цена -->
+            <div v-if="selectedItem.price" class="modal-price">
+              <span class="price-label">Стоимость аренды:</span>
+              <span class="price-value">{{ selectedItem.price }}</span>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <a href="tel:+78122522245" class="btn-secondary">
+              📞 Позвонить
+            </a>
+            <a href="mailto:marketing@himanalit.ru" class="btn-primary">
+              ✉️ Запросить
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const activeStatus = ref('all')
 const items = ref([])
 const loading = ref(true)
+const dialogVisible = ref(false)
+const selectedItem = ref(null)
 
 onMounted(async () => {
   try {
@@ -136,23 +190,17 @@ onMounted(async () => {
   }
 })
 
-const filteredItems = computed(() => {
-  if (activeStatus.value === 'all') {
-    return items.value
-  }
-  return items.value.filter(item => item.status === activeStatus.value)
-})
-
 function showDetails(item) {
-  alert(`Помещение: ${item.name}\nПлощадь: ${item.area}\nЦена: ${item.price}\n\n${item.description}`)
+  selectedItem.value = item
+  dialogVisible.value = true
 }
 
 useHead({
-  title: 'Аренда помещений - ГосНИИхиманалит',
+  title: 'Аренда помещений - ГосНИИХиманалит',
   meta: [
     { 
       name: 'description', 
-      content: 'Аренда производственных, офисных и складских помещений от АО «ГосНИИхиманалит»' 
+      content: 'Аренда производственных, офисных и складских помещений от АО «ГосНИИХиманалит»' 
     }
   ]
 })
@@ -174,45 +222,16 @@ useHead({
   font-size: 2.5rem;
   font-weight: 700;
   color: #005700;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
-.page-description {
+.loading,
+.empty {
   text-align: center;
-  font-size: 1.125rem;
+  padding: 3rem;
+  font-size: 1.25rem;
   color: #6b7280;
-  margin-bottom: 2rem;
-}
-
-/* Фильтры */
-.filters {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.filter-btn {
-  padding: 10px 24px;
-  background: #fff;
-  color: #333;
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.filter-btn:hover {
-  border-color: #005700;
-  color: #005700;
-}
-
-.filter-btn.active {
-  background: #005700;
-  color: #fff;
-  border-color: #005700;
 }
 
 /* Сетка */
@@ -230,11 +249,14 @@ useHead({
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .arenda-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-color: #005700;
 }
 
 .arenda-card.rented {
@@ -274,6 +296,9 @@ useHead({
 
 .card-content {
   padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-title {
@@ -291,18 +316,38 @@ useHead({
 }
 
 .card-specs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin-bottom: 1rem;
+  padding: 12px;
+  background: var(--bg-section);
+  border-radius: 6px;
 }
 
 .spec-item {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
   font-size: 14px;
-  color: #4b5563;
+  padding: 4px 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.spec-item:last-child {
+  border-bottom: none;
+}
+
+.spec-label {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.spec-value {
+  color: #333;
+  font-weight: 600;
+  text-align: right;
 }
 
 .card-features {
@@ -327,6 +372,7 @@ useHead({
   align-items: center;
   padding-top: 1rem;
   border-top: 1px solid #e5e7eb;
+  margin-top: auto;
 }
 
 .card-price {
@@ -344,20 +390,17 @@ useHead({
   font-size: 14px;
   cursor: pointer;
   transition: background 0.3s;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover {
   background: #003d00;
-}
-
-.btn-primary:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
 }
 
 /* Контакты */
 .contacts-section {
-  background: #f8fafc;
+  background: var(--bg-section);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
@@ -392,6 +435,190 @@ useHead({
   text-decoration: underline;
 }
 
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+}
+
+.modal-header h2 {
+  font-size: 1.35rem;
+  color: #333;
+  margin: 0;
+  padding-right: 1rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-image {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-status {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.modal-status .status-badge {
+  position: static;
+}
+
+.modal-section h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #005700;
+  margin-bottom: 0.5rem;
+}
+
+.modal-section p {
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.modal-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-section);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.modal-spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.modal-spec-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modal-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: #f0f9f0;
+  border-radius: 8px;
+  border-left: 4px solid #005700;
+}
+
+.price-label {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.price-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #005700;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+}
+
+.modal-footer .btn-primary,
+.modal-footer .btn-secondary {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #333;
+  border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+  border-color: #005700;
+  color: #005700;
+}
+
 @media (max-width: 1024px) {
   .arenda-grid {
     grid-template-columns: 1fr 1fr;
@@ -406,6 +633,14 @@ useHead({
   .contacts-info {
     flex-direction: column;
     align-items: center;
+  }
+  
+  .modal-image {
+    height: 200px;
+  }
+  
+  .modal-content {
+    max-height: 95vh;
   }
 }
 </style>

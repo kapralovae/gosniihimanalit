@@ -48,7 +48,7 @@
               
               <!-- Калькулятор: Концентрация растворов -->
               <div class="calculator-card">
-                <h3>⚗️ Концентрация растворов</h3>
+                <h3>Концентрация растворов</h3>
                 <div class="calc-form">
                   <div class="form-group">
                     <label>Масса вещества (г):</label>
@@ -67,7 +67,7 @@
               
               <!-- Калькулятор: Пересчёт ppm → мг/м³ -->
               <div class="calculator-card">
-                <h3>📊 Пересчёт ppm → мг/м³</h3>
+                <h3>Пересчёт ppm → мг/м³</h3>
                 <div class="calc-form">
                   <div class="form-group">
                     <label>Концентрация (ppm):</label>
@@ -89,7 +89,7 @@
               
               <!-- Калькулятор: Газовые законы -->
               <div class="calculator-card">
-                <h3>🌡️ Газовые законы (нормальные условия)</h3>
+                <h3>Газовые законы (нормальные условия)</h3>
                 <div class="calc-form">
                   <div class="form-group">
                     <label>Объём газа (л):</label>
@@ -111,7 +111,7 @@
               
               <!-- Калькулятор: Погрешности -->
               <div class="calculator-card">
-                <h3>📏 Погрешности измерений</h3>
+                <h3>Погрешности измерений</h3>
                 <div class="calc-form">
                   <div class="form-group">
                     <label>Измеренное значение:</label>
@@ -597,7 +597,7 @@ useHead({
 }
 
 .data-table th {
-  background: #f8fafc;
+  background: var(--bg-section);
   font-weight: 600;
   color: #333;
 }

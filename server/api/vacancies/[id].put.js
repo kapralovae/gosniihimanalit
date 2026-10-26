@@ -5,9 +5,9 @@ export default defineEventHandler(async (event) => {
   const b = await readBody(event)
   db.prepare(`
     UPDATE vacancies SET title=?, department=?, type=?, salary=?, location=?,
-      requirements=?, active=?
+      experience=?, requirements=?, active=?
     WHERE id=?
-  `).run(b.title, b.department, b.type, b.salary, b.location,
+  `).run(b.title, b.department, b.type, b.salary, b.location, b.experience,
     JSON.stringify(b.requirements || []), b.active ? 1 : 0, id)
   return { success: true }
 })

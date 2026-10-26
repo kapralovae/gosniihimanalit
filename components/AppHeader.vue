@@ -79,10 +79,10 @@
                 </div>
                 
                 <NuxtLink to="/konstruktorskoe-byuro/biblioteka" class="dropdown-item">
-                  Библиотека
+                  Электронная библиотека
                 </NuxtLink>
                 <NuxtLink to="/konstruktorskoe-byuro/biblioteka-3d" class="dropdown-item">
-                  Библиотека 3D
+                  Библиотека 3D моделей
                 </NuxtLink>
               </div>
             </div>
@@ -90,7 +90,7 @@
             <!-- Об организации -->
             <div class="nav-item has-dropdown">
               <NuxtLink 
-                to="/about" 
+                to="/about/kontakty"  
                 class="nav-link"
                 :class="{ 'active': $route.path.startsWith('/about') }"
               >
@@ -157,12 +157,12 @@
             Библиотека
           </NuxtLink>
           <NuxtLink to="/konstruktorskoe-byuro/biblioteka-3d" class="mobile-link sub" @click="mobileMenuOpen = false">
-            Библиотека 3D
+            Библиотека 3D моделей
           </NuxtLink>
         </div>
         
         <div class="mobile-group">
-          <NuxtLink to="/about" class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
+          <NuxtLink to="/about/kontakty"  class="mobile-link mobile-group-title" @click="mobileMenuOpen = false">
             Об организации
           </NuxtLink>
           <NuxtLink to="/about/kontakty" class="mobile-link sub" @click="mobileMenuOpen = false">
@@ -183,51 +183,59 @@
     <div class="header-main">
       <div class="container">
         <div class="header-main-inner">
-          <NuxtLink to="/" class="logo">
-            <div class="logo-image">
+          <div class="logo">
+            <NuxtLink to="/" class="logo-image">
               <img src="/images/himanalit_gerb.webp" alt="Герб">
-            </div>
+              <span class="sparkle sparkle-1"></span>
+              <span class="sparkle sparkle-2"></span>
+              <span class="sparkle sparkle-3"></span>
+              <span class="sparkle sparkle-4"></span>
+              <span class="sparkle sparkle-5"></span>
+            </NuxtLink>
             <div class="logo-text">
-              <span class="company-name">{{ contacts?.site_title || 'АО «ГосНИИхиманалит»' }}</span>
-              <span class="company-subtitle">{{ contacts?.hero_title || 'Приборы. Средства химического контроля. Услуги' }}</span>
+              <span class="company-parent">ГК «Ростех»</span>
+              <span class="company-name">{{ contacts?.site_title || 'АО «Государственный научно-исследовательский химико-аналитический институт»' }}</span>
+              <span class="company-subtitle">{{ contacts?.hero_title || 'Приборы. Химический контроль. Услуги' }}</span>
             </div>
-          </NuxtLink>
+          </div>
           
           <div class="header-contacts">
-            <!-- Коммерческий отдел -->
-            <div class="contact-block">
-              <span class="contact-icon">📞</span>
-              <div class="contact-text">
-                <span class="contact-label">{{ contacts?.commercial_label || 'Коммерческий отдел' }}:</span>
-                <a v-if="contacts?.commercial_phone" :href="'tel:' + contacts.commercial_phone.replace(/[^0-9+]/g, '')" class="contact-value">
-                  {{ contacts.commercial_phone }}
-                </a>
-                <a v-if="contacts?.commercial_email" :href="'mailto:' + contacts.commercial_email" class="contact-value">
-                  {{ contacts.commercial_email }}
-                </a>
+            <div class="contacts-row">
+              <!-- Коммерческий отдел -->
+              <div class="contact-block">
+                <span class="contact-icon">📞</span>
+                <div class="contact-text">
+                  <span class="contact-label">{{ contacts?.commercial_label || 'Коммерческий отдел' }}:</span>
+                  <a v-if="contacts?.commercial_phone" :href="'tel:' + contacts.commercial_phone.replace(/[^0-9+]/g, '')" class="contact-value">
+                    {{ contacts.commercial_phone }}
+                  </a>
+                  <a v-if="contacts?.commercial_email" :href="'mailto:' + contacts.commercial_email" class="contact-value contact-email">
+                    {{ contacts.commercial_email }}
+                  </a>
+                </div>
               </div>
-            </div>
-            
-            <!-- Секретарь -->
-            <div class="contact-block">
-              <span class="contact-icon">📞</span>
-              <div class="contact-text">
-                <span class="contact-label">{{ contacts?.secretary_label || 'Секретарь' }}:</span>
-                <a v-if="contacts?.secretary_phone" :href="'tel:' + contacts.secretary_phone.replace(/[^0-9+]/g, '')" class="contact-value">
-                  {{ contacts.secretary_phone }}
-                </a>
-                <a v-if="contacts?.secretary_email" :href="'mailto:' + contacts.secretary_email" class="contact-value">
-                  {{ contacts.secretary_email }}
-                </a>
+              
+              <!-- Секретарь -->
+              <div class="contact-block">
+                <span class="contact-icon">📞</span>
+                <div class="contact-text">
+                  <span class="contact-label">{{ contacts?.secretary_label || 'Секретарь' }}:</span>
+                  <a v-if="contacts?.secretary_phone" :href="'tel:' + contacts.secretary_phone.replace(/[^0-9+]/g, '')" class="contact-value">
+                    {{ contacts.secretary_phone }}
+                  </a>
+                  <a v-if="contacts?.secretary_email" :href="'mailto:' + contacts.secretary_email" class="contact-value contact-email">
+                    {{ contacts.secretary_email }}
+                  </a>
+                </div>
               </div>
             </div>
             
             <!-- Адрес -->
-            <div class="contact-block">
+            <div v-if="contacts?.show_address != 0" class="contact-block contact-address">
               <span class="contact-icon">📍</span>
               <div class="contact-text">
                 <span class="contact-label">{{ contacts?.address_label || 'Адрес' }}:</span>
-                <span class="contact-value" v-html="formatAddress(contacts?.address)"></span>
+                <span class="contact-value" v-html="formatAddress(contacts?.address, isMobile)"></span>
               </div>
             </div>
           </div>
@@ -238,49 +246,73 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+const isMobile = ref(false)
+
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkMobile)
+})
 
 const mobileMenuOpen = ref(false)
 
 const { data: contacts } = await useFetch('/api/contacts')
 
 const services = [
-  { title: 'Базовая испытательно-метрологическая лаборатория (БИМЛ)', path: '/uslugi/ispytatelnyj-centr' },
-  { title: 'Метрология и поверка', path: '/uslugi/metrologiya-i-poverka' },
+  { title: 'Испытательная лаборатория', path: '/uslugi/ispytatelnaya-laboratory' },
+  { title: 'Метрология и поверка средств измерений', path: '/uslugi/metrologiya-i-poverka' },
   { title: 'Аналитическая химия', path: '/uslugi/analiticheskaya-himiya' },
-  { title: 'Конструкторское бюро', path: '/konstruktorskoe-byuro' },
-  { title: 'Стандартизация', path: '/uslugi/standartizaciya' },
+  { title: 'Разработка приборов и систем', path: '/konstruktorskoe-byuro' },
+  { title: 'Разработка стандартов', path: '/uslugi/standartizaciya' },
   { title: 'Производство', path: '/uslugi/proizvodstvo' },
   { title: 'Аренда', path: '/uslugi/arenda' }
 ]
 
 const kbItems = [
   { title: 'Центр разработки технических средств химического контроля', path: '/konstruktorskoe-byuro/centr-razrabotki-crtshk' },
-  { title: 'Библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
+  { title: 'Электронная библиотека', path: '/konstruktorskoe-byuro/biblioteka' },
   { title: 'Полезное для инженера', path: '/konstruktorskoe-byuro/spravochnik-inzhenera' },
-  { title: 'Библиотека 3D', path: '/konstruktorskoe-byuro/biblioteka-3d' }
+  { title: 'Библиотека 3D моделей', path: '/konstruktorskoe-byuro/biblioteka-3d' }
 ]
 
-function formatAddress(address) {
+function formatAddress(address, isMobile = false) {
+  const br = isMobile ? ' ' : '<br>'
+  
   if (!address) {
-    return '190020, Санкт-Петербург,<br>ул. Бумажная, 17'
+    return `190020, Санкт-Петербург,${br}ул. Бумажная, 17`
   }
+  
   // Разбиваем по запятым
   const parts = address.split(',').map(s => s.trim())
+  
   // Если 3+ части: "индекс, город, улица" → переносим после города
   if (parts.length >= 3) {
-    return parts[0] + ', ' + parts[1] + ',<br>' + parts.slice(2).join(', ')
+    return parts[0] + ', ' + parts[1] + ',' + br + parts.slice(2).join(', ')
   }
-  // Если 2 части: "индекс, всё остальное" → переносим после индекса? Нет — оставим как есть
+  
+  // Если 2 части: "индекс, всё остальное" → переносим после индекса
   if (parts.length === 2) {
-    return parts[0] + ',<br>' + parts[1]
+    return parts[0] + ',' + br + parts[1]
   }
+  
   return address
 }
 
 </script>
 
 <style scoped>
+/* ============================================
+   1. БАЗОВЫЕ СТИЛИ
+   ============================================ */
 .header-wrapper {
   background: #fff;
 }
@@ -291,7 +323,9 @@ function formatAddress(address) {
   padding: 0 20px;
 }
 
-/* Навигация - всегда закреплена вверху */
+/* ============================================
+   2. НАВИГАЦИЯ
+   ============================================ */
 .nav-wrapper {
   position: fixed;
   top: 0;
@@ -308,7 +342,6 @@ function formatAddress(address) {
   align-items: stretch;
 }
 
-/* Бургер-меню */
 .burger-menu {
   display: none;
   flex-direction: column;
@@ -339,7 +372,6 @@ function formatAddress(address) {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-/* Десктопная навигация */
 .desktop-nav {
   display: flex;
   align-items: stretch;
@@ -414,7 +446,6 @@ function formatAddress(address) {
   padding-left: 32px;
 }
 
-/* Подменю */
 .dropdown-submenu {
   position: relative;
 }
@@ -447,14 +478,9 @@ function formatAddress(address) {
   font-size: 14px;
 }
 
-/* Мобильное подменю */
-.mobile-link.sub2 {
-  padding-left: 50px;
-  font-size: 13px;
-  color: #9ca3af;
-}
-
-/* Мобильное меню */
+/* ============================================
+   3. МОБИЛЬНОЕ МЕНЮ
+   ============================================ */
 .mobile-menu {
   display: none;
   background: #fff;
@@ -484,6 +510,12 @@ function formatAddress(address) {
   color: #6b7280;
 }
 
+.mobile-link.sub2 {
+  padding-left: 50px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
 .mobile-group {
   border-bottom: 1px solid #f0f0f0;
   padding: 5px 0;
@@ -497,10 +529,12 @@ function formatAddress(address) {
   font-size: 16px;
 }
 
-/* Логотип и контакты - прокручиваются */
+/* ============================================
+   4. ЛОГОТИП И КОНТАКТЫ (DESKTOP)
+   ============================================ */
 .header-main {
   padding: 15px 0;
-  background: #fff;
+  background: #e5e4e2;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -521,12 +555,101 @@ function formatAddress(address) {
 }
 
 .logo-image {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================
+   ЭФФЕКТ 1: БЛИК (shine)
+   ============================================ */
+/* .logo-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 70%
+  );
+  animation: shine 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes shine {
+  0% {
+    left: -150%;
+  }
+  50%, 100% {
+    left: 150%;
+  }
+} */
+
+/* ============================================
+   ЭФФЕКТ 2: ЗВЁЗДОЧКИ (sparkle)
+   ============================================ */
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  opacity: 0;
+  pointer-events: none;
+  animation: sparkle 6s ease-in-out infinite;
+  z-index: 10;
+}
+
+.sparkle::before,
+.sparkle::after {
+  content: '';
+  position: absolute;
+  background: #f3db02;
+  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.9);
+}
+
+/* Вертикальная линия */
+.sparkle::before {
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+/* Горизонтальная линия */
+.sparkle::after {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+/* Позиции звёздочек */
+.sparkle-1 { top: 30%; left: 41%; animation-delay: 0s; }
+.sparkle-2 { top: 30%; right: 41%; animation-delay: 0s; }
+.sparkle-3 { top: 73%; left: 42%; animation-delay: 3s; }
+.sparkle-4 { top: 73%; right: 42%; animation-delay: 5s; }
+.sparkle-5 { top: 73%; left: 48%; animation-delay: 4s; }
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(90deg);
+  }
 }
 
 .logo-image img {
@@ -535,16 +658,49 @@ function formatAddress(address) {
   object-fit: contain;
 }
 
+
 .logo-text {
   display: flex;
   flex-direction: column;
+  max-width: 550px;
+}
+
+.company-parent {
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  text-transform: none;
 }
 
 .company-name {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: #005700;
   line-height: 1.2;
+  white-space: normal;
+
+  /* Градиент по тексту */
+  background: linear-gradient(
+    90deg,
+    #005700 0%,
+    #00a300 25%,
+    #0fdf0f 50%,
+    #00a300 75%,
+    #005700 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;  /* для Safari */
+
+  /* Анимация бегущего градиента */
+  animation: gradientShift 8s linear infinite reverse;
+}
+
+@keyframes gradientShift {
+  to { background-position: 200% center; }
 }
 
 .company-subtitle {
@@ -552,39 +708,57 @@ function formatAddress(address) {
   color: #6b7280;
 }
 
+/* Контакты — в ряд на десктопе */
 .header-contacts {
   display: flex;
-  gap: 20px;
-  align-items: center;
+  gap: 25px;
+  align-items: flex-start;
 }
 
-.contact-item {
+.contacts-row {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 25px;
+}
+
+.contact-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .contact-icon {
-  font-size: 18px;
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .contact-text {
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
 .contact-label {
-  font-size: 11px;
+  font-size: 13px;
   color: #6b7280;
+  font-weight: 600;
 }
 
 .contact-value {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: #333;
+  text-decoration: none;
+  line-height: 1.4;
 }
 
-/* Мобильная версия */
+a.contact-value:hover {
+  color: #005700;
+}
+
+/* ============================================
+   5. АДАПТИВ
+   ============================================ */
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
@@ -602,55 +776,121 @@ function formatAddress(address) {
     display: block;
   }
   
+  /* Логотип по центру */
   .header-main-inner {
     margin-top: 50px;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+    align-items: stretch;
+    gap: 12px;
   }
   
   .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
+    width: 100%;
   }
   
   .logo-image {
     width: 50px;
     height: 50px;
+    flex-shrink: 0;
+  }
+  
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
   
   .company-name {
-    font-size: 18px;
+    font-size: 15px;
   }
   
   .company-subtitle {
-    font-size: 11px;
+    font-size: 10px;
   }
   
+  /* Контакты — flex-вертикально */
   .header-contacts {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;
+  }
+  
+  /* Ряд из 2 блоков (коммерческий + секретарь) */
+  .contacts-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
     width: 100%;
   }
   
-  .contact-item {
-    gap: 8px;
+  .contacts-row .contact-block {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .contact-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 0;
+  }
+  
+  /* Адрес — на всю ширину */
+  .contact-block.contact-address {
+    width: 100%;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 4px;
   }
   
   .contact-icon {
-    font-size: 16px;
+    font-size: 13px;
+    width: 16px;
+    flex-shrink: 0;
+    text-align: center;
+    margin-top: 2px;
+    line-height: 1;
+  }
+  
+  .contact-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
   }
   
   .contact-label {
-    font-size: 10px;
+    font-size: 11px;
+    color: #005700;
+    font-weight: 600;
+    line-height: 1.3;
   }
   
   .contact-value {
     font-size: 12px;
+    line-height: 1.4;
+    color: #333;
+    text-decoration: none;
+    word-break: break-word;
+  }
+  
+  a.contact-value:hover {
+    color: #005700;
+  }
+
+  .contact-address .contact-value br {
+    display: none;
   }
 }
 
-/* Очень маленькие экраны */
 @media (max-width: 480px) {
   .company-name {
     font-size: 16px;
